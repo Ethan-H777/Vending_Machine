@@ -4,6 +4,8 @@ import vendingMachineSystem.VendingMachine;
 import vendingMachineSystem.view.DefaultView;
 import vendingMachineSystem.view.LoginView;
 
+import java.util.List;
+
 public class LoginState extends VendingMachineState {
 
 	public LoginState(VendingMachine vm) {
@@ -23,6 +25,10 @@ public class LoginState extends VendingMachineState {
 
 	public void changeToRegistrationPage() {
 		vm.setState(new RegistrationState(vm));
+	}
+
+	public boolean verifyAccount(String username, String password){
+		return false;
 	}
 
 }

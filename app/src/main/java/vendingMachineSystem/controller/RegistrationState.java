@@ -22,4 +22,9 @@ public class RegistrationState extends VendingMachineState {
         vm.setState(new LoggedInState(vm));
     }
 
+    public boolean createAccount(String username, String password){
+
+        return false;
+    }
+
 }

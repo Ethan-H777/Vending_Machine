@@ -25,7 +25,7 @@ public class DefaultView extends AbstractView {
 		p.setLayout(new BorderLayout());
 		p.add(new JLabel("Default Landing Page"), BorderLayout.NORTH);
 		
-		JButton loginButton = new JButton("Login");
+		JButton loginButton = new JButton("Login/Register");
 		loginButton.addActionListener(new ActionListener() {
 
 			@Override

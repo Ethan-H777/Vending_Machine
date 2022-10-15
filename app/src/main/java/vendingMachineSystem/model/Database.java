@@ -1,5 +1,7 @@
 package vendingMachineSystem.model;
 
+import vendingMachineSystem.VendingMachine;
+
 import java.sql.*;
 
 public class Database {

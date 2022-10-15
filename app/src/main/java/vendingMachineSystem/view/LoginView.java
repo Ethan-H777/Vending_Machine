@@ -11,8 +11,9 @@ import vendingMachineSystem.controller.*;
 public class LoginView extends AbstractView {
 
 	LoginState state;
+	Dimension size;
 	JTextField username;
-	JTextField password;
+	JPasswordField password;
 
 	public LoginView(LoginState state) {
 		this.state = state;
@@ -27,7 +28,7 @@ public class LoginView extends AbstractView {
 		Panel p = new Panel();
 		p.setLayout(null);
 		JLabel pageLabel = new JLabel("Login");
-		Dimension size = pageLabel.getPreferredSize();
+		size = pageLabel.getPreferredSize();
 		pageLabel.setBounds(170, 30, size.width, size.height);
 		p.add(pageLabel);
 
@@ -37,7 +38,6 @@ public class LoginView extends AbstractView {
 		p.add(usernameLabel);
 
 		username = new JTextField(18);
-		size = username.getPreferredSize();
 		username.setBounds(140, 65, 150, 26);
 		p.add(username);
 
@@ -46,8 +46,8 @@ public class LoginView extends AbstractView {
 		passwordLabel.setBounds(70, 100, size.width, size.height);
 		p.add(passwordLabel);
 
-		password = new JTextField(18);
-		size = password.getPreferredSize();
+		password = new JPasswordField(18);
+		password.setEchoChar('*');
 		password.setBounds(140, 95, 150, 26);
 		p.add(password);
 
