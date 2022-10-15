@@ -27,6 +27,19 @@ public class LoginView extends AbstractView {
 		Panel p = new Panel();
 		p.setLayout(new BorderLayout());
 		p.add(new JLabel("Login Page"), BorderLayout.NORTH);
+		
+		JButton loginButton = new JButton("Done");
+		loginButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				LoginView.this.state.changeToLoginPage();
+			}
+			
+		});
+		
+		p.add(loginButton, BorderLayout.SOUTH);
+		
 		window.updateWindow(p);
 	}
 

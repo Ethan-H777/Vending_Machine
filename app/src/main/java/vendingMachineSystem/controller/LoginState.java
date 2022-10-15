@@ -18,7 +18,7 @@ public class LoginState extends VendingMachineState {
 	}
 	
 	public void changeToLoginPage() {
-		vm.setState(new LoginState(vm));
+		this.checkTimedOut(1); //Please change this this was done for testing only
 	}
 
 }
