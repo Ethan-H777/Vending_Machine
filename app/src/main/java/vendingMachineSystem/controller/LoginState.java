@@ -16,9 +16,13 @@ public class LoginState extends VendingMachineState {
 		LoginView view = new LoginView(this);
 		view.display();
 	}
-	
-	public void changeToLoginPage() {
-		this.checkTimedOut(1); //Please change this this was done for testing only
+
+	public void changeToLoggedInPage() {
+		vm.setState(new LoggedInState(vm));
+	}
+
+	public void changeToRegistrationPage() {
+		vm.setState(new RegistrationState(vm));
 	}
 
 }
