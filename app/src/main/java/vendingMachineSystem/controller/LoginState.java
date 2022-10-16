@@ -30,5 +30,11 @@ public class LoginState extends VendingMachineState {
 	public boolean verifyAccount(String username, String password){
 		return false;
 	}
+	public void changeToLoggedInPage(){
+		this.checkTimedOut(200);
 
+		// TODO: Get role based on login details
+
+		vm.setState( new LoggedInState(vm, "OWNER"));
+	}
 }
