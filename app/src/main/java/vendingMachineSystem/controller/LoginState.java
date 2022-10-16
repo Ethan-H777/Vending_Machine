@@ -19,9 +19,6 @@ public class LoginState extends VendingMachineState {
 		view.display();
 	}
 
-	public void changeToLoggedInPage() {
-		vm.setState(new LoggedInState(vm));
-	}
 
 	public void changeToRegistrationPage() {
 		vm.setState(new RegistrationState(vm));
