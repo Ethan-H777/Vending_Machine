@@ -33,7 +33,7 @@ public class LoginView extends AbstractView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LoginView.this.state.changeToLoginPage();
+				LoginView.this.state.changeToLoggedInPage();
 			}
 			
 		});
