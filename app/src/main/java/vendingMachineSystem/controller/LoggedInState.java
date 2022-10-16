@@ -41,4 +41,9 @@ public class LoggedInState extends VendingMachineState {
         System.out.println("Reports");
     }
 
+    public void clickedCancel(){
+        role = null; // update this when roles are updated?
+        vm.setState( new DefaultState(vm) );
+    }
+
 }

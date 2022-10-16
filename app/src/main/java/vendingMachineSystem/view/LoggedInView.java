@@ -34,6 +34,18 @@ public class LoggedInView extends AbstractView {
         purchaseButton.setFont(new Font("Arial", Font.PLAIN, 10));
         p.add(purchaseButton);
 
+        // cancel
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setBounds(560,220,100,40);
+        cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoggedInView.this.state.clickedCancel();
+            }
+        });
+        p.add(cancelButton);
+
         // buttons based on role
             // modify/restock
         if ( state.getRole().equals("OWNER") || state.getRole().equals("SELLER") ){
@@ -77,7 +89,7 @@ public class LoggedInView extends AbstractView {
             p.add(mgUsrButton);
         }
 
-        // reports
+            // reports
         if ( state.getRole().equals("OWNER") || state.getRole().equals("SELLER") || state.getRole().equals("CASHIER") ){
             JButton reportButton = new JButton("Reports");
             reportButton.setBounds(460,220,100,40); // 560
