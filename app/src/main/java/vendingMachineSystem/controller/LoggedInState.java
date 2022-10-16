@@ -8,7 +8,7 @@ public class LoggedInState extends VendingMachineState {
     private String role;
 
     public String getRole(){return role;}
-    public LoggedInState(VendingMachine vm, String given_role){
+    public LoggedInState(VendingMachine vm, String role){
         super(vm);
         this.role = role;
     }
@@ -20,7 +20,13 @@ public class LoggedInState extends VendingMachineState {
     }
 
     public void clickedPurchase(){
+        // (STUB) TODO: purchase page
         System.out.println("Clicked Purchase");
+    }
+
+    public void clickedModifyRestock(){
+        // (STUB) TODO: purchase page
+        System.out.println("Clicked Modify/Restock");
     }
 
 }

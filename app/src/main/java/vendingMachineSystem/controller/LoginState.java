@@ -23,8 +23,8 @@ public class LoginState extends VendingMachineState {
 	public void changeToLoggedInPage(){
 		this.checkTimedOut(200);
 
-		// TODO: Get role based on login detail
+		// TODO: Get role based on login details
 
-		vm.setState( new LoggedInState(vm, "CUSTOMER"));
+		vm.setState( new LoggedInState(vm, "OWNER"));
 	}
 }
