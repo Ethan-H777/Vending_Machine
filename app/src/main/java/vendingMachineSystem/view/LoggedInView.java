@@ -49,7 +49,7 @@ public class LoggedInView extends AbstractView {
             p.add(modButton);
         }
 
-        // update change
+            // update change
         if ( state.getRole().equals("OWNER") || state.getRole().equals("CASHIER") ){
             JButton updateButton = new JButton("Update Change");
             updateButton.setBounds(220,220,120,40); // 340
@@ -61,6 +61,20 @@ public class LoggedInView extends AbstractView {
                 }
             });
             p.add(updateButton);
+        }
+
+            // update user
+        if ( state.getRole().equals("OWNER") ){
+            JButton mgUsrButton = new JButton("Manage Users");
+            mgUsrButton.setBounds(340,220,120,40); // 460
+            mgUsrButton.setFont(new Font("Arial", Font.PLAIN, 10));
+            mgUsrButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    LoggedInView.this.state.clickedManageUsers();
+                }
+            });
+            p.add(mgUsrButton);
         }
 
         window.updateWindow(p);

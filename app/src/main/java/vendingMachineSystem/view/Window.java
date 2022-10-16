@@ -19,7 +19,7 @@ public class Window {
 	private Window() {
        frame = new JFrame("Vending Machine");
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       frame.setSize(340,300);
+       frame.setSize(460,300);
 	}
 	
 	public void updateWindow(Component component) {
