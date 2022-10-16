@@ -77,6 +77,20 @@ public class LoggedInView extends AbstractView {
             p.add(mgUsrButton);
         }
 
+        // reports
+        if ( state.getRole().equals("OWNER") || state.getRole().equals("SELLER") || state.getRole().equals("CASHIER") ){
+            JButton reportButton = new JButton("Reports");
+            reportButton.setBounds(460,220,100,40); // 560
+            reportButton.setFont(new Font("Arial", Font.PLAIN, 10));
+            reportButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    LoggedInView.this.state.clickedReports();
+                }
+            });
+            p.add(reportButton);
+        }
+
         window.updateWindow(p);
     }
 }

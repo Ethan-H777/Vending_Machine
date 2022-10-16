@@ -36,5 +36,9 @@ public class LoggedInState extends VendingMachineState {
         // (STUB) TODO: manage users page
         System.out.println("Clicked Manage Users");
     }
+    public void clickedReports(){
+        // (STUB) TODO: reports page
+        System.out.println("Reports");
+    }
 
 }
