@@ -35,7 +35,7 @@ public class LoggedInView extends AbstractView {
         p.add(purchaseButton);
 
         // buttons based on role
-        //  modify/restock
+            // modify/restock
         if ( state.getRole().equals("OWNER") || state.getRole().equals("SELLER") ){
             JButton modButton = new JButton("Modify/Restock Items");
             modButton.setBounds(100,220,120,40); // 220
@@ -49,6 +49,19 @@ public class LoggedInView extends AbstractView {
             p.add(modButton);
         }
 
+        // update change
+        if ( state.getRole().equals("OWNER") || state.getRole().equals("CASHIER") ){
+            JButton updateButton = new JButton("Update Change");
+            updateButton.setBounds(220,220,120,40); // 340
+            updateButton.setFont(new Font("Arial", Font.PLAIN, 10));
+            updateButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    LoggedInView.this.state.clickedUpdateChange();
+                }
+            });
+            p.add(updateButton);
+        }
 
         window.updateWindow(p);
     }
