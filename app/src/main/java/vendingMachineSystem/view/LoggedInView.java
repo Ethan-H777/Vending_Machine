@@ -108,6 +108,21 @@ public class LoggedInView extends AbstractView {
             p.add(reportButton);
         }
 
+        //the products scroll table
+
+        //TODO: connect the table with database, this is a sample table
+        String[][] data = { {"Mineral Water", "Mars", "Smith", "Mentos"},
+                {"Sprite", "M&M", "Pringles", "Sour Patch"}};
+        String[] columns = {"Drinks", "Chocolates", "Chips", "Candies"};
+
+        JTable productTable = new JTable(data, columns);
+        JScrollPane scrollPane = new JScrollPane(productTable);
+        scrollPane.setBounds(30, 10, 600, 200);
+        p.add(scrollPane);
+
+
         window.updateWindow(p);
     }
+
+
 }

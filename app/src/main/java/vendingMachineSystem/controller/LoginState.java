@@ -32,6 +32,7 @@ public class LoginState extends VendingMachineState {
 
 		// TODO: Get role based on login details
 
-		vm.setState( new LoggedInState(vm, "OWNER"));
+		vm.setState( new LoggedInState(vm, "SELLER"));
+		//vm.setState( new LoggedInState(vm, "CUSTOMER"));
 	}
 }
