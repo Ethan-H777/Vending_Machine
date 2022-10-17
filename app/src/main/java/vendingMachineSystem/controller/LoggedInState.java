@@ -30,6 +30,8 @@ public class LoggedInState extends VendingMachineState {
     public void clickedModifyRestock(){
         // (STUB) TODO: purchase page
         System.out.println("Clicked Modify/Restock");
+
+        vm.setState(new RestockState(vm, role));
     }
     public void clickedUpdateChange(){
         // (STUB) TODO: update change page
