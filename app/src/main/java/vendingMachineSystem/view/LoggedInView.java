@@ -110,7 +110,7 @@ public class LoggedInView extends AbstractView {
 
         //the products scroll table
 
-        if ( state.getRole().equals("SELLER") || state.getRole().equals("OWNER")) {
+        if ( state.getRole().equals("SELLER") ) {
             //TODO: connect the table with database, this is a sample table
             String[][] data = { {"Mineral Water", "1001", "Drinks", "7", "2.5"},
                     {"Sprite", "1002", "Drinks", "7", "3"}};
