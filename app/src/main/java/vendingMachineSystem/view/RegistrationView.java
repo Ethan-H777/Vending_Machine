@@ -58,7 +58,15 @@ public class RegistrationView extends AbstractView {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                RegistrationView.this.state.changeToLoggedInPage();
+                String usernameEntered = username.getText();
+                String passwordEntered = new String(password.getPassword());
+                Boolean registrationStatus = RegistrationView.this.state.createAccount(usernameEntered,passwordEntered,"CUSTOMER");
+                if (registrationStatus){
+                    RegistrationView.this.state.changeToLoggedInPage();
+                }else{
+                    RegistrationView.this.state.cancelTransaction();
+                }
+
             }
 
         });

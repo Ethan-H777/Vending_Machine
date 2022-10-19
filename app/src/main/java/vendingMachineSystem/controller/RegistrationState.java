@@ -1,9 +1,13 @@
 package vendingMachineSystem.controller;
 
-        import vendingMachineSystem.VendingMachine;
-        import vendingMachineSystem.view.DefaultView;
-        import vendingMachineSystem.view.LoginView;
-        import vendingMachineSystem.view.RegistrationView;
+import vendingMachineSystem.VendingMachine;
+import vendingMachineSystem.model.UserModel;
+import vendingMachineSystem.view.DefaultView;
+import vendingMachineSystem.view.LoginView;
+import vendingMachineSystem.view.RegistrationView;
+
+import java.lang.reflect.Type;
+import java.sql.SQLException;
 
 public class RegistrationState extends VendingMachineState {
 
@@ -22,9 +26,14 @@ public class RegistrationState extends VendingMachineState {
         vm.setState(new LoggedInState(vm,"CUSTOMER"));
     }
 
-    public boolean createAccount(String username, String password){
-
-        return false;
+    public boolean createAccount(String username, String password, String type){
+        UserModel userDB = new UserModel();
+        try {
+            userDB.createUser(username,password,type);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
 }

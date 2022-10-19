@@ -24,7 +24,8 @@ public class Database {
 		dbUrl = "jdbc:sqlite:" + System.getProperty("user.dir") + "/" + name;
         try {
         	connection = DriverManager.getConnection(dbUrl);
-        	setupProductTable();
+        	//setupProductTable();
+			setupUserTable();
         } catch (SQLException e) {
         	e.printStackTrace();
         }
@@ -40,6 +41,22 @@ public class Database {
     		);""";
 		
 		statement.execute(productTableSql);
+		statement.close();
+	}
+
+	private void setupUserTable() throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String UserTableSql = """
+			CREATE TABLE IF NOT EXISTS Users (
+			Username VARCHAR(18) PRIMARY KEY,
+			Password VARCHAR(18) NOT NULL,
+			Type VARCHAR(20) NOT NULL,
+			CreditCardNum  INT,
+			HistoryID INT    		
+    		);""";
+
+		statement.execute(UserTableSql);
 		statement.close();
 	}
 	
@@ -67,5 +84,18 @@ public class Database {
 		return rs.getString("name");
 		
 	}
-	
+
+	public void addUser(String username, String password, String type) throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String userTableSql = String.format("""
+				INSERT INTO Users(Username, Password, Type) 
+				VALUES ('%1$s', '%2$s','%3$s');
+				""", username, password, type);
+
+		statement.execute(userTableSql);
+		statement.close();
+
+	}
+
 }
