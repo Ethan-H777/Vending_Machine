@@ -98,4 +98,35 @@ public class Database {
 
 	}
 
+	public String getPassword(String username) throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String UserTableSql = String.format("""
+				SELECT Password
+				FROM Users
+				WHERE EXISTS
+				(SELECT username FROM Users WHERE username = '%1$s')
+				AND
+				username = '%2$s';
+				""", username, username);
+
+		ResultSet rs = statement.executeQuery(UserTableSql);
+		return rs.getString("Password");
+
+	}
+
+	public String getUserType(String username) throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String UserTableSql = String.format("""
+				SELECT Type
+				FROM Users
+				WHERE username = '%s';
+				""", username);
+
+		ResultSet rs = statement.executeQuery(UserTableSql);
+		return rs.getString("Type");
+
+	}
+
 }

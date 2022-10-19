@@ -3,6 +3,7 @@ package vendingMachineSystem.view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.*;
 
@@ -57,7 +58,20 @@ public class LoginView extends AbstractView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LoginView.this.state.changeToLoggedInPage();
+				String usernameEntered = username.getText().toLowerCase();
+				String passwordEntered = new String(password.getPassword());
+				try {
+					String passwordFound = LoginView.this.state.getPassword(usernameEntered);
+					if (passwordEntered.equals(passwordFound)){
+						String type = LoginView.this.state.getUserType(usernameEntered);
+						LoginView.this.state.changeToLoggedInPage(type);
+					}else{
+						new FailLogin();
+					}
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+				}
+
 			}
 			
 		});
