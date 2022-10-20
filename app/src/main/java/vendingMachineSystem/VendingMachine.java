@@ -17,6 +17,10 @@ public class VendingMachine {
 		vm.run();
 	}
 	
+	public VendingMachineState getState() {
+		return vm;
+	}
+	
 	public void setUser(String userName, String userType) {
 		this.userName = userName;
 		this.userType = userType;
