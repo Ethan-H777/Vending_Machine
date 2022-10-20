@@ -3,6 +3,7 @@ package vendingMachineSystem.model;
 import vendingMachineSystem.VendingMachine;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
 
