@@ -39,6 +39,13 @@ public class Product {
         return category;
     }
 
+    public Product( int id, String name,String category, int quantity, float price ){
+        this.category = category;
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.id= id;
+    }
     public Product(){
 
     }

@@ -6,10 +6,15 @@ import java.util.List;
 public class DataModel {
     Database db;
 
-    public DataModel(){
+    public DataModel(boolean isTest){
         // conn
         db = Database.getInstance();
-        db.connect("database.db");
+        if (isTest){
+            db.connect("test_database.db");
+        }
+        else {
+            db.connect("database.db");
+        }
     }
 
     public List<Product> allProducts() throws SQLException{

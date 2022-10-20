@@ -26,7 +26,7 @@ public class DefaultState extends VendingMachineState {
 
 	public String[][] getItemData(){
 		// get products
-		DataModel dm = new DataModel();
+		DataModel dm = new DataModel(false);
 		List<Product> ls;
 		try {
 			 ls = dm.allProducts();
