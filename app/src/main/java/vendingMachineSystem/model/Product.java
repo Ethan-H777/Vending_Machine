@@ -1,4 +1,4 @@
-package vendingMachineSystem;
+package vendingMachineSystem.model;
 
 public class Product {
     private int id;
@@ -37,5 +37,13 @@ public class Product {
     }
     public String getCategory() {
         return category;
+    }
+
+    public Product(){
+
+    }
+
+    public void displayProduct(){
+        System.out.println(String.format("id: %d, name: %s, cat: %s, q: %d, price: %f", id, name, category, quantity, price) );
     }
 }

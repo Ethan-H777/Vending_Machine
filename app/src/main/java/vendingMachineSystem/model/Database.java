@@ -3,6 +3,8 @@ package vendingMachineSystem.model;
 import vendingMachineSystem.VendingMachine;
 
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Database {
 
@@ -24,7 +26,7 @@ public class Database {
 		dbUrl = "jdbc:sqlite:" + System.getProperty("user.dir") + "/" + name;
         try {
         	connection = DriverManager.getConnection(dbUrl);
-        	//setupProductTable();
+        	setupProductTable();
 			setupUserTable();
         } catch (SQLException e) {
         	e.printStackTrace();
@@ -32,13 +34,18 @@ public class Database {
 	}
 	
 	private void setupProductTable() throws SQLException {
+
 		Statement statement = connection.createStatement();
 		
 		String productTableSql = """
 			CREATE TABLE IF NOT EXISTS Products (
 			id integer PRIMARY KEY,
-			name CHAR(50) NOT NULL    		
-    		);""";
+			name VARCHAR(50) NOT NULL,
+			category VARCHAR(50) NOT NULL,
+			quantity INTEGER NOT NULL,
+			price FLOAT(5,2) CHECK (price > 0) NOT NULL
+ 	  		)
+ 	  		;""";
 		
 		statement.execute(productTableSql);
 		statement.close();
@@ -65,7 +72,17 @@ public class Database {
 		Statement statement = connection.createStatement();
 		
 		String productTableSql = """
-			INSERT INTO Products(name) VALUES ('Drinks');
+			INSERT INTO Products(id, name, category, quantity, price) 
+				VALUES 
+					(1, 'Pebis', 'Drinks', 5, 1.10),
+					(2, 'Conk', 'Drinks', 5, 1.20),
+					(3, 'Spronk', 'Drinks', 5, 1.25),
+					(4, 'Fronta', 'Drinks', 5, 1.20),
+					(5, 'Cabdury', 'Chocolates', 5, 5.6),
+					(6, 'Skites', 'Candies', 5, 4.3),
+					(7, 'Prinkles', 'Chips', 5, 3),
+					(8, 'Alan', 'Chocolates', 5, 1.20)
+			;
 			""";
 		
 		statement.execute(productTableSql);
@@ -127,6 +144,31 @@ public class Database {
 		ResultSet rs = statement.executeQuery(UserTableSql);
 		return rs.getString("Type");
 
+	}
+
+	public List<Product> getAllProducts() throws SQLException{
+
+		List<Product> ret = new ArrayList<Product>();
+		Product prod;
+
+		Statement statement = connection.createStatement();
+		String productTableSql = """
+			SELECT * FROM Products;
+			""";
+
+		ResultSet rs = statement.executeQuery(productTableSql);
+
+		while (rs.next()){
+			prod = new Product();
+			prod.setId( rs.getInt("id") );
+			prod.setName( rs.getString("name"));
+			prod.setCategory( rs.getString("category"));
+			prod.setQuantity( rs.getInt("quantity"));
+			prod.setPrice( rs.getFloat("price"));
+			ret.add(prod);
+		}
+
+		return ret;
 	}
 
 }
