@@ -171,4 +171,20 @@ public class Database {
 		return ret;
 	}
 
+	void productsDrop() throws SQLException{
+		Statement statement = connection.createStatement();
+
+		String productTableSql = """
+			DROP TABLE IF EXISTS Products
+ 	  		;""";
+
+		statement.execute(productTableSql);
+		statement.close();
+	}
+
+	void doStatement(String cmd) throws SQLException{
+		Statement statement = connection.createStatement();
+		statement.execute(cmd);
+		statement.close();
+	}
 }
