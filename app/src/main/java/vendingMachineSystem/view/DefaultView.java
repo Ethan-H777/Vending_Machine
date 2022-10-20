@@ -36,6 +36,14 @@ public class DefaultView extends AbstractView {
 		});
 		
 		p.add(loginButton, BorderLayout.SOUTH);
+
+		String[][] data = state.getItemData();
+		String[] names = {"Category", "Item", "Quantity", "Price"};
+		JTable tab = new JTable(data, names);
+		tab.setBounds(100,100,200,200);
+		JScrollPane tab_scroller = new JScrollPane(tab);
+		p.add(tab_scroller);
+
 		window.updateWindow(p);
 	}
 
