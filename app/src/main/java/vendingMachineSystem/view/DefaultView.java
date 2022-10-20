@@ -25,7 +25,7 @@ public class DefaultView extends AbstractView {
 		p.setLayout(new BorderLayout());
 		p.add(new JLabel("Default Landing Page"), BorderLayout.NORTH);
 		
-		JButton loginButton = new JButton("Login/Register");
+		JButton loginButton = new JButton("Login");
 		loginButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -36,14 +36,6 @@ public class DefaultView extends AbstractView {
 		});
 		
 		p.add(loginButton, BorderLayout.SOUTH);
-
-		String[][] data = state.getItemData();
-		String[] names = {"Category", "Item", "Quantity", "Price"};
-		JTable tab = new JTable(data, names);
-		tab.setBounds(100,100,200,200);
-		JScrollPane tab_scroller = new JScrollPane(tab);
-		p.add(tab_scroller);
-
 		window.updateWindow(p);
 	}
 

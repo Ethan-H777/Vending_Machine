@@ -1,46 +1,24 @@
 package vendingMachineSystem.controller;
 
-import java.time.LocalDateTime;
-
 import vendingMachineSystem.VendingMachine;
-import vendingMachineSystem.view.TimeoutDialog;
 
 public abstract class VendingMachineState {
 	
 	VendingMachine vm;
-	LocalDateTime lastAction;
 	
 	public VendingMachineState(VendingMachine vm) {
 		this.vm = vm;
-		this.lastAction = LocalDateTime.now();
+		if (!(this instanceof DefaultState)) {
+			//TODO we can add a thread to monitor the timeout and switch states to the default state on timeout
+//			Thread thread = new Thread();
+//			thread.run();
+		}
 	}
 	
 	public abstract void run();
 	
-	/**
-	 * Switches state to the default state if action has timed out
-	 * (Timeout is >120 sec since last action was taken)
-	 */
-	public void checkTimedOut() {
-		checkTimedOut(120);
-	}
-	
-	/**
-	 * Switches state to the default state if action has timed out
-	 * @param seconds time since last action was performed
-	 */
-	public void checkTimedOut(long seconds) {
-		LocalDateTime currentDateTime = LocalDateTime.now();
-		if (currentDateTime.minusSeconds(seconds).compareTo(lastAction) > 0) {
-			this.cancelTransaction();
-			new TimeoutDialog();
-		}
-		else
-			this.lastAction = currentDateTime;		
-	}
-	
-	public void cancelTransaction() {
-		this.vm.setState(new DefaultState(vm));
+	public void inputEntered() {
+		//TODO this should be called after every action to reset the timeout period
 	}
 	
 	public String readInput() {
