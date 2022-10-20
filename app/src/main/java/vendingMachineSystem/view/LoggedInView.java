@@ -27,6 +27,16 @@ public class LoggedInView extends AbstractView {
 
         Panel p = new Panel();
         p.setLayout(null);
+        //p.setLayout(new BorderLayout());
+
+        //menu
+        String[][] menuData = state.getItemData();
+        String[] names = {"Category", "Item", "Quantity", "Price"};
+
+        JTable tab = new JTable(menuData, names);
+        JScrollPane tab_scroller = new JScrollPane(tab);
+        tab_scroller.setBounds(0,0,600,120);
+        p.add(tab_scroller);
 
         JButton purchaseButton = new JButton("Purchase Items");
         purchaseButton.addActionListener(new ActionListener() {
@@ -41,14 +51,14 @@ public class LoggedInView extends AbstractView {
 
         // cancel
         JButton cancelButton = new JButton("Cancel");
-        cancelButton.setBounds(560,220,100,40);
-        cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LoggedInView.this.state.clickedCancel();
             }
         });
+        cancelButton.setBounds(560,220,100,40);
+        cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
         p.add(cancelButton);
 
         // buttons based on role
@@ -124,7 +134,7 @@ public class LoggedInView extends AbstractView {
 
         if ( state.getRole().equals("CASHIER") ) {
             //TODO: connect the table with database, this is a sample table
-            Integer[][] data = { {5,5,5,5,5,5,5,5,5,5}};
+            Integer[][] data = {{5, 5, 5, 5, 5, 5, 5, 5, 5, 5}};
             String[] columns = {"$100", "$50", "$20", "$5", "$2", "$1", "50c", "20c", "10c", "5c"};
 
             JTable productTable = new JTable(data, columns);
@@ -132,7 +142,6 @@ public class LoggedInView extends AbstractView {
             scrollPane.setBounds(30, 10, 600, 200);
             p.add(scrollPane);
         }
-
 
         window.updateWindow(p);
     }
