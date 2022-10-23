@@ -138,8 +138,9 @@ public class Database {
 			""";
 		
 		ResultSet rs = statement.executeQuery(productTableSql);
-		return rs.getString("name");
-		
+		String name = rs.getString("name");
+		statement.close();
+		return name;
 	}
 
 	public void addUser(String username, String password, String type) throws SQLException {
@@ -168,7 +169,9 @@ public class Database {
 				""", username, username);
 
 		ResultSet rs = statement.executeQuery(UserTableSql);
-		return rs.getString("Password");
+		String password = rs.getString("Password");
+		statement.close();
+		return password;
 
 	}
 
@@ -182,7 +185,9 @@ public class Database {
 				""", username);
 
 		ResultSet rs = statement.executeQuery(UserTableSql);
-		return rs.getString("Type");
+		String type = rs.getString("Type");
+		statement.close();
+		return type;
 
 	}
 
@@ -208,6 +213,7 @@ public class Database {
 			ret.add(prod);
 		}
 
+		statement.close();
 		return ret;
 	}
 
@@ -231,19 +237,19 @@ public class Database {
 			changes.add(change);
 		}
 
+		statement.close();
 		return changes;
 	}
 
-	public String updateChangeQty(String name, String newQty) throws SQLException{
+	public String updateChangeQty(String name, String newQty) throws SQLException {
 		Statement statement = connection.createStatement();
 		String productTableSql = String.format(
-				"UPDATE Changes SET Quantity = %s WHERE Name = %s;", newQty, name
-		);
-
-		ResultSet rs = statement.executeQuery(productTableSql);
-		//return for testing
-		return rs.getString("Quantity");
-
+				"UPDATE Changes SET Quantity=%s WHERE Name='%s';", newQty, name
+				);
+		
+		statement.execute(productTableSql);
+		statement.close();
+		return "";
 	}
 
 	void productsDrop() throws SQLException{

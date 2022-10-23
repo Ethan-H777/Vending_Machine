@@ -112,7 +112,7 @@ public class FillCashView extends AbstractView{
             public void actionPerformed(ActionEvent e) {
                 FillCashView.this.state.changeToLoggedInState();
                 //modify database
-//                state.updateCash(cash.getText(), newQty.getText());
+                state.updateCash(cash.getText(), newQty.getText());
             }
         });
         p.add(saveButton);
