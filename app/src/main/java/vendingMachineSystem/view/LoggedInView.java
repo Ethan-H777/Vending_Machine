@@ -132,16 +132,7 @@ public class LoggedInView extends AbstractView {
             p.add(scrollPane);
         }
 
-        if ( state.getRole().equals("CASHIER") ) {
-            //TODO: connect the table with database, this is a sample table
-            Integer[][] data = {{5, 5, 5, 5, 5, 5, 5, 5, 5, 5}};
-            String[] columns = {"$100", "$50", "$20", "$5", "$2", "$1", "50c", "20c", "10c", "5c"};
 
-            JTable productTable = new JTable(data, columns);
-            JScrollPane scrollPane = new JScrollPane(productTable);
-            scrollPane.setBounds(30, 10, 600, 200);
-            p.add(scrollPane);
-        }
 
         window.updateWindow(p);
     }

@@ -10,8 +10,7 @@ import java.awt.event.ActionListener;
 public class FillCashView extends AbstractView{
     private FillCashState state;
     private Dimension size;
-    private JTextField note;
-    private JTextField coin;
+    private JTextField cash;
     private JTextField newQty;
 
     public FillCashView(FillCashState state){
@@ -29,6 +28,17 @@ public class FillCashView extends AbstractView{
         pageLabel.setBounds(170, 30, size.width, size.height);
         p.add(pageLabel);
 
+        //cash table
+        String[][] data = state.getCashData();
+        String[] columns ={"Name", "Value", "Quantity"};
+
+        JTable productTable = new JTable(data, columns);
+        JScrollPane scrollPane = new JScrollPane(productTable);
+        scrollPane.setBounds(350, 10, 250, 150);
+        p.add(scrollPane);
+
+
+
         // cancel
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setBounds(560,220,100,40);
@@ -42,17 +52,17 @@ public class FillCashView extends AbstractView{
         p.add(cancelButton);
 
 //        JLabel noteLabel = new JLabel("Cash ($)        ");
-        JLabel noteLabel = new JLabel("Cash in Dollar");
+        JLabel noteLabel = new JLabel("Cash ($ or c)");
         size = noteLabel.getPreferredSize();
         noteLabel.setBounds(70, 70, size.width, size.height);
         p.add(noteLabel);
 
-        note = new JTextField(18);
-        note.setBounds(70 + size.width, 65, 97, 26);
-        p.add(note);
+        cash = new JTextField(18);
+        cash.setBounds(70 + size.width, 65, 97, 26);
+        p.add(cash);
 
         //search button
-        JButton searchButton = new JButton("Search");
+        JButton searchButton = new JButton("Select");
         size = searchButton.getPreferredSize();
         searchButton.setBounds(250,65, size.width, size.height);
 
@@ -60,14 +70,24 @@ public class FillCashView extends AbstractView{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: find the item by the code and display
-                Integer[][] data = { {5} };
-                String[] columns = {"$5"};
+//                System.out.println(cash.getText());
 
-                JTable cashtTable = new JTable(data, columns);
-                JScrollPane scrollPane = new JScrollPane(cashtTable);
-                scrollPane.setBounds(70, 70 + 30, 40, 40);
-                p.add(scrollPane);
+                for (int i = 0; i < state.getCashData().length; i++){
+
+                    if (state.getCashData()[i][0].equals(cash.getText())){
+                        String qty = state.getCashData()[i][2];
+                        String name = state.getCashData()[i][0];
+                        String[][] data = { {qty} };
+                        String[] columns = {name};
+
+                        JTable cashTable = new JTable(data, columns);
+                        JScrollPane scrollPane = new JScrollPane(cashTable);
+                        scrollPane.setBounds(70, 70 + 30, 40, 40);
+                        p.add(scrollPane);
+                    }
+                }
+
+
             }
 
         });
@@ -91,6 +111,8 @@ public class FillCashView extends AbstractView{
             @Override
             public void actionPerformed(ActionEvent e) {
                 FillCashView.this.state.changeToLoggedInState();
+                //modify database
+//                state.updateCash(cash.getText(), newQty.getText());
             }
         });
         p.add(saveButton);

@@ -28,6 +28,7 @@ public class Database {
         	connection = DriverManager.getConnection(dbUrl);
         	setupProductTable();
 			setupUserTable();
+			setUpChangeTable();
         } catch (SQLException e) {
         	e.printStackTrace();
         }
@@ -51,6 +52,21 @@ public class Database {
 		statement.close();
 	}
 
+	private void setUpChangeTable() throws  SQLException {
+		Statement statement = connection.createStatement();
+
+		String productTableSql = """
+			CREATE TABLE IF NOT EXISTS Changes (
+			name VARCHAR(10) PRIMARY KEY,
+			value FLOAT(5,2) NOT NULL, 
+			quantity INTEGER NOT NULL
+ 	  		)
+ 	  		;""";
+
+		statement.execute(productTableSql);
+		statement.close();
+	}
+
 	private void setupUserTable() throws SQLException {
 		Statement statement = connection.createStatement();
 
@@ -64,6 +80,30 @@ public class Database {
     		);""";
 
 		statement.execute(UserTableSql);
+		statement.close();
+	}
+
+	public void addDataChanges() throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String changeTableSql = """
+			INSERT INTO Changes(name, value, quantity) 
+				VALUES 
+					('$100', '100.00', 5),
+					('$50', '50.00', 5),
+					('$20', '20.00', 5),
+					('$10', '10.00', 5),
+					('$5', '5.00', 5),
+					('$2', '2.00', 5),
+					('$1', '1.00', 5),
+					('50c', '0.50', 5),
+					('20c', '0.20', 5),
+					('10c', '0.10', 5),
+					('5c', '0.05', 5)
+			;
+			""";
+
+		statement.execute(changeTableSql);
 		statement.close();
 	}
 	
@@ -169,6 +209,41 @@ public class Database {
 		}
 
 		return ret;
+	}
+
+	public List<Change> getAllChanges() throws SQLException{
+
+		List<Change> changes = new ArrayList<Change>();
+		Change change;
+
+		Statement statement = connection.createStatement();
+		String productTableSql = """
+			SELECT * FROM Changes;
+			""";
+
+		ResultSet rs = statement.executeQuery(productTableSql);
+
+		while (rs.next()){
+			change = new Change();
+			change.setName( rs.getString("name") );
+			change.setValue( rs.getFloat("value"));
+			change.setQty( rs.getInt("quantity"));
+			changes.add(change);
+		}
+
+		return changes;
+	}
+
+	public String updateChangeQty(String name, String newQty) throws SQLException{
+		Statement statement = connection.createStatement();
+		String productTableSql = String.format(
+				"UPDATE Changes SET Quantity = %s WHERE Name = %s;", newQty, name
+		);
+
+		ResultSet rs = statement.executeQuery(productTableSql);
+		//return for testing
+		return rs.getString("Quantity");
+
 	}
 
 	void productsDrop() throws SQLException{
