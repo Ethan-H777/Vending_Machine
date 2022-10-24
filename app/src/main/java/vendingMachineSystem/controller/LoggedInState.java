@@ -45,7 +45,7 @@ public class LoggedInState extends VendingMachineState {
     }
     public void clickedReports(){
         // (STUB) TODO: reports page
-        System.out.println("Reports");
+        vm.setState( new ReportsState(vm, role) );
     }
 
     public void clickedCancel(){
