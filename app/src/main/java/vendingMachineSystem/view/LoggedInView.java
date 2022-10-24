@@ -30,13 +30,29 @@ public class LoggedInView extends AbstractView {
         //p.setLayout(new BorderLayout());
 
         //menu
-        String[][] menuData = state.getItemData();
+        JLabel menuLabel = new JLabel("Menu");
+        Dimension size = menuLabel.getPreferredSize();
+        menuLabel.setBounds(0,0,size.width,size.height);
+        p.add(menuLabel);
+        String[][] data = state.getItemData();
         String[] names = {"Category", "Item", "Quantity", "Price"};
-
-        JTable tab = new JTable(menuData, names);
+        JTable tab = new JTable(data, names);
         JScrollPane tab_scroller = new JScrollPane(tab);
-        tab_scroller.setBounds(0,0,600,120);
+        tab_scroller.setBounds(0,20,650,125);
         p.add(tab_scroller);
+
+        //recent purchases
+        JLabel recLabel = new JLabel("Recent Purchases");
+        Dimension rec_size = recLabel.getPreferredSize();
+        recLabel.setBounds(0,150,rec_size.width,rec_size.height);
+        p.add(recLabel);
+        String[][] rec_data;
+        rec_data = state.getRecentData(); // stub for now TODO: implement getting recent purchases data
+        String[] rec_names = {"Item", "Quantity", "Price"};
+        JTable rec_tab = new JTable(rec_data, rec_names);
+        JScrollPane rec_tab_scroller = new JScrollPane(rec_tab);
+        rec_tab_scroller.setBounds(0,170,650,60);
+        p.add(rec_tab_scroller);
 
         JButton purchaseButton = new JButton("Purchase Items");
         purchaseButton.addActionListener(new ActionListener() {
@@ -45,7 +61,7 @@ public class LoggedInView extends AbstractView {
                 LoggedInView.this.state.clickedPurchase();
             }
         });
-        purchaseButton.setBounds(0,220,100,40); //300x300 window, 100
+        purchaseButton.setBounds(0,230,100,40); //300x300 window, 100
         purchaseButton.setFont(new Font("Arial", Font.PLAIN, 10));
         p.add(purchaseButton);
 
@@ -57,7 +73,7 @@ public class LoggedInView extends AbstractView {
                 LoggedInView.this.state.clickedCancel();
             }
         });
-        cancelButton.setBounds(560,220,100,40);
+        cancelButton.setBounds(560,230,100,40);
         cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
         p.add(cancelButton);
 
@@ -65,7 +81,7 @@ public class LoggedInView extends AbstractView {
             // modify/restock
         if ( state.getRole().equals("OWNER") || state.getRole().equals("SELLER") ){
             JButton modButton = new JButton("Modify/Restock Items");
-            modButton.setBounds(100,220,120,40); // 220
+            modButton.setBounds(100,230,120,40);
             modButton.setFont(new Font("Arial", Font.PLAIN, 10));
             modButton.addActionListener(new ActionListener() {
                 @Override
@@ -79,7 +95,7 @@ public class LoggedInView extends AbstractView {
             // update change
         if ( state.getRole().equals("OWNER") || state.getRole().equals("CASHIER") ){
             JButton updateButton = new JButton("Update Change");
-            updateButton.setBounds(220,220,120,40); // 340
+            updateButton.setBounds(220,230,120,40); // 340
             updateButton.setFont(new Font("Arial", Font.PLAIN, 10));
             updateButton.addActionListener(new ActionListener() {
                 @Override
@@ -93,7 +109,7 @@ public class LoggedInView extends AbstractView {
             // update user
         if ( state.getRole().equals("OWNER") ){
             JButton mgUsrButton = new JButton("Manage Users");
-            mgUsrButton.setBounds(340,220,120,40); // 460
+            mgUsrButton.setBounds(340,230,120,40); // 460
             mgUsrButton.setFont(new Font("Arial", Font.PLAIN, 10));
             mgUsrButton.addActionListener(new ActionListener() {
                 @Override
@@ -107,7 +123,7 @@ public class LoggedInView extends AbstractView {
             // reports
         if ( state.getRole().equals("OWNER") || state.getRole().equals("SELLER") || state.getRole().equals("CASHIER") ){
             JButton reportButton = new JButton("Reports");
-            reportButton.setBounds(460,220,100,40); // 560
+            reportButton.setBounds(460,230,100,40); // 560
             reportButton.setFont(new Font("Arial", Font.PLAIN, 10));
             reportButton.addActionListener(new ActionListener() {
                 @Override
@@ -121,6 +137,7 @@ public class LoggedInView extends AbstractView {
         //the products scroll table
 
         if ( state.getRole().equals("SELLER") ) {
+            /* Have commented this out, as I've already written the code for this and am not sure if it's needed - Nick
             //TODO: connect the table with database, this is a sample table
             String[][] data = { {"Mineral Water", "1001", "Drinks", "7", "2.5"},
                     {"Sprite", "1002", "Drinks", "7", "3"}};
@@ -130,6 +147,7 @@ public class LoggedInView extends AbstractView {
             JScrollPane scrollPane = new JScrollPane(productTable);
             scrollPane.setBounds(30, 10, 600, 200);
             p.add(scrollPane);
+             */
         }
 
 
