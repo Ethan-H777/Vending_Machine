@@ -53,6 +53,10 @@ public abstract class VendingMachineState {
 		return "0";
 	}
 
+	public String[][] getRecentData(){ // STUB TODO: implement
+		String[][] ret = {{"corn","million","like 50 bucks"}};
+		return ret;
+	}
 
 	public String[][] getItemData(){
 		// get products
