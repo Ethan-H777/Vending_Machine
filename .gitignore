@@ -24,3 +24,5 @@ app/build.gradle
 .settings/
 app/.settings/
 app/data.db
+
+.DS_Store
