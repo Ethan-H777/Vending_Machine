@@ -84,5 +84,13 @@ public class ReportsState extends VendingMachineState {
         output_csv(filename, outString);
     }
 
+    public void userReport(boolean is_csv) {
+        String outString = "username,role\n";
+        String[][] userData = super.getUserReport();
+        outString = getOutString( userData, outString );
+        String filename = getFileName( is_csv, "users");
+        output_csv(filename, outString);
+    }
+
 
 }
