@@ -58,10 +58,7 @@ public abstract class VendingMachineState {
 		return ret;
 	}
 
-	public String[][] getItemData(){ // original function that does not return id (overloading as many usages already)
-		return getItemData(false);
-	}
-	public String[][] getItemData(boolean needs_id){
+	public String[][] getItemData(){
 		// get products
 		DataModel dm = new DataModel(false);
 		List<Product> ls;
@@ -73,18 +70,12 @@ public abstract class VendingMachineState {
 
 		// now get 2d list of items needed
 		// category, item, quantity, price
-		int ret_subsize = 4;
-		if (needs_id){ ret_subsize = 5; }
-		String[][] ret = new String[ls.size()][ret_subsize];
-
+		String[][] ret = new String[ls.size()][4];
 		for ( int prod_n = 0; prod_n < ls.size(); prod_n++ ){
 			ret[prod_n][0] = ls.get(prod_n).getCategory();
 			ret[prod_n][1] = ls.get(prod_n).getName();
 			ret[prod_n][2] = Integer.toString(ls.get(prod_n).getQuantity());
 			ret[prod_n][3] = Float.toString(ls.get(prod_n).getPrice());
-			if (needs_id){
-				ret[prod_n][4] = Integer.toString(ls.get(prod_n).getId());
-			}
 		}
 
 		return ret;
