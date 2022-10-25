@@ -2,7 +2,6 @@ package vendingMachineSystem.controller;
 
 
 import vendingMachineSystem.VendingMachine;
-import vendingMachineSystem.view.LoggedInView;
 import vendingMachineSystem.view.ReportsView;
 
 import java.io.*;
@@ -44,16 +43,11 @@ public class ReportsState extends VendingMachineState {
         }
     }
 
-    public void changeReport(boolean is_csv) {
-        // colnames
-        String outString = "name,value,quantity\n";
-
-        // append contents
-        String[][] cashData = super.getCashData();
-        for ( int i =0; i < cashData.length; i++){
-            for ( int j = 0; j < cashData[i].length; j++){
-                outString = outString + cashData[i][j];
-                if ( j == cashData[i].length-1 ){ // last
+    String getOutString(String[][] data, String outString){
+        for ( int i =0; i < data.length; i++){
+            for ( int j = 0; j < data[i].length; j++){
+                outString = outString + data[i][j];
+                if ( j == data[i].length-1 ){ // last
                     outString = outString + "\n";
                 } else{
                     outString = outString + ",";
@@ -61,13 +55,24 @@ public class ReportsState extends VendingMachineState {
             }
 
         }
+        return outString;
+    }
+    String getFileName( boolean is_csv, String repType ){
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        String filename = new SimpleDateFormat("yyyyMMdd HH:mm:ss.S").format(timestamp) + "_change";
+        String filename = new SimpleDateFormat("yyyyMMdd HH:mm:ss.S").format(timestamp) + "_" + repType;
         if (is_csv){
             filename = filename +".csv";
         } else {
             filename = filename + ".txt";
         }
+        return filename;
+    }
+
+    public void changeReport(boolean is_csv) {
+        String outString = "name,value,quantity\n";
+        String[][] cashData = super.getCashData();
+        outString = getOutString( cashData, outString );
+        String filename = getFileName( is_csv, "change");
         output_csv(filename, outString);
     }
 
