@@ -4,6 +4,7 @@ import vendingMachineSystem.VendingMachine;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserModel {
 
@@ -35,6 +36,11 @@ public class UserModel {
     public String getUserType(String username) throws SQLException {
         String type = db.getUserType(username);
         return type;
+    }
+
+    public List<User> getUserReport() throws SQLException {
+        List<User> ret = db.getUserReport();
+        return ret;
     }
 
 }

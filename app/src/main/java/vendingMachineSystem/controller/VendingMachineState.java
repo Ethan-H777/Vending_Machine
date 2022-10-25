@@ -5,10 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import vendingMachineSystem.VendingMachine;
-import vendingMachineSystem.model.Change;
-import vendingMachineSystem.model.ChangeModel;
-import vendingMachineSystem.model.DataModel;
-import vendingMachineSystem.model.Product;
+import vendingMachineSystem.model.*;
 import vendingMachineSystem.view.TimeoutDialog;
 
 public abstract class VendingMachineState {
@@ -109,6 +106,24 @@ public abstract class VendingMachineState {
 			ret[n][2] = Integer.toString(changes.get(n).getQty());
 		}
 
+		return ret;
+	}
+
+	public String[][] getUserReport(){
+		UserModel um = new UserModel();
+		List<User> users;
+		try{
+			users = um.getUserReport();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		String[][] ret = new String[users.size()][2];
+		for ( int n = 0; n < users.size(); n++ ){
+			ret[n][0] = users.get(n).getUsername();
+			ret[n][1] = users.get(n).getRole();
+		}
 		return ret;
 	}
 	

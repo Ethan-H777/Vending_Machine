@@ -268,4 +268,22 @@ public class Database {
 		statement.execute(cmd);
 		statement.close();
 	}
+
+	public List<User> getUserReport() throws SQLException{
+		List<User> users = new ArrayList<User>();
+		User user;
+
+		Statement statement = connection.createStatement();
+		String productTableSql = """
+			SELECT Username, Type FROM Users;
+			""";
+
+		ResultSet rs = statement.executeQuery(productTableSql);
+		while (rs.next()){
+			user = new User(rs.getString("username"), rs.getString("type"));
+			users.add(user);
+		}
+		statement.close();
+		return users;
+	}
 }

@@ -95,6 +95,33 @@ public class ReportsView extends AbstractView{
             p.add(detailsButtonTXT);
             report_stagger += reportDim.height;
         }
+        // users, failed transactions
+        if ( state.getRole().equals("OWNER")){
+            JButton usersButtonCSV = new JButton("csv"); // button
+            usersButtonCSV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReportsView.this.state.userReport(true);
+                }
+            });
+            JLabel usersLabel = new JLabel("Users"); // label
+            reportDim = usersLabel.getPreferredSize(); // txt
+            JButton usersButtonTXT = new JButton("text");
+            usersButtonTXT.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReportsView.this.state.userReport(false);
+                }
+            });
+
+            usersLabel.setBounds(0, report_stagger, reportDim.width, reportDim.height);
+            usersButtonCSV.setBounds(reportDim.width + 10, report_stagger, buttonWidth, reportDim.height);
+            usersButtonTXT.setBounds(reportDim.width + 20 + buttonWidth, report_stagger, buttonWidth, reportDim.height);
+            p.add(usersLabel);
+            p.add(usersButtonCSV);
+            p.add(usersButtonTXT);
+            report_stagger += reportDim.height;
+        }
 
         // cancel
         JButton cancelButton = new JButton("Cancel");
