@@ -23,8 +23,8 @@ public class LoggedInState extends VendingMachineState {
     }
 
     public void clickedPurchase(){
-        // (STUB) TODO: purchase page
         System.out.println("Clicked Purchase");
+        vm.setState(new PurchaseItemState(vm));
     }
 
     public void clickedModifyRestock(){
