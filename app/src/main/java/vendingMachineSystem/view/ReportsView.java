@@ -38,8 +38,8 @@ public class ReportsView extends AbstractView{
 
         // report buttons
 
-        // change
-        if (state.getRole().equals("OWNER") || state.getRole().equals("SELLER")) {
+        // change, transaction summary
+        if (state.getRole().equals("OWNER") || state.getRole().equals("CASHIER")) {
             JButton reportButtonCSV = new JButton("csv"); // button
             reportButtonCSV.addActionListener(new ActionListener() {
                 @Override
@@ -63,6 +63,36 @@ public class ReportsView extends AbstractView{
             p.add(reportLabel);
             p.add(reportButtonCSV);
             p.add(reportButtonTXT);
+            report_stagger += reportDim.height;
+
+            // TODO: transaction summary
+        }
+
+        // item details, item summary
+        if ( state.getRole().equals("OWNER") || state.getRole().equals("SELLER")){
+            JButton detailsButtonCSV = new JButton("csv"); // button
+            detailsButtonCSV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReportsView.this.state.detailsReport(true);
+                }
+            });
+            JLabel detailsLabel = new JLabel("Item Details"); // label
+            reportDim = detailsLabel.getPreferredSize(); // txt
+            JButton detailsButtonTXT = new JButton("text");
+            detailsButtonTXT.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReportsView.this.state.detailsReport(false);
+                }
+            });
+
+            detailsLabel.setBounds(0, report_stagger, reportDim.width, reportDim.height);
+            detailsButtonCSV.setBounds(reportDim.width + 10, report_stagger, buttonWidth, reportDim.height);
+            detailsButtonTXT.setBounds(reportDim.width + 20 + buttonWidth, report_stagger, buttonWidth, reportDim.height);
+            p.add(detailsLabel);
+            p.add(detailsButtonCSV);
+            p.add(detailsButtonTXT);
             report_stagger += reportDim.height;
         }
 
