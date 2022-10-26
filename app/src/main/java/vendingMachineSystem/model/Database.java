@@ -336,6 +336,19 @@ public class Database {
 		statement.close();
 	}
 
+	void changesDrop() throws SQLException{
+		Statement statement = connection.createStatement();
+
+		String productTableSql = """
+			DROP TABLE IF EXISTS Changes
+ 	  		;""";
+
+		statement.execute(productTableSql);
+		statement.close();
+	}
+
+
+
 	void doStatement(String cmd) throws SQLException{
 		Statement statement = connection.createStatement();
 		statement.execute(cmd);
