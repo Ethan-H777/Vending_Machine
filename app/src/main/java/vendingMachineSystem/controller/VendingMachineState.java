@@ -56,7 +56,7 @@ public abstract class VendingMachineState {
 	}
 
 	public String[][] getItemData(){ // original function that does not return id (overloading as many usages already)
-		return getItemData(false);
+		return getItemData(true);
 	}
 	public String[][] getItemData(boolean needs_id){
 		// get products
@@ -79,9 +79,11 @@ public abstract class VendingMachineState {
 			ret[prod_n][1] = ls.get(prod_n).getName();
 			ret[prod_n][2] = Integer.toString(ls.get(prod_n).getQuantity());
 			ret[prod_n][3] = Float.toString(ls.get(prod_n).getPrice());
+
 			if (needs_id){
 				ret[prod_n][4] = Integer.toString(ls.get(prod_n).getId());
 			}
+
 		}
 
 		return ret;

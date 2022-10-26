@@ -44,7 +44,7 @@ public class DefaultView extends AbstractView {
 		Dimension size = menuLabel.getPreferredSize();
 		menuLabel.setBounds(0,0,size.width,size.height);
 		p.add(menuLabel);
-		String[][] data = state.getItemData();
+		String[][] data = state.getItemData(false);
 		String[] names = {"Category", "Item", "Quantity", "Price"};
 		JTable tab = new JTable(data, names);
 		JScrollPane tab_scroller = new JScrollPane(tab);

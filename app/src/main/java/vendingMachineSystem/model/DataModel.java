@@ -23,4 +23,12 @@ public class DataModel {
         ls = db.getAllProducts();
         return ls;
     }
+
+    public void updateItemByID(String id, String name, String category, String price, String qty) throws SQLException{
+        db.updateItemByID(id, name, category, price, qty);
+    }
+
+    public void updateItemID(String name, String newID) throws SQLException{
+        db.updateItemID(name, newID);
+    }
 }
