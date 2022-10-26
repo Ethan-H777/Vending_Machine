@@ -36,13 +36,7 @@ public class RestockView extends AbstractView{
         p.add(pageLabel);
 
         //item table
-        String[][] data = state.getItemNameList();
-        String[] columns ={"Name", "Code"};
-
-        JTable productTable = new JTable(data, columns);
-        JScrollPane scrollPane = new JScrollPane(productTable);
-        scrollPane.setBounds(450, 30, 200, 100);
-        p.add(scrollPane);
+        displayProductList(p);
 
         // cancel
         JButton cancelButton = new JButton("Cancel");
@@ -213,7 +207,6 @@ public class RestockView extends AbstractView{
 
     }
 
-
     public void showModifyButton(Panel p) {
         JLabel newNameLabel = new JLabel("New name:");
         size = newNameLabel.getPreferredSize();
@@ -256,4 +249,13 @@ public class RestockView extends AbstractView{
         p.add(newPrice);
     }
 
+    public void displayProductList(Panel p){
+        String[][] data = state.getItemNameList();
+        String[] columns ={"Name", "Code"};
+
+        JTable productTable = new JTable(data, columns);
+        JScrollPane scrollPane = new JScrollPane(productTable);
+        scrollPane.setBounds(450, 30, 200, 100);
+        p.add(scrollPane);
+    }
 }
