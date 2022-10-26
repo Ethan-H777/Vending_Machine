@@ -217,6 +217,28 @@ public class Database {
 		return ret;
 	}
 
+	public void updateItemByID(String id, String name, String category, String price, String qty) throws SQLException{
+		Statement statement = connection.createStatement();
+		String productTableSql = String.format(
+				"UPDATE Products SET name='%s', category='%s', price=%s, quantity=%s WHERE id=%s;"
+				, name, category, price, qty, id
+		);
+
+		statement.execute(productTableSql);
+		statement.close();
+	}
+
+	public void updateItemID(String name, String newID) throws  SQLException{
+		Statement statement = connection.createStatement();
+		String productTableSql = String.format(
+				"UPDATE Products SET id=%s WHERE name='%s';"
+				, newID, name
+		);
+
+		statement.execute(productTableSql);
+		statement.close();
+	}
+
 	public List<Change> getAllChanges() throws SQLException{
 
 		List<Change> changes = new ArrayList<Change>();
@@ -241,15 +263,15 @@ public class Database {
 		return changes;
 	}
 
-	public String updateChangeQty(String name, String newQty) throws SQLException {
+	public void updateChangeQty(String name, String newQty) throws SQLException {
 		Statement statement = connection.createStatement();
-		String productTableSql = String.format(
+		String changeTableSql = String.format(
 				"UPDATE Changes SET Quantity=%s WHERE Name='%s';", newQty, name
 				);
 		
-		statement.execute(productTableSql);
+		statement.execute(changeTableSql);
 		statement.close();
-		return "";
+
 	}
 
 	void productsDrop() throws SQLException{
