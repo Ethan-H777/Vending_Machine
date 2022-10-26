@@ -9,6 +9,7 @@ import vendingMachineSystem.view.PurchaseItemView;
 public class PurchaseItemState extends VendingMachineState {
 
 	VendingMachineState prevState;
+	int timeoutPeriodSeconds = 120;
 	
 	public PurchaseItemState(VendingMachine vm, VendingMachineState prevState) {
 		super(vm);
@@ -37,12 +38,17 @@ public class PurchaseItemState extends VendingMachineState {
 	}
 	
 	public boolean checkTransactionTimeout() {
-		boolean timedout = super.checkTimedOut();
+		boolean timedout = super.checkTimedOut(timeoutPeriodSeconds);
 		if (timedout) {
 			TransactionModel tm = new TransactionModel(vm.getUserName(), "Timed out");
 			tm.addFailedTransaction();
 		}
 		return timedout;
 	}
+	
+	public void setTimeout(int sec) {
+		this.timeoutPeriodSeconds = sec;
+	}
+	
 	
 }

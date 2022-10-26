@@ -53,6 +53,10 @@ public abstract class VendingMachineState {
 	public String readInput() {
 		return "0";
 	}
+	
+	public VendingMachine getVm() {
+		return this.vm;
+	}
 
 	public String[][] getRecentData(){ // STUB TODO: implement
 		String[][] ret = {{"corn","million","like 50 bucks"}};
