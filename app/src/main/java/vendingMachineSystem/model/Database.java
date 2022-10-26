@@ -29,6 +29,8 @@ public class Database {
         	setupProductTable();
 			setupUserTable();
 			setUpChangeTable();
+			setupTransactionTable();
+			setupTransactionProductsTable();
         } catch (SQLException e) {
         	e.printStackTrace();
         }
@@ -55,7 +57,7 @@ public class Database {
 	private void setUpChangeTable() throws  SQLException {
 		Statement statement = connection.createStatement();
 
-		String productTableSql = """
+		String changeTableSql = """
 			CREATE TABLE IF NOT EXISTS Changes (
 			name VARCHAR(10) PRIMARY KEY,
 			value FLOAT(5,2) NOT NULL, 
@@ -63,7 +65,7 @@ public class Database {
  	  		)
  	  		;""";
 
-		statement.execute(productTableSql);
+		statement.execute(changeTableSql);
 		statement.close();
 	}
 
@@ -80,6 +82,43 @@ public class Database {
     		);""";
 
 		statement.execute(UserTableSql);
+		statement.close();
+	}
+	
+	private void setupTransactionTable() throws SQLException {
+		Statement statement = connection.createStatement();
+
+		//I got a bit lazy with the user field, I used a string instead of FK so we don't have
+		//to query the user table to get the user id.
+		String TransactionTableSql = """
+			CREATE TABLE IF NOT EXISTS Transactions (
+			id INTEGER PRIMARY KEY,
+			User VARCHAR(18),
+			Successful INT,
+			Date DATETIME DEFAULT CURRENT_TIMESTAMP,
+			Money_paid FLOAT(5,2) DEFAULT 0,
+			Returned_change FLOAT(5,2) DEFAULT 0,
+			Payment_method VARCHAR(10) DEFAULT NULL,
+			Cancelled_reason VARCHAR(20) 
+    		);""";
+
+		statement.execute(TransactionTableSql);
+		statement.close();
+	}
+	
+	private void setupTransactionProductsTable() throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String TransactionProductsTableSql = """
+			CREATE TABLE IF NOT EXISTS TransactionProducts (
+			TransactionId INTEGER,
+			Product INTEGER,
+			Quantity INT NOT NULL,
+			FOREIGN KEY (TransactionId) REFERENCES Transactions(id),
+			FOREIGN KEY (Product) REFERENCES Products(id)
+    		);""";
+
+		statement.execute(TransactionProductsTableSql);
 		statement.close();
 	}
 
@@ -250,6 +289,18 @@ public class Database {
 		statement.execute(productTableSql);
 		statement.close();
 		return "";
+	}
+	
+	public void addFailedTransaction(String user, String reason) throws SQLException {
+		String sql = """
+		INSERT INTO Transactions (User, Successful, Cancelled_reason)
+		VALUES (?, FALSE, ?)""";
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, user);
+		statement.setString(2, reason);
+		statement.execute();
+		statement.close();
 	}
 
 	void productsDrop() throws SQLException{

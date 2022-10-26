@@ -26,23 +26,27 @@ public abstract class VendingMachineState {
 	/**
 	 * Switches state to the default state if action has timed out
 	 * (Timeout is >120 sec since last action was taken)
+	 * @return boolean true if timed out otherwise false
 	 */
-	public void checkTimedOut() {
-		checkTimedOut(120);
+	public boolean checkTimedOut() {
+		return checkTimedOut(120);
 	}
 	
 	/**
 	 * Switches state to the default state if action has timed out
 	 * @param seconds time since last action was performed
+	 * @return boolean true if timed out otherwise false
 	 */
-	public void checkTimedOut(long seconds) {
+	public boolean checkTimedOut(long seconds) {
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		if (currentDateTime.minusSeconds(seconds).compareTo(lastAction) > 0) {
 			this.cancelTransaction();
 			new TimeoutDialog();
+			return true;
 		}
 		else
-			this.lastAction = currentDateTime;		
+			this.lastAction = currentDateTime;
+		return false;
 	}
 	
 	public void cancelTransaction() {

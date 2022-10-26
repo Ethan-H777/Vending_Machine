@@ -23,8 +23,7 @@ public class LoggedInState extends VendingMachineState {
     }
 
     public void clickedPurchase(){
-        System.out.println("Clicked Purchase");
-        vm.setState(new PurchaseItemState(vm));
+        vm.setState(new PurchaseItemState(vm, this));
     }
 
     public void clickedModifyRestock(){

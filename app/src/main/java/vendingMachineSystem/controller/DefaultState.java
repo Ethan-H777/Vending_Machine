@@ -23,5 +23,9 @@ public class DefaultState extends VendingMachineState {
 	public void changeToLoginPage() {
 		vm.setState(new LoginState(vm));
 	}
+	
+	public void changeToPurchaseItemsPage() {
+		vm.setState(new PurchaseItemState(vm, this));
+	}
 
 }

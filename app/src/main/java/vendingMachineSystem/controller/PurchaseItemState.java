@@ -1,12 +1,18 @@
 package vendingMachineSystem.controller;
 
+import java.util.Map;
+
 import vendingMachineSystem.VendingMachine;
+import vendingMachineSystem.model.TransactionModel;
 import vendingMachineSystem.view.PurchaseItemView;
 
 public class PurchaseItemState extends VendingMachineState {
 
-	public PurchaseItemState(VendingMachine vm) {
+	VendingMachineState prevState;
+	
+	public PurchaseItemState(VendingMachine vm, VendingMachineState prevState) {
 		super(vm);
+		this.prevState = prevState;
 	}
 
 	@Override
@@ -15,5 +21,28 @@ public class PurchaseItemState extends VendingMachineState {
         view.display();
 
 	}
+	
+	public void changeToCashPaymentPage(Map<String, Integer> itemsToPurchase) {
+		vm.setState(new CashPaymentState(vm, itemsToPurchase));
+	}
+	
+	public void changeToCardPaymentPage(Map<String, Integer> itemsToPurchase) {
+		vm.setState(new CardPaymentState(vm, itemsToPurchase));
+	}
 
+	public void cancelTransaction() {
+		TransactionModel tm = new TransactionModel(vm.getUserName(), "Cancelled");
+		tm.addFailedTransaction();
+		vm.setState(prevState);
+	}
+	
+	public boolean checkTransactionTimeout() {
+		boolean timedout = super.checkTimedOut();
+		if (timedout) {
+			TransactionModel tm = new TransactionModel(vm.getUserName(), "Timed out");
+			tm.addFailedTransaction();
+		}
+		return timedout;
+	}
+	
 }
