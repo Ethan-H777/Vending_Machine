@@ -65,9 +65,15 @@ public class RestockView extends AbstractView{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (itemFound){
-                    System.out.println("item find\n");
-                    //update item
-                    updateItem();
+                    System.out.println("Item found\n");
+                    //check if new quantity is greater than 15 max
+                    if (Integer.parseInt(newQuantity.getText()) > 15) {
+                        System.out.println("Quantity can NOT be greater than 15.\n");
+                    } else{
+                        //update item
+                        updateItem();
+                    }
+
                 }
                 RestockView.this.state.changeToLoggedInState();
             }
