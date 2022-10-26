@@ -40,7 +40,8 @@ class VendingMachineStateTest {
 		vm.setState(state);
 		try {
 			TimeUnit.SECONDS.sleep(1);
-			state.checkTimedOut(2);
+			boolean timedout = state.checkTimedOut(2);
+			assertTrue(!timedout);
 			assertTrue(vm.getState() instanceof ConcreteState);
 		} catch (InterruptedException e) {
 			assertTrue(false);
@@ -55,7 +56,8 @@ class VendingMachineStateTest {
 		vm.setState(state);
 		try {
 			TimeUnit.SECONDS.sleep(5);
-			state.checkTimedOut(1);
+			boolean timedout = state.checkTimedOut(1);
+			assertTrue(timedout);
 			assertTrue(vm.getState() instanceof DefaultState);
 		} catch (InterruptedException e) {
 			assertTrue(false);

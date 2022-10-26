@@ -22,8 +22,9 @@ public class RegistrationState extends VendingMachineState {
         view.display();
     }
 
-    public void changeToLoggedInPage() {
+    public void changeToLoggedInPage(String username) {
         vm.setState(new LoggedInState(vm,"CUSTOMER"));
+        vm.setUser(username, "CUSTOMER");
     }
 
     public boolean createAccount(String username, String password, String type){

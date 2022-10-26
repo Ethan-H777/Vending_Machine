@@ -62,7 +62,7 @@ public class RegistrationView extends AbstractView {
                 String passwordEntered = new String(password.getPassword());
                 Boolean registrationStatus = RegistrationView.this.state.createAccount(usernameEntered,passwordEntered,"CUSTOMER");
                 if (registrationStatus){
-                    RegistrationView.this.state.changeToLoggedInPage();
+                    RegistrationView.this.state.changeToLoggedInPage(username.getText());
                 }else{
                     new FailRegistration();
                 }

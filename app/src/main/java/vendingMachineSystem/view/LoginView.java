@@ -64,7 +64,7 @@ public class LoginView extends AbstractView {
 					String passwordFound = LoginView.this.state.getPassword(usernameEntered);
 					if (passwordEntered.equals(passwordFound)){
 						String type = LoginView.this.state.getUserType(usernameEntered);
-						LoginView.this.state.changeToLoggedInPage(type);
+						LoginView.this.state.changeToLoggedInPage(username.getText(), type);
 					}else{
 						new FailLogin();
 					}

@@ -29,9 +29,10 @@ public class LoginState extends VendingMachineState {
 	public boolean verifyAccount(String username, String password){
 		return false;
 	}
-	public void changeToLoggedInPage(String type){
+	public void changeToLoggedInPage(String username, String type){
 		this.checkTimedOut(200);
 		vm.setState( new LoggedInState(vm, type));
+		vm.setUser(username, type);
 	}
 
 	public String getPassword(String username) throws SQLException {
