@@ -111,6 +111,8 @@ public class FillCashView extends AbstractView{
             @Override
             public void actionPerformed(ActionEvent e) {
                 FillCashView.this.state.changeToLoggedInState();
+                //no changes if no cash selected or qty entered
+                if (cash.getText().equals("") || newQty.getText().equals("")) return;
                 //modify database
                 state.updateCash(cash.getText(), newQty.getText());
             }
