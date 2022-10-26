@@ -27,3 +27,5 @@ app/data.db
 
 .DS_Store
 app/.DS_Store
+
+app/test_database.db
