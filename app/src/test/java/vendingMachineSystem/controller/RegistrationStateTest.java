@@ -41,17 +41,7 @@ class RegistrationStateTest {
 		vm = new VendingMachine();
 		prevState = new DefaultState(vm);
 	}
-	
-	@AfterEach
-    void afterEach() {
-		try {
-			Statement statement = dbConnection.createStatement();
-			statement.execute("DELETE FROM transactions;");
-			statement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-    }
+
 
 	@Test
 	@DisplayName("Change To Logged In Page")
@@ -88,7 +78,8 @@ class RegistrationStateTest {
 	void createAccountSuccess () throws SQLException {
 		RegistrationState state = new RegistrationState(vm);
 		db.connect(dbName + ".db");
-		boolean success = state.createAccount("John","123456","CUSTOMER");
+		boolean success = state.createAccount("john","123456","CUSTOMER");
+		state.removeUser("john");
 		assert(success);
 	}
 

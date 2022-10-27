@@ -40,16 +40,6 @@ class LoginStateTest {
 		prevState = new DefaultState(vm);
 	}
 	
-	@AfterEach
-    void afterEach() {
-		try {
-			Statement statement = dbConnection.createStatement();
-			statement.execute("DELETE FROM transactions;");
-			statement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-    }
 
 	@Test
 	@DisplayName("Change To Logged In Page")

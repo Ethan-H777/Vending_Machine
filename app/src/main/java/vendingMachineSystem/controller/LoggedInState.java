@@ -12,8 +12,6 @@ public class LoggedInState extends VendingMachineState {
 
     private String role;
 
-    LinkedList emptyHolder;
-
     public String getRole(){return role;}
     public LoggedInState(VendingMachine vm, String role){
         super(vm);

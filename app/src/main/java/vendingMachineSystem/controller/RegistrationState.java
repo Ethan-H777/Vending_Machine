@@ -1,6 +1,7 @@
 package vendingMachineSystem.controller;
 
 import vendingMachineSystem.VendingMachine;
+import vendingMachineSystem.model.ManageUserModel;
 import vendingMachineSystem.model.TransactionModel;
 import vendingMachineSystem.model.UserModel;
 import vendingMachineSystem.view.DefaultView;
@@ -50,6 +51,12 @@ public class RegistrationState extends VendingMachineState {
 
     public void setTimeout(int sec) {
         this.timeoutPeriodSeconds = sec;
+    }
+
+    //for unit testing only
+    public void removeUser(String username) throws SQLException{
+        ManageUserModel db = new ManageUserModel();
+        db.removeUser(username);
     }
 
 }

@@ -66,5 +66,8 @@ public class ManageUserState extends VendingMachineState {
 			return false;
 		}
 	}
+	public void setTimeout(int sec) {
+		this.timeoutPeriodSeconds = sec;
+	}
 }
 

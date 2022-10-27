@@ -572,8 +572,9 @@ public class Database {
    			DELETE FROM Users 
    			WHERE Username='%s';
 			""", username);
-		statement.executeQuery(Sql);
+		statement.execute(Sql);
 		statement.close();
 	}
+
 
 }
