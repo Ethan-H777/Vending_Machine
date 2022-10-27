@@ -12,6 +12,7 @@ public class FillCashView extends AbstractView{
     private Dimension size;
     private JTextField cash;
     private JTextField newQty;
+    private boolean cashFound = false;
 
     public FillCashView(FillCashState state){
         this.state = state;
@@ -51,7 +52,6 @@ public class FillCashView extends AbstractView{
         });
         p.add(cancelButton);
 
-//        JLabel noteLabel = new JLabel("Cash ($)        ");
         JLabel noteLabel = new JLabel("Cash ($ or c)");
         size = noteLabel.getPreferredSize();
         noteLabel.setBounds(70, 70, size.width, size.height);
@@ -75,7 +75,7 @@ public class FillCashView extends AbstractView{
             @Override
             public void actionPerformed(ActionEvent e) {
 //                System.out.println(cash.getText());
-                boolean cashFound = false;
+//                cashFound = false;
 
                 for (int i = 0; i < state.getCashData().length; i++){
 
@@ -122,11 +122,15 @@ public class FillCashView extends AbstractView{
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FillCashView.this.state.changeToLoggedInState();
                 //no changes if no cash selected or qty entered
                 if (cash.getText().equals("") || newQty.getText().equals("")) return;
+                if (!cashFound) {
+                    System.out.println("Not selecting valid cash, unable to save");
+                    return;
+                }
                 //modify database
                 state.updateCash(cash.getText(), newQty.getText());
+                FillCashView.this.state.changeToLoggedInState();
             }
         });
         p.add(saveButton);
