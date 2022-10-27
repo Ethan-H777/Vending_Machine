@@ -60,7 +60,7 @@ class PurchaseItemStateTest {
 	@Test
 	@DisplayName("Change To Cash Payment Page")
 	void changeToCashPayment() {
-		PurchaseItemState state = new PurchaseItemState(vm, prevState);
+		PurchaseItemState state = new PurchaseItemState(vm, prevState,false);
 		state.changeToCashPaymentPage(new HashMap<String, Integer>());
 		assertTrue(state.getVm().getState() instanceof CashPaymentState);
 	}
@@ -68,7 +68,7 @@ class PurchaseItemStateTest {
 	@Test
 	@DisplayName("Change To Card Payment Page")
 	void changeToCardPayment() {
-		PurchaseItemState state = new PurchaseItemState(vm, prevState);
+		PurchaseItemState state = new PurchaseItemState(vm, prevState,false);
 		state.changeToCardPaymentPage(new HashMap<String, Integer>());
 		assertTrue(state.getVm().getState() instanceof CardPaymentState);
 	}
@@ -77,7 +77,7 @@ class PurchaseItemStateTest {
 	@DisplayName("Cancel Transaction")
 	void cancelTransaction() {
 		vm.setUser("John", "CUSTOMER");
-		PurchaseItemState state = new PurchaseItemState(vm, prevState);
+		PurchaseItemState state = new PurchaseItemState(vm, prevState,false);
 		db.connect(dbName + ".db");
 		state.cancelTransaction();
 		assertEquals(state.getVm().getState(), prevState);
@@ -101,7 +101,7 @@ class PurchaseItemStateTest {
 	@DisplayName("Timeout")
 	void timeout() {
 		vm.setUser("John", "CUSTOMER");
-		PurchaseItemState state = new PurchaseItemState(vm, prevState);
+		PurchaseItemState state = new PurchaseItemState(vm, prevState,false);
 		db.connect(dbName + ".db");
 		state.setTimeout(0);
 		boolean timedOut = state.checkTransactionTimeout();
@@ -112,7 +112,7 @@ class PurchaseItemStateTest {
 	@DisplayName("No Timeout")
 	void notTimedout() {
 		vm.setUser("John", "CUSTOMER");
-		PurchaseItemState state = new PurchaseItemState(vm, prevState);
+		PurchaseItemState state = new PurchaseItemState(vm, prevState,false);
 		db.connect(dbName + ".db");
 		boolean timedOut = state.checkTransactionTimeout();
 		assert(!timedOut);

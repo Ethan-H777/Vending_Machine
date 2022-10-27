@@ -1,27 +1,36 @@
 package vendingMachineSystem.controller;
 
+import java.sql.SQLException;
 import java.util.*;
 
 import vendingMachineSystem.VendingMachine;
+import vendingMachineSystem.model.CardModel;
+import vendingMachineSystem.model.TransactionModel;
 import vendingMachineSystem.view.CardPaymentView;
-import vendingMachineSystem.view.CashPaymentView;
 
 public class CardPaymentState extends VendingMachineState {
 
 	Map<String, Integer> itemsToPurchase;
 	String[][] itemData;
 	String[][] changeData;
+	private VendingMachineState prevState;
+
+	int timeoutPeriodSeconds = 120;
+
+	Boolean loggedIn;
 	
-	public CardPaymentState(VendingMachine vm, Map<String, Integer> itemsToPurchase) {
+	public CardPaymentState(VendingMachine vm, Map<String, Integer> itemsToPurchase,VendingMachineState prevState, boolean loggedIn) {
 		super(vm);
 		this.itemsToPurchase = itemsToPurchase;
 		itemData = super.getItemData();
 		changeData = super.getCashData();
+		this.prevState = prevState;
+		this.loggedIn =loggedIn;
 	}
 
 	@Override
 	public void run() {
-		CardPaymentView view = new CardPaymentView(this);
+		CardPaymentView view = new CardPaymentView(this,loggedIn);
 		view.display();
 	}
 	
@@ -39,9 +48,42 @@ public class CardPaymentState extends VendingMachineState {
 		}
 		return total;
 	}
-	
+
+	public String getCardNumber(String name, String cardNumber) throws SQLException {
+		CardModel cardDB = new CardModel();
+		String number = cardDB.getCardNumber(name, cardNumber);
+		return number;
+	}
+
+	public void storeCardDetails(String username, String cardName, String cardNum) throws SQLException {
+		CardModel cardDB = new CardModel();
+		cardDB.storeCardDetails(username, cardName, cardNum);
+	}
+
+	public List<String> getCardStoredByUser(String username) throws SQLException{
+		CardModel cardDB = new CardModel();
+		List<String> cardStored = cardDB.getCardStoredByUser(username);
+		return cardStored;
+	}
+
 	public String[][] getChangeData() {
 		return changeData;
+	}
+	public void changeToPurchaseState(){
+		vm.setState(prevState);
+	}
+
+	public boolean checkTransactionTimeout() {
+		boolean timedout = super.checkTimedOut(timeoutPeriodSeconds);
+		if (timedout) {
+			TransactionModel tm = new TransactionModel(vm.getUserName(), "Timed out");
+			tm.addFailedTransaction();
+		}
+		return timedout;
+	}
+
+	public String getUser(){
+		return vm.getUserName();
 	}
 
 }

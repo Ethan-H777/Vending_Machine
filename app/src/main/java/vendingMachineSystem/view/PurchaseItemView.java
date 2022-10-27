@@ -10,6 +10,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import vendingMachineSystem.controller.PurchaseItemState;
+import vendingMachineSystem.controller.VendingMachineState;
 
 public class PurchaseItemView extends AbstractView {
 
@@ -346,5 +347,5 @@ public class PurchaseItemView extends AbstractView {
 		}
 		return itemMap;
 	}
-	
+
 }

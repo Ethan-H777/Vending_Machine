@@ -5,10 +5,14 @@ import vendingMachineSystem.view.DefaultView;
 import vendingMachineSystem.view.LoggedInView;
 import vendingMachineSystem.view.LoginView;
 
+import java.util.LinkedList;
+
 
 public class LoggedInState extends VendingMachineState {
 
     private String role;
+
+    LinkedList emptyHolder;
 
     public String getRole(){return role;}
     public LoggedInState(VendingMachine vm, String role){
@@ -23,7 +27,7 @@ public class LoggedInState extends VendingMachineState {
     }
 
     public void clickedPurchase(){
-        vm.setState(new PurchaseItemState(vm, this));
+        vm.setState(new PurchaseItemState(vm, this,true));
     }
 
     public void clickedModifyRestock(){

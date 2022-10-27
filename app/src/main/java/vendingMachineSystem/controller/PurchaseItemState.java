@@ -1,5 +1,6 @@
 package vendingMachineSystem.controller;
 
+import java.util.LinkedList;
 import java.util.Map;
 
 import vendingMachineSystem.VendingMachine;
@@ -10,10 +11,12 @@ public class PurchaseItemState extends VendingMachineState {
 
 	VendingMachineState prevState;
 	int timeoutPeriodSeconds = 120;
+	Boolean loggedIn;
 	
-	public PurchaseItemState(VendingMachine vm, VendingMachineState prevState) {
+	public PurchaseItemState(VendingMachine vm, VendingMachineState prevState, Boolean loggedIn) {
 		super(vm);
 		this.prevState = prevState;
+		this.loggedIn = loggedIn;
 	}
 
 	@Override
@@ -28,7 +31,7 @@ public class PurchaseItemState extends VendingMachineState {
 	}
 	
 	public void changeToCardPaymentPage(Map<String, Integer> itemsToPurchase) {
-		vm.setState(new CardPaymentState(vm, itemsToPurchase));
+		vm.setState(new CardPaymentState(vm, itemsToPurchase,this, loggedIn));
 	}
 
 	public void cancelTransaction() {
@@ -49,6 +52,5 @@ public class PurchaseItemState extends VendingMachineState {
 	public void setTimeout(int sec) {
 		this.timeoutPeriodSeconds = sec;
 	}
-	
 	
 }
