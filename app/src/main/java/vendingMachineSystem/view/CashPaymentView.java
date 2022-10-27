@@ -1,6 +1,8 @@
 package vendingMachineSystem.view;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import vendingMachineSystem.controller.CashPaymentState;
@@ -23,6 +25,18 @@ public class CashPaymentView extends AbstractView {
 		p.setLayout(layout);
 		
 		this.addTotalPanel(p);
+
+		// cancel
+		JButton cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(560,220,100,40);
+		cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CashPaymentView.this.state.changeToPurchaseState();
+			}
+		});
+		p.add(cancelButton);
 		
 		window.updateWindow(p);
 
