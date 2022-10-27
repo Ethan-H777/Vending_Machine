@@ -185,6 +185,7 @@ public class PurchaseItemView extends AbstractView {
 			add(buttonPanel, BorderLayout.SOUTH);
 			
 			setVisible(true);
+			setAlwaysOnTop(true);
 		}
 		
 		private void addQtySpinner(JPanel addItemPanel, String name) {
