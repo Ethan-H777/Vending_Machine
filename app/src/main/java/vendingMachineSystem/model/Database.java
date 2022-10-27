@@ -1,10 +1,16 @@
 package vendingMachineSystem.model;
 
-import vendingMachineSystem.VendingMachine;
 
+//import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileReader;
 import java.sql.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 
@@ -27,13 +33,21 @@ public class Database {
         try {
         	connection = DriverManager.getConnection(dbUrl);
         	setupProductTable();
+			//dropTable("Users");
 			setupUserTable();
+			//addDefaultUsers();
 			setUpChangeTable();
 			setupTransactionTable();
 			setupTransactionProductsTable();
+			//dropTable("CreditCardList");
+			setupCreditCardList();
+			//importJsonFile();
+			setupCreditCardStored();
         } catch (SQLException e) {
         	e.printStackTrace();
-        }
+        } catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void setupProductTable() throws SQLException {
@@ -76,9 +90,7 @@ public class Database {
 			CREATE TABLE IF NOT EXISTS Users (
 			Username VARCHAR(18) PRIMARY KEY,
 			Password VARCHAR(18) NOT NULL,
-			Type VARCHAR(20) NOT NULL,
-			CreditCardNum  INT,
-			HistoryID INT    		
+			Type VARCHAR(20) NOT NULL	
     		);""";
 
 		statement.execute(UserTableSql);
@@ -119,6 +131,23 @@ public class Database {
     		);""";
 
 		statement.execute(TransactionProductsTableSql);
+		statement.close();
+	}
+
+	public void addDefaultUsers() throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String changeTableSql = """
+			INSERT INTO Users(Username, Password, Type) 
+				VALUES 
+					('billyowner', 'owner123', 'OWNER'),
+					('billyseller', 'seller123', 'SELLER'),
+					('billycashier', 'cashier123', 'CASHIER'),
+					('billy', '123456', 'CUSTOMER')
+			;
+			""";
+
+		statement.execute(changeTableSql);
 		statement.close();
 	}
 
@@ -372,4 +401,119 @@ public class Database {
 		statement.close();
 		return users;
 	}
+
+	private void setupCreditCardList() throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String CreditCardListSql = """
+			CREATE TABLE IF NOT EXISTS CreditCardList (
+			cardID INT PRIMARY KEY,
+			name VARCHAR(18),
+			number VARCHAR(18)
+    		);""";
+
+		statement.execute(CreditCardListSql);
+		statement.close();
+	}
+
+	private void dropTable(String tableToDrop) throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String dropTableSql = String.format("""
+		DROP TABLE %s;""", tableToDrop);
+
+		statement.execute(dropTableSql);
+		statement.close();
+	}
+
+	private void importJsonFile() throws Exception {
+		String sql = """
+		INSERT INTO CreditCardList (cardID,name, number) VALUES (?, ?, ?);""";
+		PreparedStatement statement = connection.prepareStatement(sql);
+
+		JSONParser parser = new JSONParser();
+		JSONArray jsonArray = (JSONArray) parser.parse(new FileReader("credit_cards.json"));
+		int id = 1;
+		for(Object object : jsonArray) {
+			JSONObject cardDetail = (JSONObject) object;
+			String name = (String) cardDetail.get("name");
+			String number = (String) cardDetail.get("number");
+			statement.setInt(1,id);
+			statement.setString(2, name);
+			statement.setString(3, number);
+			statement.executeUpdate();
+			id +=1;
+		}
+
+		statement.close();
+	}
+
+	public String getCardNumber(String name, String cardNumber) throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String UserTableSql = String.format("""
+				SELECT number
+				FROM CreditCardList
+				WHERE EXISTS
+				(SELECT number FROM CreditCardList WHERE (name = '%1$s' AND number = '%2$s'))
+				AND
+				(name = '%3$s' AND number = '%2$s');
+				""", name, cardNumber,name,cardNumber);
+
+		ResultSet rs = statement.executeQuery(UserTableSql);
+		String number = rs.getString("number");
+		statement.close();
+		return number;
+	}
+
+	private void setupCreditCardStored() throws SQLException {
+		Statement statement = connection.createStatement();
+
+		String CreditCardStoredSql = """
+			CREATE TABLE IF NOT EXISTS CreditCardStored (
+			username VARCHAR(18) NOT NULL,
+			cardName VARCHAR(18) NOT NULL,
+			cardNumber VARCHAR(18) NOT NULL,
+			PRIMARY KEY (username, cardName, cardNumber)
+    		);""";
+
+		statement.execute(CreditCardStoredSql);
+		statement.close();
+	}
+
+	public void storeCardDetails(String username, String cardName, String cardNum) throws SQLException {
+		String sql = """
+		INSERT INTO CreditCardStored (username, cardName, cardNumber)
+		VALUES (?, ?, ?)""";
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, username);
+		statement.setString(2, cardName);
+		statement.setString(3, cardNum);
+		statement.execute();
+		statement.close();
+	}
+
+	public List<String> getCardStoredByUser(String username) throws SQLException{
+
+		List <String> ret = new ArrayList<>();
+
+		Statement statement = connection.createStatement();
+		String cardTableSql = String.format("""
+			SELECT * FROM CreditCardStored
+			WHERE username = '%s';
+			""", username);
+
+		ResultSet rs = statement.executeQuery(cardTableSql);
+
+		while (rs.next()){
+			String cardNumber = rs.getString("cardNumber");
+			String last3Number = cardNumber.substring(cardNumber.length() - 2);
+			ret.add(rs.getString("cardName") + "  |  ***" + last3Number);
+		}
+
+		statement.close();
+		return ret;
+	}
+
 }
