@@ -58,6 +58,10 @@ public class LoginView extends AbstractView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				boolean timedout = LoginView.this.state.checkTransactionTimeout();
+				if (timedout) {
+					return;
+				}
 				String usernameEntered = username.getText().toLowerCase();
 				String passwordEntered = new String(password.getPassword());
 				try {
@@ -85,6 +89,10 @@ public class LoginView extends AbstractView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				boolean timedout = LoginView.this.state.checkTransactionTimeout();
+				if (timedout) {
+					return;
+				}
 				LoginView.this.state.changeToRegistrationPage();
 			}
 
