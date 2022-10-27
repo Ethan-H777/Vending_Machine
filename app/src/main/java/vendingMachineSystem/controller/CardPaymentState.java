@@ -66,9 +66,6 @@ public class CardPaymentState extends VendingMachineState {
 		return cardStored;
 	}
 
-	public String[][] getChangeData() {
-		return changeData;
-	}
 	public void changeToPurchaseState(){
 		vm.setState(prevState);
 	}
@@ -84,6 +81,10 @@ public class CardPaymentState extends VendingMachineState {
 
 	public String getUser(){
 		return vm.getUserName();
+	}
+
+	public void setTimeout(int sec) {
+		this.timeoutPeriodSeconds = sec;
 	}
 
 }
