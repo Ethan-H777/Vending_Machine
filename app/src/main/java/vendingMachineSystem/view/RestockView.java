@@ -60,13 +60,8 @@ public class RestockView extends AbstractView{
             public void actionPerformed(ActionEvent e) {
                 if (itemFound){
                     System.out.println("Item found\n");
-                    //check if new quantity is greater than 15 max
-                    if (Integer.parseInt(newQuantity.getText()) > 15) {
-                        System.out.println("Quantity can NOT be greater than 15.\n");
-                    } else{
-                        //update item
-                        updateItem();
-                    }
+                    //update item
+                    updateItem();
 
                 }
                 RestockView.this.state.changeToLoggedInState();
@@ -176,6 +171,12 @@ public class RestockView extends AbstractView{
         String qty = checkTextField(newQuantity.getText(), state.getItemData()[itemIndex][2]);
         String category = checkTextField(newCategory.getText(), state.getItemData()[itemIndex][0]);
         String price = checkTextField(newPrice.getText(), state.getItemData()[itemIndex][3]);
+
+        //check if new quantity is greater than 15 max
+        if (Integer.parseInt(qty) > 15) {
+            System.out.println("Quantity can NOT be greater than 15.\n");
+            return;
+        }
 
 
         if (id.equals(state.getItemData()[itemIndex][4])){
