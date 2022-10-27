@@ -86,12 +86,6 @@ public class CardPaymentView extends AbstractView {
 
 					String[] choices = new String[itemList.size()];
 					choices = itemList.toArray(choices);
-//						String input = (String) JOptionPane.showInputDialog(payCardStoredButton, "Selected the card you stored: \n Cardholder Name  |  Card Number",
-//								null, JOptionPane.QUESTION_MESSAGE, null,
-//								choices, // Array of choices
-//								choices[1]); // Initial choice
-
-					//...and passing `frame` instead of `null` as first parameter
 					Object selectionObject = JOptionPane.showInputDialog(payCardStoredButton,
 							"Selected the card you stored: \n Cardholder Name  |  Card Number",
 							null, JOptionPane.PLAIN_MESSAGE,

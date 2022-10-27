@@ -516,4 +516,64 @@ public class Database {
 		return ret;
 	}
 
+	public String[][] getAllUsers(String except) throws SQLException{
+
+		List <String> combination = new ArrayList<>();
+		List <String[]> ret = new ArrayList<>();
+
+		Statement statement = connection.createStatement();
+		String Sql = String.format("""
+			SELECT * FROM Users
+			WHERE Username != '%s';
+			""", except);
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			combination.add(rs.getString("Username"));
+			combination.add(rs.getString("Password"));
+			combination.add(rs.getString("Type"));
+			String[] comboArray = new String[3];
+			comboArray = combination.toArray(comboArray);
+			ret.add(comboArray);
+			combination = new ArrayList<>();
+		}
+		statement.close();
+
+		String[][] retArray = new String[ret.size()][];
+		retArray = ret.toArray(retArray);
+		return retArray;
+	}
+
+	public String[] getAllUsernames(String except) throws SQLException {
+
+		List <String> ret = new ArrayList<>();
+
+		Statement statement = connection.createStatement();
+		String Sql = String.format("""
+			SELECT Username FROM Users
+			WHERE Username != '%s';
+			""",except);
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			ret.add(rs.getString("Username"));
+		}
+		statement.close();
+
+		String[] retArray = new String[ret.size()];
+		retArray = ret.toArray(retArray);
+		return retArray;
+	}
+
+	public void removeUser(String username) throws SQLException{
+
+		Statement statement = connection.createStatement();
+		String Sql = String.format("""
+   			DELETE FROM Users 
+   			WHERE Username='%s';
+			""", username);
+		statement.executeQuery(Sql);
+		statement.close();
+	}
+
 }
