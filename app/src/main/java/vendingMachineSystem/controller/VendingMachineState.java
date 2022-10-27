@@ -98,6 +98,10 @@ public abstract class VendingMachineState {
 	}
 
 	public String[][] getCashData(){
+		return getCashData(true);
+	}
+
+	public String[][] getCashData(boolean needValue){
 		// get changes
 		ChangeModel cm = new ChangeModel(false);
 		List<Change> changes;
@@ -109,14 +113,27 @@ public abstract class VendingMachineState {
 
 		// now get 2d list of cash needed
 		// name, value, quantity
-		String[][] ret = new String[changes.size()][3];
+		int ret_subsize = 2;
+		if (needValue){ ret_subsize = 3; }
+		String[][] ret = new String[changes.size()][ret_subsize];
+
 		for ( int n = 0; n < changes.size(); n++ ){
 			ret[n][0] = changes.get(n).getName();
-			ret[n][1] = Float.toString(changes.get(n).getValue());
-			ret[n][2] = Integer.toString(changes.get(n).getQty());
+			ret[n][1] = Integer.toString(changes.get(n).getQty());
+			if (needValue) ret[n][2] = Double.toString(changes.get(n).getValue());
 		}
 
 		return ret;
+	}
+
+	public void updateCash(String name, String newQty) {
+		ChangeModel cm = new ChangeModel(false);
+		try{
+			cm.updateCash(name, newQty);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 	public String[][] getUserReport(){

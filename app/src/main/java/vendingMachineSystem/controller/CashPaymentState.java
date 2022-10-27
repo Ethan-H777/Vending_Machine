@@ -1,5 +1,8 @@
 package vendingMachineSystem.controller;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import vendingMachineSystem.VendingMachine;
@@ -39,7 +42,15 @@ public class CashPaymentState extends VendingMachineState {
 			}
 			
 		}
-		return total;
+
+		DecimalFormat df = new DecimalFormat("#.##");
+//		df.format(total);
+		total = Float.parseFloat(df.format(total));
+
+		BigDecimal convertTotal = round(new BigDecimal(String.valueOf(total)));
+
+		return convertTotal.floatValue();
+//		return total;
 	}
 	
 	public String[][] getChangeData() {
@@ -48,6 +59,20 @@ public class CashPaymentState extends VendingMachineState {
 
 	public void changeToPurchaseState(){
 		vm.setState(prevState);
+	}
+
+	public static BigDecimal round(BigDecimal value) {
+		RoundingMode roundingMode = RoundingMode.UP;
+		BigDecimal increment = new BigDecimal("0.05");
+
+		if (increment.signum() == 0) {
+			// 0 increment does not make much sense, but prevent division by 0
+			return value;
+		} else {
+			BigDecimal divided = value.divide(increment, 0, roundingMode);
+			BigDecimal result = divided.multiply(increment);
+			return result;
+		}
 	}
 
 }

@@ -29,8 +29,8 @@ public class Change {
         return name;
     }
 
-    public float getValue() {
-        return value;
+    public double getValue() {
+        return (double) value;
     }
 
     public int getQty() {

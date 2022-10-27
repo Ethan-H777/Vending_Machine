@@ -307,9 +307,9 @@ public class Database {
 		statement.close();
 	}
 
-	public List<Change> getAllChanges() throws SQLException{
+	public ArrayList<Change> getAllChanges() throws SQLException{
 
-		List<Change> changes = new ArrayList<Change>();
+		ArrayList<Change> changes = new ArrayList<Change>();
 		Change change;
 
 		Statement statement = connection.createStatement();

@@ -1,6 +1,7 @@
 package vendingMachineSystem.model;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChangeModel {
@@ -18,10 +19,10 @@ public class ChangeModel {
     }
 
 
-    public List<Change> allChanges() throws SQLException {
+    public ArrayList<Change> allChanges() throws SQLException {
 //        if table was dropped
 //        db.addDataChanges();
-        List<Change> changes;
+        ArrayList<Change> changes;
         changes = db.getAllChanges();
         return changes;
     }
