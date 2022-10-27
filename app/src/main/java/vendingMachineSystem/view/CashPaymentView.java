@@ -26,17 +26,9 @@ public class CashPaymentView extends AbstractView {
 		
 		this.addTotalPanel(p);
 
-		// cancel
-		JButton cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(560,220,100,40);
-		cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				CashPaymentView.this.state.changeToPurchaseState();
-			}
-		});
-		p.add(cancelButton);
+		addButtons(p);
+
+
 		
 		window.updateWindow(p);
 
@@ -56,6 +48,33 @@ public class CashPaymentView extends AbstractView {
 		totalPanel.add(totalAmount);
 		
 		p.add(totalPanel);
+	}
+
+	public void addButtons(Panel p){
+		// cancel
+		JButton cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(560,220,100,40);
+		cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CashPaymentView.this.state.changeToPurchaseState();
+			}
+		});
+		p.add(cancelButton);
+
+		JLabel payLabel = new JLabel("Select Payment");
+		Dimension sizePay = payLabel.getPreferredSize();
+		payLabel.setBounds(30, 30, sizePay.width, sizePay.height);
+		p.add(payLabel);
+
+		JLabel newNameLabel = new JLabel("$100");
+		Dimension size100 = newNameLabel.getPreferredSize();
+		newNameLabel.setBounds(30,40, size100.width, size100.height);
+		p.add(newNameLabel);
+
+
+
 	}
 
 }
