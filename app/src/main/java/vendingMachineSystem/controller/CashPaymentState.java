@@ -8,14 +8,17 @@ import vendingMachineSystem.view.CashPaymentView;
 public class CashPaymentState extends VendingMachineState {
 
 	Map<String, Integer> itemsToPurchase;
+	private VendingMachineState prevState;
+	//the prevState is the purchaseItemState
 	String[][] itemData;
 	String[][] changeData;
 	
-	public CashPaymentState(VendingMachine vm, Map<String, Integer> itemsToPurchase) {
+	public CashPaymentState(VendingMachine vm, Map<String, Integer> itemsToPurchase, VendingMachineState prevState) {
 		super(vm);
 		this.itemsToPurchase = itemsToPurchase;
 		itemData = super.getItemData();
 		changeData = super.getCashData();
+		this.prevState = prevState;
 	}
 
 	@Override
@@ -41,6 +44,10 @@ public class CashPaymentState extends VendingMachineState {
 	
 	public String[][] getChangeData() {
 		return changeData;
+	}
+
+	public void changeToPurchaseState(){
+		vm.setState(prevState);
 	}
 
 }

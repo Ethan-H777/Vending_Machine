@@ -24,7 +24,7 @@ public class PurchaseItemState extends VendingMachineState {
 	}
 	
 	public void changeToCashPaymentPage(Map<String, Integer> itemsToPurchase) {
-		vm.setState(new CashPaymentState(vm, itemsToPurchase));
+		vm.setState(new CashPaymentState(vm, itemsToPurchase, this));
 	}
 	
 	public void changeToCardPaymentPage(Map<String, Integer> itemsToPurchase) {
