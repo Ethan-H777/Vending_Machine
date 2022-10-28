@@ -23,15 +23,7 @@ public class FillCashState extends VendingMachineState{
         vm.setState(new LoggedInState(vm, this.role));
     }
 
-    public void updateCash(String name, String newQty) {
-        ChangeModel cm = new ChangeModel(false);
-        try{
-            cm.updateCash(name, newQty);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-    }
 
 
 

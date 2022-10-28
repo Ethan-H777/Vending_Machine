@@ -58,11 +58,15 @@ public class RegistrationView extends AbstractView {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                boolean timedout = RegistrationView.this.state.checkTransactionTimeout();
+                if (timedout) {
+                    return;
+                }
                 String usernameEntered = username.getText().toLowerCase();
                 String passwordEntered = new String(password.getPassword());
                 Boolean registrationStatus = RegistrationView.this.state.createAccount(usernameEntered,passwordEntered,"CUSTOMER");
                 if (registrationStatus){
-                    RegistrationView.this.state.changeToLoggedInPage();
+                    RegistrationView.this.state.changeToLoggedInPage(username.getText());
                 }else{
                     new FailRegistration();
                 }

@@ -5,6 +5,8 @@ import vendingMachineSystem.view.DefaultView;
 import vendingMachineSystem.view.LoggedInView;
 import vendingMachineSystem.view.LoginView;
 
+import java.util.LinkedList;
+
 
 public class LoggedInState extends VendingMachineState {
 
@@ -23,8 +25,7 @@ public class LoggedInState extends VendingMachineState {
     }
 
     public void clickedPurchase(){
-        // (STUB) TODO: purchase page
-        System.out.println("Clicked Purchase");
+        vm.setState(new PurchaseItemState(vm, this,true));
     }
 
     public void clickedModifyRestock(){
@@ -42,6 +43,7 @@ public class LoggedInState extends VendingMachineState {
     public void clickedManageUsers(){
         // (STUB) TODO: manage users page
         System.out.println("Clicked Manage Users");
+        vm.setState(new ManageUserState(vm,this));
     }
     public void clickedReports(){
         // (STUB) TODO: reports page

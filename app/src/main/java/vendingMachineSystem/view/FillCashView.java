@@ -12,6 +12,7 @@ public class FillCashView extends AbstractView{
     private Dimension size;
     private JTextField cash;
     private JTextField newQty;
+    private boolean cashFound = false;
 
     public FillCashView(FillCashState state){
         this.state = state;
@@ -29,8 +30,8 @@ public class FillCashView extends AbstractView{
         p.add(pageLabel);
 
         //cash table
-        String[][] data = state.getCashData();
-        String[] columns ={"Name", "Value", "Quantity"};
+        String[][] data = state.getCashData(false);
+        String[] columns ={"Name", "Quantity"};
 
         JTable productTable = new JTable(data, columns);
         JScrollPane scrollPane = new JScrollPane(productTable);
@@ -51,7 +52,6 @@ public class FillCashView extends AbstractView{
         });
         p.add(cancelButton);
 
-//        JLabel noteLabel = new JLabel("Cash ($)        ");
         JLabel noteLabel = new JLabel("Cash ($ or c)");
         size = noteLabel.getPreferredSize();
         noteLabel.setBounds(70, 70, size.width, size.height);
@@ -60,6 +60,10 @@ public class FillCashView extends AbstractView{
         cash = new JTextField(18);
         cash.setBounds(70 + size.width, 65, 97, 26);
         p.add(cash);
+
+        JLabel found = new JLabel();
+        found.setBounds(70, 100, 200, 20);
+        p.add(found);
 
         //search button
         JButton searchButton = new JButton("Select");
@@ -71,22 +75,30 @@ public class FillCashView extends AbstractView{
             @Override
             public void actionPerformed(ActionEvent e) {
 //                System.out.println(cash.getText());
+//                cashFound = false;
 
                 for (int i = 0; i < state.getCashData().length; i++){
 
                     if (state.getCashData()[i][0].equals(cash.getText())){
-                        String qty = state.getCashData()[i][2];
-                        String name = state.getCashData()[i][0];
-                        String[][] data = { {qty} };
-                        String[] columns = {name};
+//                        String qty = state.getCashData()[i][1];
+//                        String name = state.getCashData()[i][0];
+//                        String[][] data = { {qty} };
+//                        String[] columns = {name};
+//
+//                        JTable cashTable = new JTable(data, columns);
+//                        JScrollPane scrollPane = new JScrollPane(cashTable);
+//                        scrollPane.setBounds(70, 70 + 30, 40, 40);
+//                        p.add(scrollPane);
 
-                        JTable cashTable = new JTable(data, columns);
-                        JScrollPane scrollPane = new JScrollPane(cashTable);
-                        scrollPane.setBounds(70, 70 + 30, 40, 40);
-                        p.add(scrollPane);
+                        found.setText("Cash Found.");
+
+                        cashFound = true;
                     }
                 }
 
+                if (!cashFound) {
+                    found.setText("Cash Not Found.");
+                }
 
             }
 
@@ -110,9 +122,15 @@ public class FillCashView extends AbstractView{
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FillCashView.this.state.changeToLoggedInState();
+                //no changes if no cash selected or qty entered
+                if (cash.getText().equals("") || newQty.getText().equals("")) return;
+                if (!cashFound) {
+                    System.out.println("Not selecting valid cash, unable to save");
+                    return;
+                }
                 //modify database
                 state.updateCash(cash.getText(), newQty.getText());
+                FillCashView.this.state.changeToLoggedInState();
             }
         });
         p.add(saveButton);

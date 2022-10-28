@@ -17,6 +17,8 @@ public class RestockView extends AbstractView{
     private JTextField newCategory;
     private JTextField newQuantity;
     private JTextField newPrice;
+    private boolean itemFound;
+    private int itemIndex;
 
     public RestockView(RestockState state){
         this.state = state;
@@ -32,6 +34,9 @@ public class RestockView extends AbstractView{
         size = pageLabel.getPreferredSize();
         pageLabel.setBounds(170, 30, size.width, size.height);
         p.add(pageLabel);
+
+        //item table
+        displayProductList(p);
 
         // cancel
         JButton cancelButton = new JButton("Cancel");
@@ -53,6 +58,12 @@ public class RestockView extends AbstractView{
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (itemFound){
+                    System.out.println("Item found\n");
+                    //update item
+                    updateItem();
+
+                }
                 RestockView.this.state.changeToLoggedInState();
             }
         });
@@ -75,8 +86,7 @@ public class RestockView extends AbstractView{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: find the item by the code and display
-                showProductToModify(p);
+                itemIndex = showProductToModify(p, "name");
             }
 
         });
@@ -99,8 +109,7 @@ public class RestockView extends AbstractView{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: find the item by the code and display
-                showProductToModify(p);
+                itemIndex = showProductToModify(p, "code");
             }
 
         });
@@ -111,14 +120,92 @@ public class RestockView extends AbstractView{
         window.updateWindow(p);
     }
 
-    public void showProductToModify(Panel p) {
-        String[][] data = { {"Mineral Water", "1001", "Drinks", "7", "2.5"} };
-        String[] columns = {"Item", "Code", "Category", "Quantity", "Price"};
+    public int showProductToModify(Panel p, String method) {
+        int index = -1;
 
+        if (method.equals("name")){
+            for (int i = 0; i < state.getItemData().length; i++){
+                if (state.getItemData()[i][1].equals(item.getText())){
+                    index = i;
+                }
+            }
+
+        } else if (method.equals("code")) {
+            for (int i = 0; i < state.getItemData().length; i++){
+                if (state.getItemData()[i][4].equals(code.getText())){
+                    index = i;
+                }
+            }
+        } else{
+            //never reach this line
+            System.out.println("either search by name or code!\n");
+        }
+
+        if (index == -1){
+            System.out.println("Item not found.\n");
+            itemFound = false;
+            return index;
+        }
+        itemFound = true;
+
+        String category = state.getItemData()[index][0];
+        String name = state.getItemData()[index][1];
+        String qty = state.getItemData()[index][2];
+        String price = state.getItemData()[index][3];
+        String id = state.getItemData()[index][4];
+
+        String[][] data = {{id, category, name, qty, price}};
+        String[] columns = {"Code", "Category", "Name", "Quantity", "Price"};
         JTable productTable = new JTable(data, columns);
         JScrollPane scrollPane = new JScrollPane(productTable);
         scrollPane.setBounds(70, 95 + 30, 300, 40);
         p.add(scrollPane);
+
+        return index;
+    }
+
+    public void updateItem(){
+        //check all text field empty or same as old one
+        String name = checkTextField(newName.getText(), state.getItemData()[itemIndex][1]);
+        String id = checkTextField(newCode.getText(), state.getItemData()[itemIndex][4]);
+        String qty = checkTextField(newQuantity.getText(), state.getItemData()[itemIndex][2]);
+        String category = checkTextField(newCategory.getText(), state.getItemData()[itemIndex][0]);
+        String price = checkTextField(newPrice.getText(), state.getItemData()[itemIndex][3]);
+
+        //check if new quantity is greater than 15 max
+        if (Integer.parseInt(qty) > 15) {
+            System.out.println("Quantity can NOT be greater than 15.\n");
+            return;
+        }
+
+
+        if (id.equals(state.getItemData()[itemIndex][4])){
+            //item code is not changing so update item by id
+            RestockView.this.state.updateItemByID(id, name, category, price, qty);
+        } else{
+            //the situation where seller wants to change all item info including id/code
+
+            //update all info except code with original id
+            RestockView.this.state.updateItemByID(state.getItemData()[itemIndex][4], name, category, price, qty);
+            //after updating all other info, update the id by searching through new name
+            RestockView.this.state.updateItemID(name, id);
+        }
+
+    }
+
+    /** return the original string if input is same as original string
+    return the original string if input is empty
+    return input only when input is different from original **/
+    public String checkTextField(String input, String original){
+        //seller didn't enter new input
+        if (input.equals("")) return original;
+
+        if (input.equals(original)){
+            return original;
+        } else {
+            return input;
+        }
+
     }
 
     public void showModifyButton(Panel p) {
@@ -163,4 +250,13 @@ public class RestockView extends AbstractView{
         p.add(newPrice);
     }
 
+    public void displayProductList(Panel p){
+        String[][] data = state.getItemNameList();
+        String[] columns ={"Name", "Code"};
+
+        JTable productTable = new JTable(data, columns);
+        JScrollPane scrollPane = new JScrollPane(productTable);
+        scrollPane.setBounds(450, 30, 200, 100);
+        p.add(scrollPane);
+    }
 }

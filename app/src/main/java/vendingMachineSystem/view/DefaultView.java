@@ -23,28 +23,15 @@ public class DefaultView extends AbstractView {
 		
 		Panel p = new Panel();
 		//p.setLayout(new BorderLayout());
-		p.setLayout(null);
-		p.add(new JLabel("Default Landing Page"), BorderLayout.NORTH);
-		
-		JButton loginButton = new JButton("Login/Register");
-		loginButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				DefaultView.this.state.changeToLoginPage();
-			}
-			
-		});
-
-		loginButton.setBounds( 150, 250, 350, 25 );
-		p.add(loginButton);
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
 		//menu
 		JLabel menuLabel = new JLabel("Menu");
+		menuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		Dimension size = menuLabel.getPreferredSize();
 		menuLabel.setBounds(0,0,size.width,size.height);
 		p.add(menuLabel);
-		String[][] data = state.getItemData();
+		String[][] data = state.getItemData(false);
 		String[] names = {"Category", "Item", "Quantity", "Price"};
 		JTable tab = new JTable(data, names);
 		JScrollPane tab_scroller = new JScrollPane(tab);
@@ -53,6 +40,7 @@ public class DefaultView extends AbstractView {
 
 		//recent purchases
 		JLabel recLabel = new JLabel("Recent Purchases");
+		recLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		Dimension rec_size = recLabel.getPreferredSize();
 		recLabel.setBounds(0,150,rec_size.width,rec_size.height);
 		p.add(recLabel);
@@ -64,6 +52,38 @@ public class DefaultView extends AbstractView {
 		rec_tab_scroller.setBounds(0,170,650,75);
 		p.add(rec_tab_scroller);
 
+		JPanel buttonPanel = new JPanel();
+		
+		//Purchase Button
+		JButton purchaseButton = new JButton("Purchase Items");
+		purchaseButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DefaultView.this.state.changeToPurchaseItemsPage();
+			}
+			
+		});
+		
+//		purchaseButton.setBounds( 150, 250, 350, 25 );
+		buttonPanel.add(purchaseButton);
+		
+		//Login Button
+		JButton loginButton = new JButton("Login/Register");
+		loginButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DefaultView.this.state.changeToLoginPage();
+			}
+			
+		});
+
+//		loginButton.setBounds( 150, 250, 350, 25 );
+		buttonPanel.add(loginButton);
+		
+		p.add(buttonPanel);
+		
 		window.updateWindow(p);
 	}
 

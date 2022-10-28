@@ -58,13 +58,17 @@ public class LoginView extends AbstractView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				boolean timedout = LoginView.this.state.checkTransactionTimeout();
+				if (timedout) {
+					return;
+				}
 				String usernameEntered = username.getText().toLowerCase();
 				String passwordEntered = new String(password.getPassword());
 				try {
 					String passwordFound = LoginView.this.state.getPassword(usernameEntered);
 					if (passwordEntered.equals(passwordFound)){
 						String type = LoginView.this.state.getUserType(usernameEntered);
-						LoginView.this.state.changeToLoggedInPage(type);
+						LoginView.this.state.changeToLoggedInPage(username.getText(), type);
 					}else{
 						new FailLogin();
 					}
@@ -85,6 +89,10 @@ public class LoginView extends AbstractView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				boolean timedout = LoginView.this.state.checkTransactionTimeout();
+				if (timedout) {
+					return;
+				}
 				LoginView.this.state.changeToRegistrationPage();
 			}
 

@@ -5,10 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import vendingMachineSystem.VendingMachine;
-import vendingMachineSystem.model.Change;
-import vendingMachineSystem.model.ChangeModel;
-import vendingMachineSystem.model.DataModel;
-import vendingMachineSystem.model.Product;
+import vendingMachineSystem.model.*;
 import vendingMachineSystem.view.TimeoutDialog;
 
 public abstract class VendingMachineState {
@@ -26,23 +23,27 @@ public abstract class VendingMachineState {
 	/**
 	 * Switches state to the default state if action has timed out
 	 * (Timeout is >120 sec since last action was taken)
+	 * @return boolean true if timed out otherwise false
 	 */
-	public void checkTimedOut() {
-		checkTimedOut(120);
+	public boolean checkTimedOut() {
+		return checkTimedOut(120);
 	}
 	
 	/**
 	 * Switches state to the default state if action has timed out
 	 * @param seconds time since last action was performed
+	 * @return boolean true if timed out otherwise false
 	 */
-	public void checkTimedOut(long seconds) {
+	public boolean checkTimedOut(long seconds) {
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		if (currentDateTime.minusSeconds(seconds).compareTo(lastAction) > 0) {
 			this.cancelTransaction();
 			new TimeoutDialog();
+			return true;
 		}
 		else
-			this.lastAction = currentDateTime;		
+			this.lastAction = currentDateTime;
+		return false;
 	}
 	
 	public void cancelTransaction() {
@@ -52,13 +53,20 @@ public abstract class VendingMachineState {
 	public String readInput() {
 		return "0";
 	}
+	
+	public VendingMachine getVm() {
+		return this.vm;
+	}
 
 	public String[][] getRecentData(){ // STUB TODO: implement
 		String[][] ret = {{"corn","million","like 50 bucks"}};
 		return ret;
 	}
 
-	public String[][] getItemData(){
+	public String[][] getItemData(){ // original function that does not return id (overloading as many usages already)
+		return getItemData(true);
+	}
+	public String[][] getItemData(boolean needs_id){
 		// get products
 		DataModel dm = new DataModel(false);
 		List<Product> ls;
@@ -76,12 +84,21 @@ public abstract class VendingMachineState {
 			ret[prod_n][1] = ls.get(prod_n).getName();
 			ret[prod_n][2] = Integer.toString(ls.get(prod_n).getQuantity());
 			ret[prod_n][3] = Float.toString(ls.get(prod_n).getPrice());
+
+			if (needs_id){
+				ret[prod_n][4] = Integer.toString(ls.get(prod_n).getId());
+			}
+
 		}
 
 		return ret;
 	}
 
 	public String[][] getCashData(){
+		return getCashData(true);
+	}
+
+	public String[][] getCashData(boolean needValue){
 		// get changes
 		ChangeModel cm = new ChangeModel(false);
 		List<Change> changes;
@@ -93,13 +110,44 @@ public abstract class VendingMachineState {
 
 		// now get 2d list of cash needed
 		// name, value, quantity
-		String[][] ret = new String[changes.size()][3];
+		int ret_subsize = 2;
+		if (needValue){ ret_subsize = 3; }
+		String[][] ret = new String[changes.size()][ret_subsize];
+
 		for ( int n = 0; n < changes.size(); n++ ){
 			ret[n][0] = changes.get(n).getName();
-			ret[n][1] = Float.toString(changes.get(n).getValue());
-			ret[n][2] = Integer.toString(changes.get(n).getQty());
+			ret[n][1] = Integer.toString(changes.get(n).getQty());
+			if (needValue) ret[n][2] = Double.toString(changes.get(n).getValue());
 		}
 
+		return ret;
+	}
+
+	public void updateCash(String name, String newQty) {
+		ChangeModel cm = new ChangeModel(false);
+		try{
+			cm.updateCash(name, newQty);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
+	public String[][] getUserReport(){
+		UserModel um = new UserModel();
+		List<User> users;
+		try{
+			users = um.getUserReport();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		String[][] ret = new String[users.size()][2];
+		for ( int n = 0; n < users.size(); n++ ){
+			ret[n][0] = users.get(n).getUsername();
+			ret[n][1] = users.get(n).getRole();
+		}
 		return ret;
 	}
 	

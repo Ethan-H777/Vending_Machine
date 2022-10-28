@@ -1,6 +1,7 @@
 package vendingMachineSystem.controller;
 
 import vendingMachineSystem.VendingMachine;
+import vendingMachineSystem.model.TransactionModel;
 import vendingMachineSystem.model.UserModel;
 import vendingMachineSystem.view.DefaultView;
 import vendingMachineSystem.view.LoginView;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class LoginState extends VendingMachineState {
 
+	int timeoutPeriodSeconds = 120;
 	public LoginState(VendingMachine vm) {
 		super(vm);
 		// TODO Auto-generated constructor stub
@@ -26,12 +28,11 @@ public class LoginState extends VendingMachineState {
 		vm.setState(new RegistrationState(vm));
 	}
 
-	public boolean verifyAccount(String username, String password){
-		return false;
-	}
-	public void changeToLoggedInPage(String type){
-		this.checkTimedOut(200);
+
+	public void changeToLoggedInPage(String username, String type){
+		this.checkTimedOut(120);
 		vm.setState( new LoggedInState(vm, type));
+		vm.setUser(username, type);
 	}
 
 	public String getPassword(String username) throws SQLException {
@@ -44,6 +45,19 @@ public class LoginState extends VendingMachineState {
 		UserModel userDB = new UserModel();
 		String type = userDB.getUserType(username);
 		return type;
+	}
+
+	public boolean checkTransactionTimeout() {
+		boolean timedout = super.checkTimedOut(timeoutPeriodSeconds);
+		if (timedout) {
+			TransactionModel tm = new TransactionModel(vm.getUserName(), "Timed out");
+			tm.addFailedTransaction();
+		}
+		return timedout;
+	}
+
+	public void setTimeout(int sec) {
+		this.timeoutPeriodSeconds = sec;
 	}
 
 }
