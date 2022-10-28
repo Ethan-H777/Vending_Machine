@@ -5,6 +5,13 @@ import vendingMachineSystem.VendingMachine;
 import vendingMachineSystem.view.LoggedInView;
 import vendingMachineSystem.view.ReportsView;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
 public class ReportsState extends VendingMachineState {
 
         private String role;
@@ -19,6 +26,21 @@ public class ReportsState extends VendingMachineState {
     public void run(){
         ReportsView view = new ReportsView(this);
         view.display();
+    }
+
+    void output_csv(String filename, String plaintext){
+        File file = new File(filename);
+        try
+        {
+            file.createNewFile();
+            BufferedWriter file_w = new BufferedWriter(new FileWriter(filename, true));
+            file_w.append(plaintext);
+            file_w.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void clickedCancel(){

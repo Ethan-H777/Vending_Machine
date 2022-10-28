@@ -22,6 +22,10 @@ public class ReportsView extends AbstractView{
     public void display() {
         Window window = Window.getInstance();
 
+        int report_stagger = 50;
+        Dimension reportDim;
+        int buttonWidth = 100;
+
         Panel p = new Panel();
         p.setLayout(null);
 
