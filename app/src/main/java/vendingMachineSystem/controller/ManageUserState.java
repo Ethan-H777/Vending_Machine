@@ -48,6 +48,10 @@ public class ManageUserState extends VendingMachineState {
 		vm.setState(prevState);
 	}
 
+	public void refresh(){
+		vm.setState( new ManageUserState(vm,prevState) );
+	}
+
 	public boolean checkTransactionTimeout() {
 		boolean timedout = super.checkTimedOut(timeoutPeriodSeconds);
 		if (timedout) {

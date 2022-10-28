@@ -75,7 +75,7 @@ public class ManageUserView extends AbstractView {
 						Boolean registrationStatus = ManageUserView.this.state.createAccount(usernameEntered, passwordEntered, typeEntered);
 						System.out.println(registrationStatus);
 						if (registrationStatus) {
-							ManageUserView.this.state.returnToLoggedInState();
+							ManageUserView.this.state.refresh();
 						} else {
 							new FailCreatingUser();
 						}
@@ -122,7 +122,7 @@ public class ManageUserView extends AbstractView {
 				} catch(NullPointerException ne){
 				} catch (SQLException ex) {
 				}
-				ManageUserView.this.state.returnToLoggedInState();
+				ManageUserView.this.state.refresh();
 			}
 			
 		});
