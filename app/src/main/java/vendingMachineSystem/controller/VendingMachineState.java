@@ -76,9 +76,13 @@ public abstract class VendingMachineState {
 			throw new RuntimeException(e);
 		}
 
+		int arraySize;
+		if (needs_id) {arraySize = 5;}
+		else {arraySize = 4;}
+
 		// now get 2d list of items needed
 		// category, item, quantity, price
-		String[][] ret = new String[ls.size()][4];
+		String[][] ret = new String[ls.size()][arraySize];
 		for ( int prod_n = 0; prod_n < ls.size(); prod_n++ ){
 			ret[prod_n][0] = ls.get(prod_n).getCategory();
 			ret[prod_n][1] = ls.get(prod_n).getName();
