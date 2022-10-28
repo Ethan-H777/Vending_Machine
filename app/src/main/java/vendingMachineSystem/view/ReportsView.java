@@ -1,4 +1,3 @@
-
 package vendingMachineSystem.view;
 
 import vendingMachineSystem.controller.LoggedInState;
@@ -21,9 +20,6 @@ public class ReportsView extends AbstractView{
 
     @Override
     public void display() {
-        int report_stagger = 0;
-        int buttonWidth = 90;
-        Dimension reportDim;
         Window window = Window.getInstance();
 
         Panel p = new Panel();
@@ -31,9 +27,8 @@ public class ReportsView extends AbstractView{
 
         // label
         JLabel label = new JLabel(label_string);
-        Dimension top_size = label.getPreferredSize();
-        label.setBounds(0,0,top_size.width,top_size.height);
-        report_stagger += top_size.height;
+        Dimension size = label.getPreferredSize();
+        label.setBounds(0,0,size.width,size.height);
         p.add(label);
 
         // report buttons

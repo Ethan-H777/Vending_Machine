@@ -2,11 +2,8 @@ package vendingMachineSystem.controller;
 
 
 import vendingMachineSystem.VendingMachine;
+import vendingMachineSystem.view.LoggedInView;
 import vendingMachineSystem.view.ReportsView;
-
-import java.io.*;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 public class ReportsState extends VendingMachineState {
 
@@ -28,20 +25,6 @@ public class ReportsState extends VendingMachineState {
         vm.setState( new LoggedInState(vm, role) );
     }
 
-    void output_csv(String filename, String plaintext){
-        File file = new File(filename);
-        try
-        {
-            file.createNewFile();
-            BufferedWriter file_w = new BufferedWriter(new FileWriter(filename, true));
-            file_w.append(plaintext);
-            file_w.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     String getOutString(String[][] data, String outString){
         for ( int i =0; i < data.length; i++){

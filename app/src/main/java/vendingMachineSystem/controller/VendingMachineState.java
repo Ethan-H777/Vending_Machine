@@ -78,10 +78,7 @@ public abstract class VendingMachineState {
 
 		// now get 2d list of items needed
 		// category, item, quantity, price
-		int ret_subsize = 4;
-		if (needs_id){ ret_subsize = 5; }
-		String[][] ret = new String[ls.size()][ret_subsize];
-
+		String[][] ret = new String[ls.size()][4];
 		for ( int prod_n = 0; prod_n < ls.size(); prod_n++ ){
 			ret[prod_n][0] = ls.get(prod_n).getCategory();
 			ret[prod_n][1] = ls.get(prod_n).getName();
