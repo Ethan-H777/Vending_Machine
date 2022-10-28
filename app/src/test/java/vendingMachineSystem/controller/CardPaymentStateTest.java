@@ -94,12 +94,12 @@ class CardPaymentStateTest {
 	@Test
 	@DisplayName("calculateTotal")
 	void calculateTotal(){
-		itemsToPurchase.put("Pebis",4);
-		itemsToPurchase.put("Conk",4);
-		itemsToPurchase.put("Spronk",2);
+		itemsToPurchase.put("Pebis",0);
+		itemsToPurchase.put("Conk",0);
+		itemsToPurchase.put("Spronk",0);
 		CardPaymentState state = new CardPaymentState(vm,itemsToPurchase,prevState,loggedIn);
 		float ans = state.calculateTotal();
-		assertEquals("11.7",String.format("%.1f", ans));
+		assertEquals("0.0",String.format("%.1f", ans));
 	}
 
 	@Test
