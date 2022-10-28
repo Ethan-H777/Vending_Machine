@@ -407,6 +407,7 @@ public class CashPaymentView extends AbstractView {
 			if (!hasChange && extra > 0.05){
 				System.out.println("Payment Fail, Not Enough Change.");
 				success = false;
+				break;
 			}
 
 		}
