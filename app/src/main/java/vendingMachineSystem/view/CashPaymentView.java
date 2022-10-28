@@ -309,7 +309,7 @@ public class CashPaymentView extends AbstractView {
 		JLabel change = new JLabel();
 //		Dimension sizeChange = change.getPreferredSize();
 //		change.setBounds(30, 210, sizeChange.width, sizeChange.height);
-		change.setBounds(30, 210, 400, 25);
+		change.setBounds(30, 210, 600, 25);
 		p.add(change);
 
 		JButton confirm = new JButton("Confirm Payment");
@@ -325,6 +325,7 @@ public class CashPaymentView extends AbstractView {
 					new FailPayment(shortage);
 				} else if (payment == state.calculateTotal()) {
 					success = true;
+					change.setText("Payment Success! No Changes Need.");
 					//TODO: add the items to transactionProducts table in database
 					//add income cash to machine
 				} else{
@@ -334,12 +335,20 @@ public class CashPaymentView extends AbstractView {
 					//TODO: not enough changes in machine! Fail payment.
 					ArrayList<Change> changes = returnChanges((double) extra);
 
-					//display changes to customer
-					displayChanges(changes, change);
 
-					//TODO: add the items to transactionProducts table in database
-					//add income cash to machine after return change successfully
-					addIncomeToMachine();
+					if (success) {
+						//display changes to customer
+						displayChanges(changes, change);
+
+						//add income cash to machine after return change successfully
+						addIncomeToMachine();
+						//TODO: add the items to transactionProducts table in database
+					} else{
+						change.setText("Payment Fail, not enough changes in Vending Machine.");
+					}
+
+
+
 
 				}
 			}
@@ -386,6 +395,19 @@ public class CashPaymentView extends AbstractView {
 					}
 					break;
 				}
+			}
+
+			boolean hasChange = false;
+			//check all cash smaller than extra, all qty = 0 means not enough change, fail!
+			for (Change c: cash){
+				if (round(c.getValue() * 100.0)/100.0 <= round(extra * 100.0)/100.0 && c.getQty() > 0){
+					hasChange = true;
+				}
+			}
+			if (!hasChange && extra > 0.05){
+				System.out.println("Payment Fail, Not Enough Change.");
+				success = false;
+				break;
 			}
 
 		}
