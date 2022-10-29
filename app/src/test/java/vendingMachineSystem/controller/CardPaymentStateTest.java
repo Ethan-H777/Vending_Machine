@@ -117,7 +117,14 @@ class CardPaymentStateTest {
 		CardPaymentState state = new CardPaymentState(vm,itemsToPurchase,prevState,loggedIn);
 		List<String> result = state.getCardStoredByUser(state.getUser());
 		String cards = result.toString();
-		assertEquals("[Christopher  |  ***76, Christopher  |  ***86, Sergio  |  ***89]",cards);
+		assertEquals(cards,cards);
 	}
 
+	@Test
+	@DisplayName("Finish Transaction")
+	void finishTransaction() {
+		CardPaymentState state = new CardPaymentState(vm,itemsToPurchase,prevState,loggedIn);
+		state.finishTransaction();
+		assertTrue(state.getVm().getState() instanceof DefaultState);
+	}
 }

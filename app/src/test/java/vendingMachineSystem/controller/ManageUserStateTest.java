@@ -103,6 +103,7 @@ class ManageUserStateTest {
 		db.connect(dbName + ".db");
 		state.createAccount("test","123456","CUSTOMER");
 		boolean success = state.createAccount("test","123456","CUSTOMER");
+		state.removeUser("test");
 		assert(!success);
 	}
 
@@ -128,6 +129,49 @@ class ManageUserStateTest {
 		String output = Arrays.toString(result);
 		assertEquals(output,output);
 
+	}
+
+	@Test
+	@DisplayName("refresh")
+	void refresh () throws SQLException{
+		vm.setUser("billyowner", "OWNER");
+		ManageUserState state = new ManageUserState(vm,prevState,false);
+		state.refresh();
+		assertTrue(state.getVm().getState() instanceof ManageUserState);
+
+	}
+
+	@Test
+	@DisplayName("refresh password")
+	void passwordRefresh () throws SQLException{
+		vm.setUser("billyowner", "OWNER");
+		ManageUserState state = new ManageUserState(vm,prevState,false);
+		state.passwordRefresh(false);
+		assertTrue(state.getVm().getState() instanceof ManageUserState);
+	}
+
+	@Test
+	@DisplayName("update user")
+	void updateUser () throws SQLException {
+		ManageUserState state = new ManageUserState(vm,prevState,false);
+		db.connect(dbName + ".db");
+		state.createAccount("john","123456","CUSTOMER");
+		boolean success = state.updateUser("john","john","123456789","CUSTOMER");
+		state.removeUser("john");
+		assert(success);
+	}
+
+	@Test
+	@DisplayName("get user info")
+	void getUserInfo () throws SQLException{
+		vm.setUser("billyowner", "OWNER");
+		ManageUserState state = new ManageUserState(vm,prevState,false);
+		db.connect(dbName + ".db");
+		state.createAccount("john","123456","CUSTOMER");
+		String[] result = state.getUserInfo("john");
+		String output = Arrays.toString(result);
+		state.removeUser("john");
+		assertEquals("[john, 123456, CUSTOMER]",output);
 	}
 
 }

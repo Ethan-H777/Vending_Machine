@@ -84,9 +84,16 @@ public class ManageUserState extends VendingMachineState {
 		return db.getUserInfo(username);
 	}
 
-	public void updateUser(String oldUsername, String username, String password, String type) throws SQLException {
-		ManageUserModel db = new ManageUserModel();
-		db.updateUser(oldUsername,username,password,type);
+	public boolean updateUser(String oldUsername, String username, String password, String type){
+
+		try {
+			ManageUserModel db = new ManageUserModel();
+			db.updateUser(oldUsername,username,password,type);
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+
 	}
 
 	public void setTimeout(int sec) {
