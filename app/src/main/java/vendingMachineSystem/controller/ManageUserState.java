@@ -9,26 +9,29 @@ import vendingMachineSystem.view.DefaultView;
 import vendingMachineSystem.view.ManageUserView;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class ManageUserState extends VendingMachineState {
 
 	private VendingMachineState prevState;
 
 	int timeoutPeriodSeconds = 120;
-	public ManageUserState(VendingMachine vm, VendingMachineState prevState) {
+	boolean showPassword;
+	public ManageUserState(VendingMachine vm, VendingMachineState prevState, boolean showPassword) {
 		super(vm);
 		this.prevState = prevState;
+		this.showPassword = showPassword;
 	}
 
 	@Override
 	public void run(){
-		ManageUserView view = new ManageUserView(this);
+		ManageUserView view = new ManageUserView(this, showPassword);
 		view.display();
 	}
 
-	public String[][] getAllUsers(String except) throws SQLException {
+	public String[][] getAllUsers(String except, boolean showPassword) throws SQLException {
 		ManageUserModel db = new ManageUserModel();
-		return db.getAllUsers(except);
+		return db.getAllUsers(except,showPassword);
 	}
 
 	public String[] getAllUsernames(String except) throws SQLException {
@@ -49,7 +52,12 @@ public class ManageUserState extends VendingMachineState {
 	}
 
 	public void refresh(){
-		vm.setState( new ManageUserState(vm,prevState) );
+
+		vm.setState( new ManageUserState(vm,prevState,showPassword) );
+	}
+
+	public void passwordRefresh(boolean checked){
+		vm.setState( new ManageUserState(vm,prevState,checked) );
 	}
 
 	public boolean checkTransactionTimeout() {
@@ -70,6 +78,17 @@ public class ManageUserState extends VendingMachineState {
 			return false;
 		}
 	}
+
+	public String[] getUserInfo(String username) throws SQLException{
+		ManageUserModel db = new ManageUserModel();
+		return db.getUserInfo(username);
+	}
+
+	public void updateUser(String oldUsername, String username, String password, String type) throws SQLException {
+		ManageUserModel db = new ManageUserModel();
+		db.updateUser(oldUsername,username,password,type);
+	}
+
 	public void setTimeout(int sec) {
 		this.timeoutPeriodSeconds = sec;
 	}

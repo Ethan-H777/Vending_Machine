@@ -13,8 +13,8 @@ public class ManageUserModel {
     }
 
 
-    public String[][] getAllUsers(String except) throws SQLException{
-        return db.getAllUsers(except);
+    public String[][] getAllUsers(String except, boolean showPassword) throws SQLException{
+        return db.getAllUsers(except,showPassword);
     }
 
     public String[] getAllUsernames(String except) throws SQLException{
@@ -27,6 +27,14 @@ public class ManageUserModel {
 
     public void createUser(String username, String password, String type) throws SQLException {
         db.addUser(username,password,type);
+    }
+
+    public String[] getUserInfo(String username) throws SQLException{
+        return db.getUserInfo(username);
+    }
+
+    public void updateUser(String oldUsername, String username, String password, String type) throws SQLException {
+        db.updateUser(oldUsername,username,password,type);
     }
 
 }

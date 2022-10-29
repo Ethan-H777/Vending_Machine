@@ -516,7 +516,7 @@ public class Database {
 		return ret;
 	}
 
-	public String[][] getAllUsers(String except) throws SQLException{
+	public String[][] getAllUsers(String except,boolean showPassword) throws SQLException{
 
 		List <String> combination = new ArrayList<>();
 		List <String[]> ret = new ArrayList<>();
@@ -530,7 +530,11 @@ public class Database {
 
 		while (rs.next()){
 			combination.add(rs.getString("Username"));
-			combination.add(rs.getString("Password"));
+			if (showPassword){
+				combination.add(rs.getString("Password"));
+			}else{
+				combination.add("*********");
+			}
 			combination.add(rs.getString("Type"));
 			String[] comboArray = new String[3];
 			comboArray = combination.toArray(comboArray);
@@ -574,6 +578,41 @@ public class Database {
 			""", username);
 		statement.execute(Sql);
 		statement.close();
+	}
+
+	public String[] getUserInfo(String username) throws SQLException{
+		List <String> ret = new ArrayList<>();
+
+		Statement statement = connection.createStatement();
+		String Sql = String.format("""
+			SELECT * FROM Users
+			WHERE Username = '%s';
+			""",username);
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			ret.add(rs.getString("Username"));
+			ret.add(rs.getString("Password"));
+			ret.add(rs.getString("Type"));
+		}
+		statement.close();
+
+		String[] retArray = new String[ret.size()];
+		retArray = ret.toArray(retArray);
+		return retArray;
+	}
+
+	public void updateUser(String oldUsername, String username, String password, String type) throws SQLException {
+		Statement statement = connection.createStatement();
+		String changeTableSql = String.format("""
+				UPDATE Users
+				SET Username = '%1$s', Password = '%2$s', Type = '%3$s'
+				WHERE Username = '%4$s';
+				""", username,password,type,oldUsername);
+
+		statement.execute(changeTableSql);
+		statement.close();
+
 	}
 
 
