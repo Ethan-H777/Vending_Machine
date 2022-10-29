@@ -6,7 +6,9 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 import vendingMachineSystem.VendingMachine;
+import vendingMachineSystem.model.TransactionModel;
 import vendingMachineSystem.view.CashPaymentView;
+
 
 public class CashPaymentState extends VendingMachineState {
 
@@ -15,6 +17,7 @@ public class CashPaymentState extends VendingMachineState {
 	//the prevState is the purchaseItemState
 	String[][] itemData;
 	String[][] changeData;
+	int timeoutPeriodSeconds = 120;
 	
 	public CashPaymentState(VendingMachine vm, Map<String, Integer> itemsToPurchase, VendingMachineState prevState) {
 		super(vm);
@@ -73,6 +76,19 @@ public class CashPaymentState extends VendingMachineState {
 			BigDecimal result = divided.multiply(increment);
 			return result;
 		}
+	}
+
+	public boolean checkTransactionTimeout() {
+		boolean timedout = super.checkTimedOut(timeoutPeriodSeconds);
+		if (timedout) {
+			TransactionModel tm = new TransactionModel(vm.getUserName(), "Timed out");
+			tm.addFailedTransaction();
+		}
+		return timedout;
+	}
+
+	public void setTimeout(int sec) {
+		this.timeoutPeriodSeconds = sec;
 	}
 
 }

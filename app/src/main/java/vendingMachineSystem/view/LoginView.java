@@ -28,9 +28,9 @@ public class LoginView extends AbstractView {
 		
 		Panel p = new Panel();
 		p.setLayout(null);
-		JLabel pageLabel = new JLabel("Login");
+		JLabel pageLabel = new JLabel("Welcome! Please Log In Below.");
 		size = pageLabel.getPreferredSize();
-		pageLabel.setBounds(170, 30, size.width, size.height);
+		pageLabel.setBounds(100, 30, size.width, size.height);
 		p.add(pageLabel);
 
 		JLabel usernameLabel = new JLabel("Username:");
@@ -53,7 +53,7 @@ public class LoginView extends AbstractView {
 		p.add(password);
 
 
-		JButton loginButton = new JButton("Login");
+		JButton loginButton = new JButton("Log In");
 		loginButton.addActionListener(new ActionListener() {
 
 			@Override

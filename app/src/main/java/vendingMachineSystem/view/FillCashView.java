@@ -41,9 +41,9 @@ public class FillCashView extends AbstractView{
 
 
         // cancel
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.setBounds(560,220,100,40);
-        cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        JButton cancelButton = new JButton("Return");
+        cancelButton.setBounds(550,220,100,40);
+        //cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

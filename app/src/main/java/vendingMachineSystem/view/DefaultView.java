@@ -69,7 +69,7 @@ public class DefaultView extends AbstractView {
 		buttonPanel.add(purchaseButton);
 		
 		//Login Button
-		JButton loginButton = new JButton("Login/Register");
+		JButton loginButton = new JButton("Log In/Register");
 		loginButton.addActionListener(new ActionListener() {
 
 			@Override

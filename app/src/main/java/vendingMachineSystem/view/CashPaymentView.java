@@ -69,7 +69,7 @@ public class CashPaymentView extends AbstractView {
 	public void addPaymentButtons(Panel p){
 		JButton doneButton = new JButton("Done");
 		doneButton.setBounds(560 - 100,220,100,40);
-		doneButton.setFont(new Font("Arial", Font.PLAIN, 10));
+		//doneButton.setFont(new Font("Arial", Font.PLAIN, 10));
 		doneButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -80,10 +80,10 @@ public class CashPaymentView extends AbstractView {
 		p.add(doneButton);
 
 		// cancel
-		JButton cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(560,220,100,40);
-		cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
-		cancelButton.addActionListener(new ActionListener() {
+		JButton returnButton = new JButton("Return");
+		returnButton.setBounds(560,220,100,40);
+		//cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
+		returnButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (success) {
@@ -93,7 +93,8 @@ public class CashPaymentView extends AbstractView {
 				CashPaymentView.this.state.changeToPurchaseState();
 			}
 		});
-		p.add(cancelButton);
+		p.add(returnButton);
+
 
 		JLabel amountLabel = new JLabel("Current Payment Amount:");
 		Dimension sizeAmount = amountLabel.getPreferredSize();

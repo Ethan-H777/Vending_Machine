@@ -26,7 +26,7 @@ public class ManageUserView extends AbstractView {
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
 		//menu
-		JLabel menuLabel = new JLabel("Users List");
+		JLabel menuLabel = new JLabel("User List");
 		menuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		Dimension size = menuLabel.getPreferredSize();
 		menuLabel.setBounds(0,0,size.width,size.height);

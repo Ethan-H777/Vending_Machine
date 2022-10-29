@@ -25,6 +25,10 @@ public class PurchaseItemState extends VendingMachineState {
         view.display();
 
 	}
+
+	public boolean getLoggedInStatus (){
+		return loggedIn;
+	}
 	
 	public void changeToCashPaymentPage(Map<String, Integer> itemsToPurchase) {
 		vm.setState(new CashPaymentState(vm, itemsToPurchase, this));

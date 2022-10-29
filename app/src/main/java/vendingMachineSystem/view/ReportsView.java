@@ -123,7 +123,7 @@ public class ReportsView extends AbstractView{
         }
 
         // cancel
-        JButton cancelButton = new JButton("Cancel");
+        JButton cancelButton = new JButton("Return");
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -131,7 +131,7 @@ public class ReportsView extends AbstractView{
             }
         });
         cancelButton.setBounds(560,230,100,40);
-        cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        //cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
         p.add(cancelButton);
 
         // finish

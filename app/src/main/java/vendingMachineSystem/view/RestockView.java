@@ -39,9 +39,9 @@ public class RestockView extends AbstractView{
         displayProductList(p);
 
         // cancel
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.setBounds(560,220,100,40);
-        cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        JButton cancelButton = new JButton("Return");
+        cancelButton.setBounds(550,220,100,40);
+        //cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,8 +53,8 @@ public class RestockView extends AbstractView{
         //save
         JButton saveButton = new JButton("Save");
         size = saveButton.getPreferredSize();
-        saveButton.setBounds(560,170, 100, 40);
-        saveButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        saveButton.setBounds(550,170, 100, 40);
+        //saveButton.setFont(new Font("Arial", Font.PLAIN, 10));
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

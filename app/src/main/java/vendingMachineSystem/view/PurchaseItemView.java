@@ -318,7 +318,14 @@ public class PurchaseItemView extends AbstractView {
 		cardPayButton.setBounds( 170, 250, 150, 25 );
 		buttonPanel.add(cardPayButton);
 		
-		JButton cancelButton = new JButton("Cancel");
+		JButton cancelButton;
+
+		if(PurchaseItemView.this.state.getLoggedInStatus()){
+			cancelButton = new JButton("Cancel Transaction & Return");
+		}else{
+			cancelButton = new JButton("Cancel Transaction");
+		}
+
 		cancelButton.addActionListener(new ActionListener() {
 
 			@Override

@@ -54,7 +54,7 @@ public class LoggedInView extends AbstractView {
         rec_tab_scroller.setBounds(0,170,650,60);
         p.add(rec_tab_scroller);
 
-        JButton purchaseButton = new JButton("Purchase Items");
+        JButton purchaseButton = new JButton("Purchase");
         purchaseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,11 +62,11 @@ public class LoggedInView extends AbstractView {
             }
         });
         purchaseButton.setBounds(0,230,100,40); //300x300 window, 100
-        purchaseButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        //purchaseButton.setFont(new Font("Arial", Font.PLAIN, 10));
         p.add(purchaseButton);
 
         // cancel
-        JButton cancelButton = new JButton("Cancel");
+        JButton cancelButton = new JButton("Log Out");
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,15 +74,15 @@ public class LoggedInView extends AbstractView {
             }
         });
         cancelButton.setBounds(560,230,100,40);
-        cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
+        //cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
         p.add(cancelButton);
 
         // buttons based on role
             // modify/restock
         if ( state.getRole().equals("OWNER") || state.getRole().equals("SELLER") ){
-            JButton modButton = new JButton("Modify/Restock Items");
+            JButton modButton = new JButton("Modify/Restock");
             modButton.setBounds(100,230,120,40);
-            modButton.setFont(new Font("Arial", Font.PLAIN, 10));
+            //modButton.setFont(new Font("Arial", Font.PLAIN, 10));
             modButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -96,7 +96,7 @@ public class LoggedInView extends AbstractView {
         if ( state.getRole().equals("OWNER") || state.getRole().equals("CASHIER") ){
             JButton updateButton = new JButton("Update Change");
             updateButton.setBounds(220,230,120,40); // 340
-            updateButton.setFont(new Font("Arial", Font.PLAIN, 10));
+            //updateButton.setFont(new Font("Arial", Font.PLAIN, 10));
             updateButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -110,7 +110,7 @@ public class LoggedInView extends AbstractView {
         if ( state.getRole().equals("OWNER") ){
             JButton mgUsrButton = new JButton("Manage Users");
             mgUsrButton.setBounds(340,230,120,40); // 460
-            mgUsrButton.setFont(new Font("Arial", Font.PLAIN, 10));
+            //mgUsrButton.setFont(new Font("Arial", Font.PLAIN, 10));
             mgUsrButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -124,7 +124,7 @@ public class LoggedInView extends AbstractView {
         if ( state.getRole().equals("OWNER") || state.getRole().equals("SELLER") || state.getRole().equals("CASHIER") ){
             JButton reportButton = new JButton("Reports");
             reportButton.setBounds(460,230,100,40); // 560
-            reportButton.setFont(new Font("Arial", Font.PLAIN, 10));
+            //reportButton.setFont(new Font("Arial", Font.PLAIN, 10));
             reportButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

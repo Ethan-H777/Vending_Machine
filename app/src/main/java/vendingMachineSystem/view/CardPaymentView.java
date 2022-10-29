@@ -170,8 +170,13 @@ public class CardPaymentView extends AbstractView {
 //		p.setLayout(layout);
 //
 //		this.addTotalPanel(p);
+		JButton CancelButton;
+		if(loggedIn){
+			CancelButton = new JButton("Log Out");
+		}else{
+			CancelButton = new JButton("Cancel Transaction");
+		}
 
-		JButton CancelButton = new JButton("Cancel");
 		CancelButton.addActionListener(new ActionListener() {
 
 			@Override
