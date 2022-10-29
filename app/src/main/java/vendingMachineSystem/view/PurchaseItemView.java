@@ -8,6 +8,9 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import vendingMachineSystem.controller.PurchaseItemState;
 import vendingMachineSystem.controller.VendingMachineState;
@@ -18,7 +21,7 @@ public class PurchaseItemView extends AbstractView {
 	LinkedList<PurchaseItemLine> itemsToPurchase;
 	String[][] itemDataArray;
 	ItemData itemData;
-	Panel purchaseItemPanel;
+	JTable purchaseItemTable;
 	
 	public PurchaseItemView(PurchaseItemState state) {
 		this.state = state;
@@ -30,16 +33,20 @@ public class PurchaseItemView extends AbstractView {
 	private class ItemData {
 		ArrayList<String> itemNames;
 		Map<String, Integer> availableQty;
+		Map<String, Float> prices;
 		
 		public ItemData (String[][] itemDataArray) {
 			itemNames = new ArrayList<String>();
 			availableQty = new HashMap<String, Integer>();
+			prices = new HashMap<String, Float>();
 			
 			for (String[] line: itemDataArray) {
 				String itemName = line[1];
 				String quantity = line[2];
+				String price = line[3];
 				itemNames.add(itemName);
 				availableQty.put(itemName, Integer.parseInt(quantity));
+				prices.put(itemName, Float.parseFloat(price));
 			}
 		}
 		
@@ -52,42 +59,25 @@ public class PurchaseItemView extends AbstractView {
 			return availableQty.get(itemName);
 		}
 		
+		public float getPrice(String itemName) {
+			return prices.get(itemName);
+		}
+		
 		public String[] getItemNames() {
 			return (String[]) itemNames.toArray(new String[0]);
 		}
 	}
 	
 	private class PurchaseItemLine extends JPanel {
-		JLabel itemLabel;
-		JLabel quantityLabel;
-		JButton deleteButton;
+
 		String itemName;
 		int quantity;
+		float price;
 		
 		public PurchaseItemLine(String item, int quantity) {
 			this.itemName = item;
 			this.quantity = quantity;
-			
-			itemLabel = new JLabel(item);
-			super.add(itemLabel);
-			
-			quantityLabel = new JLabel(Integer.toString(quantity));
-            super.add(quantityLabel);
-            
-            deleteButton = new JButton("Delete");
-            deleteButton.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					PurchaseItemView.this.state.checkTimedOut();
-					PurchaseItemView.this.itemData.addQty(item, quantity);
-					PurchaseItemView.this.itemsToPurchase.remove(PurchaseItemLine.this);
-					PurchaseItemView.this.display();
-				}
-            	
-            });
-            
-            super.add(deleteButton);
+			this.price = quantity * PurchaseItemView.this.itemData.getPrice(item);
 		}
 		
 		public String getItemName() {
@@ -96,6 +86,15 @@ public class PurchaseItemView extends AbstractView {
 		
 		public int getQty() {
 			return this.quantity;
+		}
+		
+		public void addQty(int qty) {
+			this.quantity = this.quantity + qty;
+			this.price = quantity * PurchaseItemView.this.itemData.getPrice(this.itemName);
+		}
+		
+		public float getPrice() {
+			return this.price;
 		}
 		
 	}
@@ -162,7 +161,16 @@ public class PurchaseItemView extends AbstractView {
 					}
 					quantity = (Integer) numberModel.getValue();
 					if (quantity > 0) {
-						PurchaseItemView.this.itemsToPurchase.add(new PurchaseItemLine(selectedItem, quantity));
+						boolean hasItem = false;
+						for (PurchaseItemLine line: PurchaseItemView.this.itemsToPurchase) {
+							if (line.getItemName().equals(selectedItem)) {
+								line.addQty(quantity);
+								hasItem = true;
+							}
+						}
+						if (!hasItem) {
+							PurchaseItemView.this.itemsToPurchase.add(new PurchaseItemLine(selectedItem, quantity));							
+						}
 						PurchaseItemView.this.itemData.addQty(selectedItem, -quantity);						
 					}
 					AddItemDialog.this.dispose();
@@ -214,6 +222,76 @@ public class PurchaseItemView extends AbstractView {
 		
 	}
 	
+	private class PurchaseItemsTableModel extends AbstractTableModel {
+		
+		private String[] columnNames = { "Item", "Quantity", "Price", "" };
+		private Object[][] data;
+		
+		public PurchaseItemsTableModel(LinkedList<PurchaseItemLine> itemsToPurchase) {
+			float total = 0;
+			for (PurchaseItemLine line: itemsToPurchase) {
+				JButton deleteButton = new JButton("Delete Item");
+				Object[] tableLine = {
+					line.getItemName(),
+					(Integer)line.getQty(),
+					String.format("%.2f", (Float)line.getPrice()),
+					deleteButton
+				};
+				if (data == null) {
+					data = new Object[1][4];
+					data[0] = tableLine;
+				}
+				else {
+					data = appendToArray(data, tableLine);
+				}
+				total += line.getPrice();
+			}
+			if (data != null) {
+				Object[] tableLine = {
+					"",
+					"Total",
+					String.format("%.2f", (Float)total),
+					null
+				};
+				data = appendToArray(data, tableLine);
+			}
+			return;
+		}
+		
+		private Object[][] appendToArray(Object[][] data, Object[] newLine) {
+			int oldLength = data.length;
+			Object[][] newArray = new Object[oldLength + 1][data[0].length];
+			int rowNumber = 0;
+			for (Object[] row: data) {
+				newArray[rowNumber] = row;
+				rowNumber++;
+			}
+			newArray[newArray.length-1] = newLine;
+			return newArray;
+		}
+
+		@Override
+		public int getRowCount() {
+			return data == null ? 0 : data.length;
+		}
+		
+	    @Override
+	    public String getColumnName(int column) {
+	        return columnNames[column];
+	    }
+
+		@Override
+		public int getColumnCount() {
+			return columnNames.length;
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			return data == null ? null : data[rowIndex][columnIndex];
+		}
+		
+	}
+	
 	@Override
 	public void display() {
 		Window window = Window.getInstance();
@@ -247,18 +325,45 @@ public class PurchaseItemView extends AbstractView {
 		addItemPanel.setPreferredSize(new Dimension(650, 20));		
 		p.add(addItemPanel);
 		
-		purchaseItemPanel = new Panel();
-		purchaseItemPanel.setLayout(new FlowLayout());
-		purchaseItemPanel.setPreferredSize(new Dimension(650, 100));
-		JScrollPane purchaseItemScroller = new JScrollPane(purchaseItemPanel);
+		purchaseItemTable = new JTable(new PurchaseItemsTableModel(itemsToPurchase));
+		purchaseItemTable.getColumn("").setCellRenderer(new ButtonRenderer());
+		
+		purchaseItemTable.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		    	
+		        int row = purchaseItemTable.rowAtPoint(evt.getPoint());
+		        int col = purchaseItemTable.columnAtPoint(evt.getPoint());
+		        if(col == 3 && row != purchaseItemTable.getRowCount() - 1) {
+					boolean timedout = PurchaseItemView.this.state.checkTransactionTimeout();
+					if (timedout) {
+						return;
+					}
+		        	PurchaseItemLine line = PurchaseItemView.this.itemsToPurchase.get(row);
+					PurchaseItemView.this.itemData.addQty(line.getItemName(), line.getQty());
+					PurchaseItemView.this.itemsToPurchase.remove(line);
+					PurchaseItemView.this.display();
+		        }
+		    }
+		});
+		
+		JScrollPane purchaseItemScroller = new JScrollPane(purchaseItemTable);
 		purchaseItemScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		purchaseItemScroller.setPreferredSize(new Dimension(650, 100));
 		
 		for (PurchaseItemLine item: itemsToPurchase) {
-			purchaseItemPanel.add(item);
+			purchaseItemTable.add(item);
 		}			
 		
 		p.add(purchaseItemScroller);
+	}
+	
+	private class ButtonRenderer implements TableCellRenderer {
+
+		  public Component getTableCellRendererComponent(JTable table, Object value,
+		      boolean isSelected, boolean hasFocus, int row, int column) {
+			  return (JButton) value;
+		  }
 	}
 	
 	private void addPurchaseItemLine(Panel p) {
@@ -267,7 +372,7 @@ public class PurchaseItemView extends AbstractView {
 	}
 
 	private void addActionButtons(Panel p) {
-		JPanel buttonPanel = new JPanel();
+		Panel buttonPanel = new Panel();
 		FlowLayout flowLayout = new FlowLayout();
 		buttonPanel.setLayout(flowLayout);
 		
@@ -279,7 +384,7 @@ public class PurchaseItemView extends AbstractView {
 				if (timedout) {
 					return;
 				}
-				PurchaseItemView.this.addPurchaseItemLine(purchaseItemPanel);
+				PurchaseItemView.this.addPurchaseItemLine(buttonPanel);
 			}
 		});
 		buttonPanel.add(addPurchaseItemButton);

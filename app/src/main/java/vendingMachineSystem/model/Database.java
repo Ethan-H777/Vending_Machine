@@ -353,6 +353,57 @@ public class Database {
 		statement.execute();
 		statement.close();
 	}
+	
+	public long addSuccessfulTransaction(String user, float moneyPaid, float returnedChange, String paymentMethod) throws SQLException {
+		String sql = """
+		INSERT INTO Transactions (User, Successful, Money_paid, Returned_change, Payment_method)
+		VALUES (?, TRUE, ?, ?, ?)""";
+		
+		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setString(1, user);
+		statement.setFloat(2, moneyPaid);
+		statement.setFloat(3, returnedChange);
+		statement.setString(4, paymentMethod);
+		statement.execute();
+		long id = statement.getGeneratedKeys().getLong(1);
+		statement.close();
+		return id;
+	}
+	
+	public void addTransactionItems(long id, String itemName, int quantity) throws SQLException {
+		String selectSql = """
+		SELECT id from Products WHERE name = ?""";
+		
+		PreparedStatement selectStatement = connection.prepareStatement(selectSql);
+		selectStatement.setString(1, itemName);
+		ResultSet rs = selectStatement.executeQuery();
+		long productId = rs.getLong("id");
+		selectStatement.close();
+		
+		String insertSql = """
+		INSERT INTO TransactionProducts (TransactionId, Product, Quantity)
+		VALUES (?, ?, ?)""";
+		
+		PreparedStatement statement = connection.prepareStatement(insertSql);
+		statement.setLong(1, id);
+		statement.setLong(2, productId);
+		statement.setInt(3, quantity);
+		statement.execute();
+		statement.close();
+	}
+	
+	public void removeProductQty(String itemName, int quantity) throws SQLException {
+		String sql = """
+		UPDATE Products
+		SET Quantity = Quantity - ?
+		WHERE name=?""";
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setInt(1, quantity);
+		statement.setString(2, itemName);
+		statement.execute();
+		statement.close();
+	}
 
 	void productsDrop() throws SQLException{
 		Statement statement = connection.createStatement();

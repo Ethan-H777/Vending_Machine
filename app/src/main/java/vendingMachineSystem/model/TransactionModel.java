@@ -11,7 +11,11 @@ public class TransactionModel {
     Database db = Database.getInstance();
     String user;
     String reason;
-
+    float moneyPaid;
+    float returnedChange;
+    String paymentMethod;
+    Map<String, Integer> purchasedItems;
+    
     public TransactionModel(){
 
     }
@@ -21,9 +25,29 @@ public class TransactionModel {
     	this.reason = reason;
     }
 
+    public TransactionModel(String user, float moneyPaid, float returnedChange, String paymentMethod, Map<String, Integer> purchasedItems) {
+    	this.user = user;
+    	this.moneyPaid = moneyPaid;
+    	this.returnedChange = returnedChange;
+    	this.paymentMethod = paymentMethod;
+    	this.purchasedItems = purchasedItems;
+    }
+    
     public void addFailedTransaction() {
     	try {
     		db.addFailedTransaction(user, reason);    		
+    	} catch (SQLException e) {
+    		System.err.println(e);
+    	}
+    }
+    
+    public void addSuccessfulTransaction() {
+    	try {
+    		long transactionId = db.addSuccessfulTransaction(user, moneyPaid, returnedChange, paymentMethod);
+    		for (Map.Entry<String, Integer> entry: purchasedItems.entrySet()) {
+    			db.addTransactionItems(transactionId, entry.getKey(), entry.getValue());
+    			db.removeProductQty(entry.getKey(), entry.getValue());
+    		}
     	} catch (SQLException e) {
     		System.err.println(e);
     	}

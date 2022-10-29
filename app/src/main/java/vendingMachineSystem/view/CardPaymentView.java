@@ -92,7 +92,7 @@ public class CardPaymentView extends AbstractView {
 							null, choices, choices[0]);
 					String selectionString = selectionObject.toString();
 					new FinishedPurchase();
-					CardPaymentView.this.state.cancelTransaction();
+					CardPaymentView.this.state.finishTransaction();
 					System.out.println(selectionString);
 
 				}
@@ -129,15 +129,15 @@ public class CardPaymentView extends AbstractView {
 							if (save == 0) {
 								CardPaymentView.this.state.storeCardDetails(CardPaymentView.this.state.getUser(), nameEntered, numberEntered);
 								new FinishedPurchase();
-								CardPaymentView.this.state.cancelTransaction();
+								CardPaymentView.this.state.finishTransaction();
 							} else if (save == 1) {
 								new FinishedPurchase();
-								CardPaymentView.this.state.cancelTransaction();
+								CardPaymentView.this.state.finishTransaction();
 							}
 
 						}else{
 							new FinishedPurchase();
-							CardPaymentView.this.state.cancelTransaction();
+							CardPaymentView.this.state.finishTransaction();
 						}
 					}else{
 						new FailCardPayment();
