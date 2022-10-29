@@ -22,7 +22,7 @@ public class ReportsView extends AbstractView{
     public void display() {
         Window window = Window.getInstance();
 
-        int report_stagger = 50;
+        int report_stagger = 80;
         Dimension reportDim;
         int buttonWidth = 100;
 
@@ -32,7 +32,7 @@ public class ReportsView extends AbstractView{
         // label
         JLabel label = new JLabel(label_string);
         Dimension size = label.getPreferredSize();
-        label.setBounds(0,0,size.width,size.height);
+        label.setBounds(170,30,size.width,size.height);
         p.add(label);
 
         // report buttons
@@ -44,6 +44,7 @@ public class ReportsView extends AbstractView{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ReportsView.this.state.changeReport(true);
+                    new ReportDownloaded();
                 }
             });
             JLabel reportLabel = new JLabel("Change"); // label
@@ -53,12 +54,13 @@ public class ReportsView extends AbstractView{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ReportsView.this.state.changeReport(false);
+                    new ReportDownloaded();
                 }
             });
 
-            reportLabel.setBounds(0, report_stagger, reportDim.width, reportDim.height);
-            reportButtonCSV.setBounds(reportDim.width + 10, report_stagger, buttonWidth, reportDim.height);
-            reportButtonTXT.setBounds(reportDim.width + 20 + buttonWidth, report_stagger, buttonWidth, reportDim.height);
+            reportLabel.setBounds(80, report_stagger, reportDim.width, reportDim.height);
+            reportButtonCSV.setBounds(reportDim.width + 110, report_stagger, buttonWidth, reportDim.height);
+            reportButtonTXT.setBounds(reportDim.width + 120 + buttonWidth, report_stagger, buttonWidth, reportDim.height);
             p.add(reportLabel);
             p.add(reportButtonCSV);
             p.add(reportButtonTXT);
@@ -74,6 +76,7 @@ public class ReportsView extends AbstractView{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ReportsView.this.state.detailsReport(true);
+                    new ReportDownloaded();
                 }
             });
             JLabel detailsLabel = new JLabel("Item Details"); // label
@@ -83,12 +86,13 @@ public class ReportsView extends AbstractView{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ReportsView.this.state.detailsReport(false);
+                    new ReportDownloaded();
                 }
             });
 
-            detailsLabel.setBounds(0, report_stagger, reportDim.width, reportDim.height);
-            detailsButtonCSV.setBounds(reportDim.width + 10, report_stagger, buttonWidth, reportDim.height);
-            detailsButtonTXT.setBounds(reportDim.width + 20 + buttonWidth, report_stagger, buttonWidth, reportDim.height);
+            detailsLabel.setBounds(80, report_stagger + 10, reportDim.width, reportDim.height);
+            detailsButtonCSV.setBounds(reportDim.width + 110, report_stagger + 10, buttonWidth, reportDim.height);
+            detailsButtonTXT.setBounds(reportDim.width + 120 + buttonWidth, report_stagger + 10, buttonWidth, reportDim.height);
             p.add(detailsLabel);
             p.add(detailsButtonCSV);
             p.add(detailsButtonTXT);
@@ -101,6 +105,7 @@ public class ReportsView extends AbstractView{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ReportsView.this.state.userReport(true);
+                    new ReportDownloaded();
                 }
             });
             JLabel usersLabel = new JLabel("Users"); // label
@@ -110,12 +115,14 @@ public class ReportsView extends AbstractView{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ReportsView.this.state.userReport(false);
+                    new ReportDownloaded();
                 }
+
             });
 
-            usersLabel.setBounds(0, report_stagger, reportDim.width, reportDim.height);
-            usersButtonCSV.setBounds(reportDim.width + 10, report_stagger, buttonWidth, reportDim.height);
-            usersButtonTXT.setBounds(reportDim.width + 20 + buttonWidth, report_stagger, buttonWidth, reportDim.height);
+            usersLabel.setBounds(80, report_stagger+20, reportDim.width, reportDim.height);
+            usersButtonCSV.setBounds(reportDim.width + 110, report_stagger +20, buttonWidth, reportDim.height);
+            usersButtonTXT.setBounds(reportDim.width + 120 + buttonWidth, report_stagger+20, buttonWidth, reportDim.height);
             p.add(usersLabel);
             p.add(usersButtonCSV);
             p.add(usersButtonTXT);
@@ -130,7 +137,7 @@ public class ReportsView extends AbstractView{
                 ReportsView.this.state.clickedCancel();
             }
         });
-        cancelButton.setBounds(560,230,100,40);
+        cancelButton.setBounds(550,220,100,40);
         //cancelButton.setFont(new Font("Arial", Font.PLAIN, 10));
         p.add(cancelButton);
 

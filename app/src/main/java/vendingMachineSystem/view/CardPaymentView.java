@@ -154,22 +154,7 @@ public class CardPaymentView extends AbstractView {
 		size = payButton.getPreferredSize();
 		payButton.setBounds(300, 200, size.width, size.height);
 		p.add(payButton);
-//
-//		JButton registerButton = new JButton("Register");
-//		registerButton.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				LoginView.this.state.changeToRegistrationPage();
-//			}
-//
-//		});
-//
-//		Panel p = new Panel();
-//		BoxLayout layout = new BoxLayout(p, BoxLayout.Y_AXIS);
-//		p.setLayout(layout);
-//
-//		this.addTotalPanel(p);
+
 		JButton CancelButton;
 		if(loggedIn){
 			CancelButton = new JButton("Log Out");
