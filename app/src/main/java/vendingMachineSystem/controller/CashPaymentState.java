@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 import vendingMachineSystem.VendingMachine;
+import vendingMachineSystem.model.TransactionModel;
 import vendingMachineSystem.view.CashPaymentView;
 
 public class CashPaymentState extends VendingMachineState {
@@ -73,6 +74,18 @@ public class CashPaymentState extends VendingMachineState {
 			BigDecimal result = divided.multiply(increment);
 			return result;
 		}
+	}
+	
+	public void finishTransaction() {
+		String user = super.getVm().getUserName();
+		float moneyPaid = calculateTotal();
+		
+		//TODO moneyPaid and change 
+		TransactionModel tm = new TransactionModel(user, moneyPaid, 0, "cash", itemsToPurchase);
+		tm.addSuccessfulTransaction();
+		
+		//TODO update change
+		vm.setState(new DefaultState(vm));
 	}
 
 }

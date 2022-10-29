@@ -335,7 +335,10 @@ public class PurchaseItemView extends AbstractView {
 		        int row = purchaseItemTable.rowAtPoint(evt.getPoint());
 		        int col = purchaseItemTable.columnAtPoint(evt.getPoint());
 		        if(col == 3 && row != purchaseItemTable.getRowCount() - 1) {
-		        	PurchaseItemView.this.state.checkTimedOut();
+					boolean timedout = PurchaseItemView.this.state.checkTransactionTimeout();
+					if (timedout) {
+						return;
+					}
 		        	PurchaseItemLine line = PurchaseItemView.this.itemsToPurchase.get(row);
 					PurchaseItemView.this.itemData.addQty(line.getItemName(), line.getQty());
 					PurchaseItemView.this.itemsToPurchase.remove(line);

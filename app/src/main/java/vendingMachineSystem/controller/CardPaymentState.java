@@ -86,5 +86,13 @@ public class CardPaymentState extends VendingMachineState {
 	public void setTimeout(int sec) {
 		this.timeoutPeriodSeconds = sec;
 	}
+	
+	public void finishTransaction() {
+		String user = super.getVm().getUserName();
+		float moneyPaid = calculateTotal();
+		TransactionModel tm = new TransactionModel(user, moneyPaid, 0, "card", itemsToPurchase);
+		tm.addSuccessfulTransaction();
+		vm.setState(new DefaultState(vm));
+	}
 
 }
