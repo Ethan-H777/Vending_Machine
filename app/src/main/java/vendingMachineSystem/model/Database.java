@@ -653,6 +653,46 @@ public class Database {
 		return retArray;
 	}
 
+	public List<RecentTransaction> getAllRecent(String username) throws SQLException{
+		List <RecentTransaction> ret = new ArrayList<RecentTransaction>();
+
+		Statement statement = connection.createStatement();
+		String Sql;
+
+		if ( username == null ) {
+			Sql = String.format("""
+					SELECT P.name 
+					FROM 
+						Transactions T
+						INNER JOIN TransactionProducts TP ON (TP.TransactionId = T.id)
+						INNER JOIN Products P ON ( TP.Product = P.id)
+					WHERE successful = 1
+					ORDER BY T.id DESC
+					LIMIT 5
+					;
+					""");
+		} else {
+			Sql = String.format("""
+					SELECT P.name 
+					FROM 
+						Transactions T
+						INNER JOIN TransactionProducts TP ON (TP.TransactionId = T.id)
+						INNER JOIN Products P ON ( TP.Product = P.id)
+					WHERE successful = 1 AND User = '%s'
+					ORDER BY T.id DESC
+					LIMIT 5;
+					""", username);
+		}
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			ret.add(new RecentTransaction(rs.getString("Name")));
+			System.out.println("NAME: "+rs.getString("Name"));
+		}
+		statement.close();
+		return ret;
+	}
+
 	public void updateUser(String oldUsername, String username, String password, String type) throws SQLException {
 		Statement statement = connection.createStatement();
 		String changeTableSql = String.format("""

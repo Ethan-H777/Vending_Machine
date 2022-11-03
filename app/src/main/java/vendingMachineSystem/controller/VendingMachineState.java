@@ -62,10 +62,11 @@ public abstract class VendingMachineState {
 		TransactionModel tm = new TransactionModel();
 		List<RecentTransaction> ls;
 		ls = tm.getRecentTransactions(username);
+		if (ls == null) return null; // if no history, do nothing
 		String[][] ret = new String[ls.size()][2];
 		for (int i = 0; i < ls.size(); i++){
 			ret[i][0] = Integer.toString(i+1);
-			ret[i][0] = ls.get(i).getItemName();
+			ret[i][1] = ls.get(i).getItemName();
 		}
 		return ret;
 	}
