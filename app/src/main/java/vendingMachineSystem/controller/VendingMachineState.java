@@ -58,9 +58,19 @@ public abstract class VendingMachineState {
 		return this.vm;
 	}
 
-	public String[][] getRecentData(){ // STUB TODO: implement
-		String[][] ret = {{"corn","million","like 50 bucks"}};
+	public String[][] getRecentData(String username){ // STUB TODO: implement
+		TransactionModel tm = new TransactionModel();
+		List<RecentTransaction> ls;
+		ls = tm.getRecentTransactions(username);
+		String[][] ret = new String[ls.size()][2];
+		for (int i = 0; i < ls.size(); i++){
+			ret[i][0] = Integer.toString(i+1);
+			ret[i][0] = ls.get(i).getItemName();
+		}
 		return ret;
+	}
+	public String[][] getRecentData(){
+		return getRecentData(null);
 	}
 
 	public String[][] getItemData(){ // original function that does not return id (overloading as many usages already)

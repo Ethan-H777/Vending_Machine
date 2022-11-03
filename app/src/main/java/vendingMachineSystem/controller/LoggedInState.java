@@ -11,8 +11,10 @@ import java.util.LinkedList;
 public class LoggedInState extends VendingMachineState {
 
     private String role;
+    private String username;
 
     public String getRole(){return role;}
+    public String getUsername(){return username;}
     public LoggedInState(VendingMachine vm, String role){
         super(vm);
         this.role = role;

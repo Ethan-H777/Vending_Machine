@@ -45,7 +45,7 @@ public class DefaultView extends AbstractView {
 		recLabel.setBounds(0,150,rec_size.width,rec_size.height);
 		p.add(recLabel);
 		String[][] rec_data;
-		rec_data = state.getRecentData(); // stub for now TODO: implement getting recent purchases data
+		rec_data = state.getRecentData();
 		String[] rec_names = {"Item", "Quantity", "Price"};
 		JTable rec_tab = new JTable(rec_data, rec_names);
 		JScrollPane rec_tab_scroller = new JScrollPane(rec_tab);
