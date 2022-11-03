@@ -42,18 +42,19 @@ public class LoggedInView extends AbstractView {
         p.add(tab_scroller);
 
         //recent purchases
-        JLabel recLabel = new JLabel("Recent Purchases");
-        Dimension rec_size = recLabel.getPreferredSize();
-        recLabel.setBounds(0,150,rec_size.width,rec_size.height);
-        p.add(recLabel);
         String[][] rec_data;
-        rec_data = state.getRecentData(); // stub for now TODO: implement getting recent purchases data
-        String[] rec_names = {"Item", "Quantity", "Price"};
-        JTable rec_tab = new JTable(rec_data, rec_names);
-        JScrollPane rec_tab_scroller = new JScrollPane(rec_tab);
-        rec_tab_scroller.setBounds(0,170,650,60);
-        p.add(rec_tab_scroller);
-
+        rec_data = state.getRecentData(state.getVm().getUserName());
+        if (rec_data != null) {
+            JLabel recLabel = new JLabel("Recent Purchases");
+            Dimension rec_size = recLabel.getPreferredSize();
+            recLabel.setBounds(0, 150, rec_size.width, rec_size.height);
+            p.add(recLabel);
+            String[] rec_names = {"", "Item"};
+            JTable rec_tab = new JTable(rec_data, rec_names);
+            JScrollPane rec_tab_scroller = new JScrollPane(rec_tab);
+            rec_tab_scroller.setBounds(0, 170, 650, 60);
+            p.add(rec_tab_scroller);
+        }
         JButton purchaseButton = new JButton("Purchase");
         purchaseButton.addActionListener(new ActionListener() {
             @Override

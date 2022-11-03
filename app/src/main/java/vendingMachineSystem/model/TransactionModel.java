@@ -4,6 +4,7 @@ import vendingMachineSystem.VendingMachine;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 public class TransactionModel {
@@ -53,4 +54,12 @@ public class TransactionModel {
     	}
     }
 
+	public List<RecentTransaction> getRecentTransactions(String username){
+		try {
+			return db.getAllRecent(username); // TODO: make username specific (STUB)
+		} catch (SQLException e) {
+			System.err.println(e);
+			return null;
+		}
+	}
 }
