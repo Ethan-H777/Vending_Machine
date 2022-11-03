@@ -58,9 +58,20 @@ public abstract class VendingMachineState {
 		return this.vm;
 	}
 
-	public String[][] getRecentData(){ // STUB TODO: implement
-		String[][] ret = {{"corn","million","like 50 bucks"}};
+	public String[][] getRecentData(String username){ // STUB TODO: implement
+		TransactionModel tm = new TransactionModel();
+		List<RecentTransaction> ls;
+		ls = tm.getRecentTransactions(username);
+		if (ls == null) return null; // if no history, do nothing
+		String[][] ret = new String[ls.size()][2];
+		for (int i = 0; i < ls.size(); i++){
+			ret[i][0] = Integer.toString(i+1);
+			ret[i][1] = ls.get(i).getItemName();
+		}
 		return ret;
+	}
+	public String[][] getRecentData(){
+		return getRecentData(null);
 	}
 
 	public String[][] getItemData(){ // original function that does not return id (overloading as many usages already)
@@ -137,6 +148,56 @@ public abstract class VendingMachineState {
 
 	}
 
+	public String[][] getFailedData(){
+		TransactionModel tm = new TransactionModel();
+		List<FailedTrans> fails;
+		fails = tm.getFailedReport();
+
+		if (fails == null) return null;
+
+		String[][] ret = new String[fails.size()][3];
+		for ( int n = 0; n < fails.size(); n++ ){
+			ret[n][0] = fails.get(n).getWhen();
+			ret[n][1] = fails.get(n).getName();
+			ret[n][2] = fails.get(n).getWhy();
+		}
+		return ret;
+	}
+
+	//when,item,paid,change,method
+	public String[][] getSummData(){
+		TransactionModel tm = new TransactionModel();
+		List<Summ> summary;
+		summary = tm.getSummReport();
+
+		if (summary == null) return null;
+
+		String[][] ret = new String[summary.size()][5];
+		for ( int n = 0; n < summary.size(); n++ ){
+			ret[n][0] = summary.get(n).getWhen();
+			ret[n][1] = summary.get(n).getItem();
+			ret[n][2] = summary.get(n).getPaid();
+			ret[n][3] = summary.get(n).getChange();
+			ret[n][4] = summary.get(n).getMethod();
+		}
+		return ret;
+	}
+
+	public String[][] getISummData(){
+		TransactionModel tm = new TransactionModel();
+		List<ISumm> summary;
+		summary = tm.getISummReport();
+
+		if (summary == null) return null;
+
+		String[][] ret = new String[summary.size()][3];
+		for ( int n = 0; n < summary.size(); n++ ){
+			ret[n][0] = Integer.toString(summary.get(n).getId());
+			ret[n][1] = summary.get(n).getName();
+			ret[n][2] = Integer.toString(summary.get(n).getQuantity());
+		}
+		return ret;
+	}
 	public String[][] getUserReport(){
 		UserModel um = new UserModel();
 		List<User> users;

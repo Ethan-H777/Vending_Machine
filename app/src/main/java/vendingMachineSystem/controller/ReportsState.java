@@ -73,11 +73,35 @@ public class ReportsState extends VendingMachineState {
         return filename;
     }
 
+    public void failedReport( boolean is_csv ){
+        String outString = "timestamp,user,reason\n";
+        String[][] failedData = super.getFailedData();
+        outString = getOutString( failedData, outString );
+        String filename = getFileName( is_csv, "failed_transactions");
+        output_csv(filename, outString);
+    }
+
     public void changeReport(boolean is_csv) {
         String outString = "name,value,quantity\n";
         String[][] cashData = super.getCashData();
         outString = getOutString( cashData, outString );
         String filename = getFileName( is_csv, "change");
+        output_csv(filename, outString);
+    }
+
+    public void summaryReport(boolean is_csv) {
+        String outString = "when,item,paid,change,method\n";
+        String[][] summData = super.getSummData();
+        outString = getOutString( summData, outString );
+        String filename = getFileName( is_csv, "transaction_summary");
+        output_csv(filename, outString);
+    }
+
+    public void IsummaryReport(boolean is_csv) {
+        String outString = "code,name,quantity\n";
+        String[][] IsummData = super.getISummData();
+        outString = getOutString( IsummData, outString );
+        String filename = getFileName( is_csv, "item_summary");
         output_csv(filename, outString);
     }
 

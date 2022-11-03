@@ -4,6 +4,7 @@ import vendingMachineSystem.VendingMachine;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 public class TransactionModel {
@@ -53,4 +54,39 @@ public class TransactionModel {
     	}
     }
 
+	public List<RecentTransaction> getRecentTransactions(String username){
+		try {
+			return db.getAllRecent(username);
+		} catch (SQLException e) {
+			System.err.println(e);
+			return null;
+		}
+	}
+
+	public List<FailedTrans> getFailedReport(){
+		try {
+			return db.getFailed();
+		} catch (SQLException e) {
+			System.err.println(e);
+			return null;
+		}
+	}
+
+	public List<Summ> getSummReport(){
+		try {
+			return db.getSumm();
+		} catch (SQLException e) {
+			System.err.println(e);
+			return null;
+		}
+	}
+
+	public List<ISumm> getISummReport(){
+		try {
+			return db.getISumm();
+		} catch (SQLException e) {
+			System.err.println(e);
+			return null;
+		}
+	}
 }

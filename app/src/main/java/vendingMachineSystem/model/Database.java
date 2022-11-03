@@ -653,6 +653,124 @@ public class Database {
 		return retArray;
 	}
 
+	public List<RecentTransaction> getAllRecent(String username) throws SQLException{
+		List <RecentTransaction> ret = new ArrayList<RecentTransaction>();
+
+		Statement statement = connection.createStatement();
+		String Sql;
+
+		if ( username == null ) {
+			Sql = String.format("""
+					SELECT P.name 
+					FROM 
+						Transactions T
+						INNER JOIN TransactionProducts TP ON (TP.TransactionId = T.id)
+						INNER JOIN Products P ON ( TP.Product = P.id)
+					WHERE successful = 1
+					ORDER BY T.id DESC
+					LIMIT 5
+					;
+					""");
+		} else {
+			Sql = String.format("""
+					SELECT P.name 
+					FROM 
+						Transactions T
+						INNER JOIN TransactionProducts TP ON (TP.TransactionId = T.id)
+						INNER JOIN Products P ON ( TP.Product = P.id)
+					WHERE successful = 1 AND User = '%s'
+					ORDER BY T.id DESC
+					LIMIT 5;
+					""", username);
+		}
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			ret.add(new RecentTransaction(rs.getString("Name")));
+		}
+		statement.close();
+		return ret;
+	}
+
+	public List <FailedTrans> getFailed() throws SQLException{
+		List <FailedTrans> ret = new ArrayList<FailedTrans>();
+
+		Statement statement = connection.createStatement();
+		String Sql;
+
+		Sql = String.format("""
+				SELECT Date, COALESCE(User,'anonymous') AS Name, Cancelled_reason
+				FROM Transactions T
+				WHERE successful = 0
+				;
+				""");
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			ret.add(new FailedTrans(rs.getTimestamp("Date"), rs.getString("Name"), rs.getString("Cancelled_reason")));
+		}
+		statement.close();
+		return ret;
+	}
+
+	public List<Summ> getSumm() throws SQLException{
+		List <Summ> ret = new ArrayList<Summ>();
+
+		Statement statement = connection.createStatement();
+		String Sql;
+
+		//when,item,paid,change,method
+		Sql = String.format("""
+				SELECT T.Date, P.name, T.Money_paid, T.Returned_change, T.Payment_method
+				FROM 
+					Transactions T
+					INNER JOIN TransactionProducts TP ON (TP.TransactionId = T.id)
+					INNER JOIN Products P ON ( TP.Product = P.id)
+				WHERE successful = 1 -- this line isn't really needed as inner join handles it
+				;
+				""");
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			ret.add(new Summ(
+									rs.getTimestamp("Date"),
+									rs.getString("Name"),
+									rs.getDouble("Money_paid"),
+									rs.getDouble("Returned_change"),
+									rs.getString("Payment_method")
+									));
+		}
+		statement.close();
+		return ret;
+	}
+
+	public List<ISumm> getISumm() throws SQLException{
+		List <ISumm> ret = new ArrayList<ISumm>();
+
+		Statement statement = connection.createStatement();
+		String Sql;
+
+		Sql = String.format("""
+				SELECT TP.Product, P.name, SUM(TP.Quantity) AS Quantity
+				FROM 
+					TransactionProducts TP
+					INNER JOIN Products P ON ( TP.Product = P.id)
+				GROUP BY TP.Product
+				;
+				""");
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			ret.add(new ISumm(
+					rs.getInt("Product"),
+					rs.getString("Name"),
+					rs.getInt("Quantity")
+			));
+		}
+		statement.close();
+		return ret;
+	}
+
 	public void updateUser(String oldUsername, String username, String password, String type) throws SQLException {
 		Statement statement = connection.createStatement();
 		String changeTableSql = String.format("""
