@@ -64,7 +64,6 @@ public class RestockView extends AbstractView{
             public void actionPerformed(ActionEvent e) {
                 boolean canUpdate = false;
                 if (itemFound){
-                    System.out.println("Item found\n");
                     //update item
                     canUpdate = updateItem();
 

@@ -128,6 +128,10 @@ public class FillCashView extends AbstractView{
                     System.out.println("Not selecting valid cash, unable to save");
                     return;
                 }
+                if (Integer.parseInt(newQty.getText()) < 0){
+                    System.out.println("Negative amount, unable to save");
+                    return;
+                }
                 //modify database
                 state.updateCash(cash.getText(), newQty.getText());
                 FillCashView.this.state.changeToLoggedInState();
