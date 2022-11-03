@@ -1,11 +1,15 @@
 package vendingMachineSystem.view;
 
 import vendingMachineSystem.controller.RestockState;
+import vendingMachineSystem.model.DataModel;
+import vendingMachineSystem.model.Product;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class RestockView extends AbstractView{
     private RestockState state;
@@ -58,13 +62,19 @@ public class RestockView extends AbstractView{
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                boolean canUpdate = false;
                 if (itemFound){
                     System.out.println("Item found\n");
                     //update item
-                    updateItem();
+                    canUpdate = updateItem();
 
                 }
-                RestockView.this.state.changeToLoggedInState();
+                if (canUpdate){
+                    RestockView.this.state.changeToLoggedInState();
+                } else{
+                    new FailRestock();
+                }
+
             }
         });
         p.add(saveButton);
@@ -164,7 +174,7 @@ public class RestockView extends AbstractView{
         return index;
     }
 
-    public void updateItem(){
+    public boolean updateItem(){
         //check all text field empty or same as old one
         String name = checkTextField(newName.getText(), state.getItemData()[itemIndex][1]);
         String id = checkTextField(newCode.getText(), state.getItemData()[itemIndex][4]);
@@ -175,8 +185,35 @@ public class RestockView extends AbstractView{
         //check if new quantity is greater than 15 max
         if (Integer.parseInt(qty) > 15) {
             System.out.println("Quantity can NOT be greater than 15.\n");
-            return;
+            return false;
         }
+        //check new code already exist
+        DataModel dm = new DataModel(false);
+        try{
+            ArrayList<Product> items = (ArrayList<Product>) dm.allProducts();
+            for (Product product: items){
+                if (product.getId() == Integer.parseInt(id)){
+                    System.out.println("Product code already exist.\n");
+                    return false;
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        //check conflicting names
+        try{
+            ArrayList<Product> items = (ArrayList<Product>) dm.allProducts();
+            for (Product product: items){
+                if (product.getName().equals(name)){
+                    System.out.println("Product name already exist.\n");
+                    return false;
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
 
 
         if (id.equals(state.getItemData()[itemIndex][4])){
@@ -190,6 +227,7 @@ public class RestockView extends AbstractView{
             //after updating all other info, update the id by searching through new name
             RestockView.this.state.updateItemID(name, id);
         }
+        return true;
 
     }
 
