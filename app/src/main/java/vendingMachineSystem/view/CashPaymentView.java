@@ -319,6 +319,11 @@ public class CashPaymentView extends AbstractView {
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				boolean timedout = CashPaymentView.this.state.checkTransactionTimeout();
+				if (timedout) {
+					return;
+				}
+
 				if (success) return;
 
 				if (payment < state.calculateTotal()){
@@ -330,9 +335,9 @@ public class CashPaymentView extends AbstractView {
 					CashPaymentView.this.state.finishTransaction();
 				} else{
 					float extra = payment - state.calculateTotal();
+					success = true;
 
 					//gives back the changes
-					//TODO: not enough changes in machine! Fail payment.
 					ArrayList<Change> changes = returnChanges((double) extra);
 
 
@@ -342,7 +347,7 @@ public class CashPaymentView extends AbstractView {
 
 						//add income cash to machine after return change successfully
 						addIncomeToMachine();
-						CashPaymentView.this.state.finishTransaction();
+//						CashPaymentView.this.state.finishTransaction();
 					} else{
 						change.setText("Payment Fail, not enough changes in Vending Machine.");
 					}
@@ -410,6 +415,7 @@ public class CashPaymentView extends AbstractView {
 				break;
 			}
 
+
 		}
 
 		//update the Change table in database
@@ -431,7 +437,6 @@ public class CashPaymentView extends AbstractView {
 		}
 
 		changeLabel.setText(msg);
-		success = true;
 
 	}
 
