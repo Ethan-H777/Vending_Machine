@@ -91,6 +91,7 @@ public class CashPaymentView extends AbstractView {
 			public void actionPerformed(ActionEvent e) {
 				if (success) {
 					System.out.println("Too late to cancel! Payment done!");
+					new FailReturnAfterCashPay();
 					return;
 				}
 				CashPaymentView.this.state.changeToPurchaseState();
