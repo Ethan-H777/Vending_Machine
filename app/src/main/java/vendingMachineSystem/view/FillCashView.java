@@ -123,13 +123,18 @@ public class FillCashView extends AbstractView{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //no changes if no cash selected or qty entered
-                if (cash.getText().equals("") || newQty.getText().equals("")) return;
+                if (cash.getText().equals("") || newQty.getText().equals("")){
+                    new FailCashRefill();
+                    return;
+                }
                 if (!cashFound) {
+                    new FailCashRefill();
                     System.out.println("Not selecting valid cash, unable to save");
                     return;
                 }
                 if (Integer.parseInt(newQty.getText()) < 0){
                     System.out.println("Negative amount, unable to save");
+                    new FailCashRefill();
                     return;
                 }
                 //modify database
