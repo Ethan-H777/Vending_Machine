@@ -74,7 +74,10 @@ public class CashPaymentView extends AbstractView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (success) CashPaymentView.this.state.changeToPurchaseState();
+				if (success) {
+					CashPaymentView.this.state.finishTransaction();
+//					CashPaymentView.this.state.changeToPurchaseState();
+				}
 			}
 		});
 		p.add(doneButton);
