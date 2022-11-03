@@ -71,6 +71,8 @@ public class ReportsView extends AbstractView{
 
         // item details, item summary
         if ( state.getRole().equals("OWNER") || state.getRole().equals("SELLER")){
+
+            //details
             JButton detailsButtonCSV = new JButton("csv"); // button
             detailsButtonCSV.addActionListener(new ActionListener() {
                 @Override
@@ -96,6 +98,34 @@ public class ReportsView extends AbstractView{
             p.add(detailsLabel);
             p.add(detailsButtonCSV);
             p.add(detailsButtonTXT);
+            report_stagger += reportDim.height;
+
+            // summary
+            JButton summaryButtonCSV = new JButton("csv"); // button
+            summaryButtonCSV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReportsView.this.state.summaryReport(true);
+                    new ReportDownloaded();
+                }
+            });
+            JLabel summaryLabel = new JLabel("Item summary"); // label
+            reportDim = summaryLabel.getPreferredSize(); // txt
+            JButton summaryButtonTXT = new JButton("text");
+            summaryButtonTXT.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReportsView.this.state.summaryReport(false);
+                    new ReportDownloaded();
+                }
+            });
+
+            summaryLabel.setBounds(80, report_stagger + 10, reportDim.width, reportDim.height);
+            summaryButtonCSV.setBounds(reportDim.width + 110, report_stagger + 10, buttonWidth, reportDim.height);
+            summaryButtonTXT.setBounds(reportDim.width + 120 + buttonWidth, report_stagger + 10, buttonWidth, reportDim.height);
+            p.add(summaryLabel);
+            p.add(summaryButtonCSV);
+            p.add(summaryButtonTXT);
             report_stagger += reportDim.height;
         }
         // users, failed transactions

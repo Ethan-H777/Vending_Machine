@@ -89,6 +89,14 @@ public class ReportsState extends VendingMachineState {
         output_csv(filename, outString);
     }
 
+    public void summaryReport(boolean is_csv) {
+        String outString = "when,item,paid,change,method\n";
+        String[][] summData = super.getSummData();
+        outString = getOutString( summData, outString );
+        String filename = getFileName( is_csv, "item_summary");
+        output_csv(filename, outString);
+    }
+
     public void detailsReport(boolean is_csv) {
         String outString = "category,name,quantity,price,id\n";
         String[][] cashData = super.getItemData(true);

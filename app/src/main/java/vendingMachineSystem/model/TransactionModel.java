@@ -71,4 +71,13 @@ public class TransactionModel {
 			return null;
 		}
 	}
+
+	public List<Summ> getSummReport(){
+		try {
+			return db.getSumm();
+		} catch (SQLException e) {
+			System.err.println(e);
+			return null;
+		}
+	}
 }

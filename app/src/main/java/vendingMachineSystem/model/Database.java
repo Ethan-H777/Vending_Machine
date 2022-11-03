@@ -713,6 +713,37 @@ public class Database {
 		return ret;
 	}
 
+	public List<Summ> getSumm() throws SQLException{
+		List <Summ> ret = new ArrayList<Summ>();
+
+		Statement statement = connection.createStatement();
+		String Sql;
+
+		//when,item,paid,change,method
+		Sql = String.format("""
+				SELECT T.Date, P.name, T.Money_paid, T.Returned_change, T.Payment_method
+				FROM 
+					Transactions T
+					INNER JOIN TransactionProducts TP ON (TP.TransactionId = T.id)
+					INNER JOIN Products P ON ( TP.Product = P.id)
+				WHERE successful = 1 -- this line isn't really needed as inner join handles it
+				;
+				""");
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			ret.add(new Summ(
+									rs.getTimestamp("Date"),
+									rs.getString("Name"),
+									rs.getDouble("Money_paid"),
+									rs.getDouble("Returned_change"),
+									rs.getString("Payment_method")
+									));
+		}
+		statement.close();
+		return ret;
+	}
+
 	public void updateUser(String oldUsername, String username, String password, String type) throws SQLException {
 		Statement statement = connection.createStatement();
 		String changeTableSql = String.format("""
