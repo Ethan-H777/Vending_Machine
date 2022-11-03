@@ -687,7 +687,27 @@ public class Database {
 
 		while (rs.next()){
 			ret.add(new RecentTransaction(rs.getString("Name")));
-			System.out.println("NAME: "+rs.getString("Name"));
+		}
+		statement.close();
+		return ret;
+	}
+
+	public List <FailedTrans> getFailed() throws SQLException{
+		List <FailedTrans> ret = new ArrayList<FailedTrans>();
+
+		Statement statement = connection.createStatement();
+		String Sql;
+
+		Sql = String.format("""
+				SELECT Date, COALESCE(User,'anonymous') AS Name, Cancelled_reason
+				FROM Transactions T
+				WHERE successful = 0
+				;
+				""");
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			ret.add(new FailedTrans(rs.getTimestamp("Date"), rs.getString("Name"), rs.getString("Cancelled_reason")));
 		}
 		statement.close();
 		return ret;

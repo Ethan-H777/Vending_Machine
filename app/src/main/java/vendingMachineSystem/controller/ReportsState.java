@@ -73,6 +73,14 @@ public class ReportsState extends VendingMachineState {
         return filename;
     }
 
+    public void failedReport( boolean is_csv ){
+        String outString = "timestamp,user,reason\n";
+        String[][] failedData = super.getFailedData();
+        outString = getOutString( failedData, outString );
+        String filename = getFileName( is_csv, "failed_transactions");
+        output_csv(filename, outString);
+    }
+
     public void changeReport(boolean is_csv) {
         String outString = "name,value,quantity\n";
         String[][] cashData = super.getCashData();

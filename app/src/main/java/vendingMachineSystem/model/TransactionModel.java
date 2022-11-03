@@ -56,7 +56,16 @@ public class TransactionModel {
 
 	public List<RecentTransaction> getRecentTransactions(String username){
 		try {
-			return db.getAllRecent(username); // TODO: make username specific (STUB)
+			return db.getAllRecent(username);
+		} catch (SQLException e) {
+			System.err.println(e);
+			return null;
+		}
+	}
+
+	public List<FailedTrans> getFailedReport(){
+		try {
+			return db.getFailed();
 		} catch (SQLException e) {
 			System.err.println(e);
 			return null;

@@ -148,6 +148,22 @@ public abstract class VendingMachineState {
 
 	}
 
+	public String[][] getFailedData(){
+		TransactionModel tm = new TransactionModel();
+		List<FailedTrans> fails;
+		fails = tm.getFailedReport();
+
+		if (fails == null) return null;
+
+		String[][] ret = new String[fails.size()][3];
+		for ( int n = 0; n < fails.size(); n++ ){
+			ret[n][0] = fails.get(n).getWhen();
+			ret[n][1] = fails.get(n).getName();
+			ret[n][2] = fails.get(n).getWhy();
+		}
+		return ret;
+	}
+
 	public String[][] getUserReport(){
 		UserModel um = new UserModel();
 		List<User> users;

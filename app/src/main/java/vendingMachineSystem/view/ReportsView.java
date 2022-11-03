@@ -100,6 +100,8 @@ public class ReportsView extends AbstractView{
         }
         // users, failed transactions
         if ( state.getRole().equals("OWNER")){
+
+            //users
             JButton usersButtonCSV = new JButton("csv"); // button
             usersButtonCSV.addActionListener(new ActionListener() {
                 @Override
@@ -126,6 +128,35 @@ public class ReportsView extends AbstractView{
             p.add(usersLabel);
             p.add(usersButtonCSV);
             p.add(usersButtonTXT);
+            report_stagger += reportDim.height;
+
+            // failed
+            JButton failedButtonCSV = new JButton("csv"); // button
+            failedButtonCSV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReportsView.this.state.failedReport(true);
+                    new ReportDownloaded();
+                }
+            });
+            JLabel failedLabel = new JLabel("Failed Transactions"); // label
+            reportDim = failedLabel.getPreferredSize(); // txt
+            JButton failedButtonTXT = new JButton("text");
+            failedButtonTXT.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReportsView.this.state.failedReport(false);
+                    new ReportDownloaded();
+                }
+
+            });
+
+            failedLabel.setBounds(80, report_stagger+20, reportDim.width, reportDim.height);
+            failedButtonCSV.setBounds(reportDim.width + 110, report_stagger +20, buttonWidth, reportDim.height);
+            failedButtonTXT.setBounds(reportDim.width + 120 + buttonWidth, report_stagger+20, buttonWidth, reportDim.height);
+            p.add(failedLabel);
+            p.add(failedButtonCSV);
+            p.add(failedButtonTXT);
             report_stagger += reportDim.height;
         }
 
