@@ -76,7 +76,8 @@ public class CashPaymentView extends AbstractView {
 
 				if (success) {
 					CashPaymentView.this.state.finishTransaction();
-//					CashPaymentView.this.state.changeToPurchaseState();
+				} else{
+					new FailDoneCashPay();
 				}
 			}
 		});
