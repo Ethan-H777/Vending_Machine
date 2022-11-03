@@ -66,7 +66,33 @@ public class ReportsView extends AbstractView{
             p.add(reportButtonTXT);
             report_stagger += reportDim.height;
 
-            // TODO: transaction summary
+            // summary
+            JButton summaryButtonCSV = new JButton("csv"); // button
+            summaryButtonCSV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReportsView.this.state.summaryReport(true);
+                    new ReportDownloaded();
+                }
+            });
+            JLabel summaryLabel = new JLabel("Transaction summary"); // label
+            reportDim = summaryLabel.getPreferredSize(); // txt
+            JButton summaryButtonTXT = new JButton("text");
+            summaryButtonTXT.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReportsView.this.state.summaryReport(false);
+                    new ReportDownloaded();
+                }
+            });
+
+            summaryLabel.setBounds(80, report_stagger + 10, reportDim.width, reportDim.height);
+            summaryButtonCSV.setBounds(reportDim.width + 110, report_stagger + 10, buttonWidth, reportDim.height);
+            summaryButtonTXT.setBounds(reportDim.width + 120 + buttonWidth, report_stagger + 10, buttonWidth, reportDim.height);
+            p.add(summaryLabel);
+            p.add(summaryButtonCSV);
+            p.add(summaryButtonTXT);
+            report_stagger += reportDim.height;
         }
 
         // item details, item summary
@@ -100,32 +126,32 @@ public class ReportsView extends AbstractView{
             p.add(detailsButtonTXT);
             report_stagger += reportDim.height;
 
-            // summary
-            JButton summaryButtonCSV = new JButton("csv"); // button
-            summaryButtonCSV.addActionListener(new ActionListener() {
+            // Item summary
+            JButton IsummaryButtonCSV = new JButton("csv"); // button
+            IsummaryButtonCSV.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    ReportsView.this.state.summaryReport(true);
+                    ReportsView.this.state.IsummaryReport(true);
                     new ReportDownloaded();
                 }
             });
-            JLabel summaryLabel = new JLabel("Item summary"); // label
-            reportDim = summaryLabel.getPreferredSize(); // txt
-            JButton summaryButtonTXT = new JButton("text");
-            summaryButtonTXT.addActionListener(new ActionListener() {
+            JLabel IsummaryLabel = new JLabel("Item summary"); // label
+            reportDim = IsummaryLabel.getPreferredSize(); // txt
+            JButton IsummaryButtonTXT = new JButton("text");
+            IsummaryButtonTXT.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    ReportsView.this.state.summaryReport(false);
+                    ReportsView.this.state.IsummaryReport(false);
                     new ReportDownloaded();
                 }
             });
 
-            summaryLabel.setBounds(80, report_stagger + 10, reportDim.width, reportDim.height);
-            summaryButtonCSV.setBounds(reportDim.width + 110, report_stagger + 10, buttonWidth, reportDim.height);
-            summaryButtonTXT.setBounds(reportDim.width + 120 + buttonWidth, report_stagger + 10, buttonWidth, reportDim.height);
-            p.add(summaryLabel);
-            p.add(summaryButtonCSV);
-            p.add(summaryButtonTXT);
+            IsummaryLabel.setBounds(80, report_stagger + 10, reportDim.width, reportDim.height);
+            IsummaryButtonCSV.setBounds(reportDim.width + 110, report_stagger + 10, buttonWidth, reportDim.height);
+            IsummaryButtonTXT.setBounds(reportDim.width + 120 + buttonWidth, report_stagger + 10, buttonWidth, reportDim.height);
+            p.add(IsummaryLabel);
+            p.add(IsummaryButtonCSV);
+            p.add(IsummaryButtonTXT);
             report_stagger += reportDim.height;
         }
         // users, failed transactions

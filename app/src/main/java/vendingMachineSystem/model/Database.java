@@ -744,6 +744,33 @@ public class Database {
 		return ret;
 	}
 
+	public List<ISumm> getISumm() throws SQLException{
+		List <ISumm> ret = new ArrayList<ISumm>();
+
+		Statement statement = connection.createStatement();
+		String Sql;
+
+		Sql = String.format("""
+				SELECT TP.Product, P.name, SUM(TP.Quantity) AS Quantity
+				FROM 
+					TransactionProducts TP
+					INNER JOIN Products P ON ( TP.Product = P.id)
+				GROUP BY TP.Product
+				;
+				""");
+		ResultSet rs = statement.executeQuery(Sql);
+
+		while (rs.next()){
+			ret.add(new ISumm(
+					rs.getInt("Product"),
+					rs.getString("Name"),
+					rs.getInt("Quantity")
+			));
+		}
+		statement.close();
+		return ret;
+	}
+
 	public void updateUser(String oldUsername, String username, String password, String type) throws SQLException {
 		Statement statement = connection.createStatement();
 		String changeTableSql = String.format("""

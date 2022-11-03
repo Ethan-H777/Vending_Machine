@@ -80,4 +80,13 @@ public class TransactionModel {
 			return null;
 		}
 	}
+
+	public List<ISumm> getISummReport(){
+		try {
+			return db.getISumm();
+		} catch (SQLException e) {
+			System.err.println(e);
+			return null;
+		}
+	}
 }

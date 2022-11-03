@@ -182,6 +182,22 @@ public abstract class VendingMachineState {
 		}
 		return ret;
 	}
+
+	public String[][] getISummData(){
+		TransactionModel tm = new TransactionModel();
+		List<ISumm> summary;
+		summary = tm.getISummReport();
+
+		if (summary == null) return null;
+
+		String[][] ret = new String[summary.size()][3];
+		for ( int n = 0; n < summary.size(); n++ ){
+			ret[n][0] = Integer.toString(summary.get(n).getId());
+			ret[n][1] = summary.get(n).getName();
+			ret[n][2] = Integer.toString(summary.get(n).getQuantity());
+		}
+		return ret;
+	}
 	public String[][] getUserReport(){
 		UserModel um = new UserModel();
 		List<User> users;
