@@ -86,7 +86,7 @@ public class CashPaymentStateTest {
     @DisplayName("Finish Transaction")
     void finishTransaction() {
         CashPaymentState state = new CashPaymentState(vm,itemsToPurchase,prevState);
-        state.finishTransaction();
+        state.finishTransaction(0);
         assertTrue(state.getVm().getState() instanceof DefaultState);
     }
 

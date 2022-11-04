@@ -78,12 +78,12 @@ public class CashPaymentState extends VendingMachineState {
 		}
 	}
 	
-	public void finishTransaction() {
+	public void finishTransaction(float change) {
 		String user = super.getVm().getUserName();
 		float moneyPaid = calculateTotal();
 		
 		//TODO moneyPaid and change 
-		TransactionModel tm = new TransactionModel(user, moneyPaid, 0, "cash", itemsToPurchase);
+		TransactionModel tm = new TransactionModel(user, moneyPaid, change, "cash", itemsToPurchase);
 		tm.addSuccessfulTransaction();
 		
 		//TODO update change
