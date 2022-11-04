@@ -86,14 +86,17 @@ public class CardPaymentView extends AbstractView {
 
 					String[] choices = new String[itemList.size()];
 					choices = itemList.toArray(choices);
-					Object selectionObject = JOptionPane.showInputDialog(payCardStoredButton,
-							"Selected the card you stored: \n Cardholder Name  |  Card Number",
-							null, JOptionPane.PLAIN_MESSAGE,
-							null, choices, choices[0]);
-					String selectionString = selectionObject.toString();
-					new FinishedPurchase();
-					CardPaymentView.this.state.finishTransaction();
-					System.out.println(selectionString);
+					try {
+						Object selectionObject = JOptionPane.showInputDialog(payCardStoredButton,
+								"Selected the card you stored: \n Cardholder Name  |  Card Number",
+								null, JOptionPane.PLAIN_MESSAGE,
+								null, choices, choices[0]);
+						String selectionString = selectionObject.toString();
+						new FinishedPurchase();
+						CardPaymentView.this.state.finishTransaction();
+						System.out.println(selectionString);
+					}catch (Exception exx){
+					}
 
 				}
 
