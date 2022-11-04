@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class RestockView extends AbstractView{
     private RestockState state;
@@ -23,6 +24,7 @@ public class RestockView extends AbstractView{
     private JTextField newPrice;
     private boolean itemFound;
     private int itemIndex;
+    private JScrollPane scrollPane;
 
     public RestockView(RestockState state){
         this.state = state;
@@ -58,7 +60,7 @@ public class RestockView extends AbstractView{
         JButton saveButton = new JButton("Save");
         size = saveButton.getPreferredSize();
         saveButton.setBounds(550,170, 100, 40);
-        //saveButton.setFont(new Font("Arial", Font.PLAIN, 10));
+
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -149,10 +151,16 @@ public class RestockView extends AbstractView{
             //never reach this line
             System.out.println("either search by name or code!\n");
         }
+        JLabel notFoundLabel = new JLabel();
+        notFoundLabel.setBounds(400, 95+30, 200, 40);
+        p.add(notFoundLabel);
 
         if (index == -1){
             System.out.println("Item not found.\n");
             itemFound = false;
+
+            notFoundLabel.setText("Item Not Found.");
+
             return index;
         }
         itemFound = true;
@@ -166,7 +174,7 @@ public class RestockView extends AbstractView{
         String[][] data = {{id, category, name, qty, price}};
         String[] columns = {"Code", "Category", "Name", "Quantity", "Price"};
         JTable productTable = new JTable(data, columns);
-        JScrollPane scrollPane = new JScrollPane(productTable);
+        scrollPane = new JScrollPane(productTable);
         scrollPane.setBounds(70, 95 + 30, 300, 40);
         p.add(scrollPane);
 
@@ -182,10 +190,16 @@ public class RestockView extends AbstractView{
         String price = checkTextField(newPrice.getText(), state.getItemData()[itemIndex][3]);
 
         //check if new quantity is greater than 15 max or negative
-        if (Integer.parseInt(qty) > 15 || Integer.parseInt(qty) < 0) {
-            System.out.println("Quantity can NOT be greater than 15.\n");
+        try{
+            if (Integer.parseInt(qty) > 15 || Integer.parseInt(qty) < 0) {
+                System.out.println("Quantity can NOT be greater than 15.\n");
+                return false;
+            }
+        } catch (Exception e){
+            System.out.println("Quantity should be integer.\n");
             return false;
         }
+
 
         //check new code already exist
         DataModel dm = new DataModel(false);
@@ -197,8 +211,9 @@ public class RestockView extends AbstractView{
                     return false;
                 }
             }
-        } catch (SQLException e){
-            e.printStackTrace();
+        } catch (Exception e){
+            System.out.println("ID should be integer.\n");
+            return false;
         }
 
         //check conflicting names
@@ -215,10 +230,28 @@ public class RestockView extends AbstractView{
         }
 
         //check price
-        if (Float.parseFloat(price) < 0){
-            System.out.println("Price can NOT be negative.\n");
+        try{
+            if (Float.parseFloat(price) < 0){
+                System.out.println("Price can NOT be negative.\n");
+                return false;
+            }
+        } catch (Exception e){
+            System.out.println("Price should be float.\n");
             return false;
         }
+
+        //check category
+        String lowCat = category.toLowerCase(Locale.ROOT);
+        if (lowCat.equals("drinks") || lowCat.equals("chocolates") || lowCat.equals("chips") || lowCat.equals("candies")){
+            if (lowCat.equals("drinks")) category = "Drinks";
+            if (lowCat.equals("chocolates")) category = "Chocolates";
+            if (lowCat.equals("chips")) category = "Chips";
+            if (lowCat.equals("candies")) category = "Candies";
+        } else{
+            System.out.println("Please enter category among Drinks, Chocolates, Chips and Candies.\n");
+            return false;
+        }
+
 
         if (id.equals(state.getItemData()[itemIndex][4])){
             //item code is not changing so update item by id

@@ -75,20 +75,11 @@ public class FillCashView extends AbstractView{
             @Override
             public void actionPerformed(ActionEvent e) {
 //                System.out.println(cash.getText());
-//                cashFound = false;
+                cashFound = false;
 
                 for (int i = 0; i < state.getCashData().length; i++){
 
                     if (state.getCashData()[i][0].equals(cash.getText())){
-//                        String qty = state.getCashData()[i][1];
-//                        String name = state.getCashData()[i][0];
-//                        String[][] data = { {qty} };
-//                        String[] columns = {name};
-//
-//                        JTable cashTable = new JTable(data, columns);
-//                        JScrollPane scrollPane = new JScrollPane(cashTable);
-//                        scrollPane.setBounds(70, 70 + 30, 40, 40);
-//                        p.add(scrollPane);
 
                         found.setText("Cash Found.");
 
@@ -104,6 +95,10 @@ public class FillCashView extends AbstractView{
 
         });
         p.add(searchButton);
+
+        JLabel msg = new JLabel();
+        msg.setBounds(70, 100 + 60, 300,20);
+        p.add(msg);
 
         //new quantity
         JLabel qtyLabel = new JLabel("New Quantity");
@@ -129,14 +124,20 @@ public class FillCashView extends AbstractView{
                 }
                 if (!cashFound) {
                     new FailCashRefill();
-                    System.out.println("Not selecting valid cash, unable to save");
+                    msg.setText("Not selecting valid cash, unable to save");
                     return;
                 }
-                if (Integer.parseInt(newQty.getText()) < 0){
-                    System.out.println("Negative amount, unable to save");
-                    new FailCashRefill();
+                try{
+                    if (Integer.parseInt(newQty.getText()) < 0){
+                        msg.setText("Negative amount, unable to save");
+                        new FailCashRefill();
+                        return;
+                    }
+                } catch (Exception ex){
+                    msg.setText("Quantity should be integer.");
                     return;
                 }
+
                 //modify database
                 state.updateCash(cash.getText(), newQty.getText());
                 FillCashView.this.state.changeToLoggedInState();
