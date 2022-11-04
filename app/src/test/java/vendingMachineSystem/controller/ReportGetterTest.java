@@ -11,7 +11,7 @@ import java.sql.DriverManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class reportGetterTest {
+public class ReportGetterTest {
 
     static Database db;
     static String dbName = "test_database";
