@@ -75,7 +75,11 @@ public class CashPaymentView extends AbstractView {
 			public void actionPerformed(ActionEvent e) {
 
 				if (success) {
-					CashPaymentView.this.state.finishTransaction(payment - state.calculateTotal());
+					if (payment == state.calculateTotal()){
+						CashPaymentView.this.state.finishTransaction(0);
+					} else{
+						CashPaymentView.this.state.finishTransaction(payment - state.calculateTotal());
+					}
 				} else{
 					new FailDoneCashPay();
 				}
@@ -334,18 +338,18 @@ public class CashPaymentView extends AbstractView {
 				if (payment < state.calculateTotal()){
 					float shortage = state.calculateTotal() - payment;
 					new FailPayment(shortage);
+
 				} else if (payment == state.calculateTotal()) {
 					success = true;
 					change.setText("Payment Success! No Changes Need.");
 					addIncomeToMachine();
-					CashPaymentView.this.state.finishTransaction(0);
+
 				} else{
 					float extra = payment - state.calculateTotal();
 					success = true;
 
 					//gives back the changes
 					ArrayList<Change> changes = returnChanges((double) extra);
-
 
 					if (success) {
 						//display changes to customer
