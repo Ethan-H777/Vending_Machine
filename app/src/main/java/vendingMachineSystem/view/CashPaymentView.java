@@ -337,6 +337,7 @@ public class CashPaymentView extends AbstractView {
 				} else if (payment == state.calculateTotal()) {
 					success = true;
 					change.setText("Payment Success! No Changes Need.");
+					addIncomeToMachine();
 					CashPaymentView.this.state.finishTransaction(0);
 				} else{
 					float extra = payment - state.calculateTotal();
@@ -352,7 +353,6 @@ public class CashPaymentView extends AbstractView {
 
 						//add income cash to machine after return change successfully
 						addIncomeToMachine();
-//						CashPaymentView.this.state.finishTransaction();
 					} else{
 						change.setText("Payment Fail, not enough changes in Vending Machine.");
 					}
@@ -423,7 +423,7 @@ public class CashPaymentView extends AbstractView {
 
 		}
 
-		//update the Change table in database
+//		//update the Change table in database
 		for (Change c: cash){
 			CashPaymentView.this.state.updateCash(c.getName(), Integer.toString(c.getQty()));
 		}

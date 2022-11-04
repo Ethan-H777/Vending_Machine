@@ -67,6 +67,8 @@ public class RestockView extends AbstractView{
                     //update item
                     canUpdate = updateItem();
 
+                } else{
+//                    addNewItem();
                 }
                 if (canUpdate){
                     RestockView.this.state.changeToLoggedInState();
@@ -296,4 +298,5 @@ public class RestockView extends AbstractView{
         scrollPane.setBounds(450, 30, 200, 100);
         p.add(scrollPane);
     }
+
 }
