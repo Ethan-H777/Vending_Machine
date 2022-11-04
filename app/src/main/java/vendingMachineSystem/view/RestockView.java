@@ -67,8 +67,6 @@ public class RestockView extends AbstractView{
                     //update item
                     canUpdate = updateItem();
 
-                } else{
-//                    addNewItem();
                 }
                 if (canUpdate){
                     RestockView.this.state.changeToLoggedInState();
@@ -193,7 +191,7 @@ public class RestockView extends AbstractView{
         try{
             ArrayList<Product> items = (ArrayList<Product>) dm.allProducts();
             for (Product product: items){
-                if (product.getId() == Integer.parseInt(id)){
+                if (product.getId() == Integer.parseInt(id) && !id.equals(state.getItemData()[itemIndex][4])){
                     System.out.println("Product code already exist.\n");
                     return false;
                 }
@@ -206,7 +204,7 @@ public class RestockView extends AbstractView{
         try{
             ArrayList<Product> items = (ArrayList<Product>) dm.allProducts();
             for (Product product: items){
-                if (product.getName().equals(name)){
+                if (product.getName().equals(name) && !name.equals(state.getItemData()[itemIndex][1])){
                     System.out.println("Product name already exist.\n");
                     return false;
                 }
