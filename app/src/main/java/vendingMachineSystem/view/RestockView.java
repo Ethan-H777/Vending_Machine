@@ -181,11 +181,12 @@ public class RestockView extends AbstractView{
         String category = checkTextField(newCategory.getText(), state.getItemData()[itemIndex][0]);
         String price = checkTextField(newPrice.getText(), state.getItemData()[itemIndex][3]);
 
-        //check if new quantity is greater than 15 max
-        if (Integer.parseInt(qty) > 15) {
+        //check if new quantity is greater than 15 max or negative
+        if (Integer.parseInt(qty) > 15 || Integer.parseInt(qty) < 0) {
             System.out.println("Quantity can NOT be greater than 15.\n");
             return false;
         }
+
         //check new code already exist
         DataModel dm = new DataModel(false);
         try{
@@ -213,7 +214,11 @@ public class RestockView extends AbstractView{
             e.printStackTrace();
         }
 
-
+        //check price
+        if (Float.parseFloat(price) < 0){
+            System.out.println("Price can NOT be negative.\n");
+            return false;
+        }
 
         if (id.equals(state.getItemData()[itemIndex][4])){
             //item code is not changing so update item by id

@@ -351,7 +351,6 @@ public class CashPaymentView extends AbstractView {
 					//gives back the changes
 					ArrayList<Change> changes = returnChanges((double) extra);
 
-
 					if (success) {
 						//display changes to customer
 						displayChanges(changes, change);
