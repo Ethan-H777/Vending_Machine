@@ -20,7 +20,7 @@ public class ChangeModelTest {
         db.connect(dbName + ".db");
 
         try {
-            db.changesDrop();
+            db.dropTable("Changes");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
