@@ -135,7 +135,7 @@ public class ReportsView extends AbstractView{
                     new ReportDownloaded();
                 }
             });
-            JLabel IsummaryLabel = new JLabel("Item summary"); // label
+            JLabel IsummaryLabel = new JLabel("Item Sold"); // label
             reportDim = IsummaryLabel.getPreferredSize(); // txt
             JButton IsummaryButtonTXT = new JButton("text");
             IsummaryButtonTXT.addActionListener(new ActionListener() {

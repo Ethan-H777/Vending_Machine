@@ -12,6 +12,7 @@ public class DefaultState extends VendingMachineState {
 
 	public DefaultState(VendingMachine vm) {
 		super(vm);
+		vm.setUser("anonymous", "CUSTOMER");
 	}
 
 	@Override
