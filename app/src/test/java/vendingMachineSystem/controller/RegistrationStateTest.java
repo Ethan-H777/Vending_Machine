@@ -88,7 +88,9 @@ class RegistrationStateTest {
 	void createAccountFail () throws SQLException {
 		RegistrationState state = new RegistrationState(vm);
 		db.connect(dbName + ".db");
-		boolean success = state.createAccount("billy","123456","CUSTOMER");
+		state.createAccount("john","123456","CUSTOMER");
+		boolean success = state.createAccount("john","123456","CUSTOMER");
+		state.removeUser("john");
 		assert(!success);
 	}
 
