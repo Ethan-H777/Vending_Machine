@@ -44,7 +44,10 @@ public class ReportsState extends VendingMachineState {
     }
 
     public void clickedCancel(){
-        vm.setState( new LoggedInState(vm, role) );
+            if (super.checkTimedOut()){vm.setState(new DefaultState(vm));}
+            else{
+                vm.setState(new LoggedInState(vm, role));
+            }
     }
 
 
