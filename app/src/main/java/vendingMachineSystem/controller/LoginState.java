@@ -31,8 +31,8 @@ public class LoginState extends VendingMachineState {
 
 	public void changeToLoggedInPage(String username, String type){
 		this.checkTimedOut(120);
-		vm.setState( new LoggedInState(vm, type));
 		vm.setUser(username, type);
+		vm.setState( new LoggedInState(vm, type));
 	}
 
 	public String getPassword(String username) throws SQLException {
