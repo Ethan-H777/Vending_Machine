@@ -44,11 +44,15 @@ public class ReportsState extends VendingMachineState {
     }
 
     public void clickedCancel(){
-        vm.setState( new LoggedInState(vm, role) );
+            if (super.checkTimedOut()){vm.setState(new DefaultState(vm));}
+            else{
+                vm.setState(new LoggedInState(vm, role));
+            }
     }
 
 
     String getOutString(String[][] data, String outString){
+            if (data == null) return outString;
         for ( int i =0; i < data.length; i++){
             for ( int j = 0; j < data[i].length; j++){
                 outString = outString + data[i][j];
