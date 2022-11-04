@@ -16,7 +16,7 @@ public class DataModelTest {
         Database testdb = Database.getInstance();
         testdb.connect("test_database.db");
         try {
-            testdb.productsDrop();
+            testdb.dropTable("Products");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
