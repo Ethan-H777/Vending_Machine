@@ -46,4 +46,49 @@ public class ReportGetterTest {
             assertTrue(false); // if there is an error, test fails
         }
     }
+    @Test
+    void ISummRep(){
+        try{
+            ReportsState rs = new ReportsState(vm, "OWNER");
+            rs.IsummaryReport(true);
+        } catch (Exception e) {
+            assertTrue(false); // if there is an error, test fails
+        }
+    }
+    @Test
+    void detailRep(){
+        try{
+            ReportsState rs = new ReportsState(vm, "OWNER");
+            rs.detailsReport(true);
+        } catch (Exception e) {
+            assertTrue(false); // if there is an error, test fails
+        }
+    }
+    @Test
+    void failRep(){
+        try{
+            ReportsState rs = new ReportsState(vm, "OWNER");
+            rs.failedReport(true);
+        } catch (Exception e) {
+            assertTrue(false); // if there is an error, test fails
+        }
+    }
+    @Test
+    void summaryRep(){
+        try{
+            ReportsState rs = new ReportsState(vm, "OWNER");
+            rs.summaryReport(true);
+        } catch (Exception e) {
+            assertTrue(false); // if there is an error, test fails
+        }
+    }
+    @Test
+    void usrRep(){
+        try{
+            ReportsState rs = new ReportsState(vm, "OWNER");
+            rs.userReport(true);
+        } catch (Exception e) {
+            assertTrue(false); // if there is an error, test fails
+        }
+    }
 }
