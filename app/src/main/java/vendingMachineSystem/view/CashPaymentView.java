@@ -75,7 +75,7 @@ public class CashPaymentView extends AbstractView {
 			public void actionPerformed(ActionEvent e) {
 
 				if (success) {
-					CashPaymentView.this.state.finishTransaction();
+					CashPaymentView.this.state.finishTransaction(payment - state.calculateTotal());
 				} else{
 					new FailDoneCashPay();
 				}
@@ -337,7 +337,7 @@ public class CashPaymentView extends AbstractView {
 				} else if (payment == state.calculateTotal()) {
 					success = true;
 					change.setText("Payment Success! No Changes Need.");
-					CashPaymentView.this.state.finishTransaction();
+					CashPaymentView.this.state.finishTransaction(0);
 				} else{
 					float extra = payment - state.calculateTotal();
 					success = true;
