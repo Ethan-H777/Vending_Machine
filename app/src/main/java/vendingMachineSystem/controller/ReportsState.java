@@ -52,6 +52,7 @@ public class ReportsState extends VendingMachineState {
 
 
     String getOutString(String[][] data, String outString){
+            if (data == null) return outString;
         for ( int i =0; i < data.length; i++){
             for ( int j = 0; j < data[i].length; j++){
                 outString = outString + data[i][j];
