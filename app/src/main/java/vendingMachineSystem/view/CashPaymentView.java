@@ -76,8 +76,10 @@ public class CashPaymentView extends AbstractView {
 
 				if (success) {
 					if (payment == state.calculateTotal()){
+						new FinishedPurchase();
 						CashPaymentView.this.state.finishTransaction(0);
 					} else{
+						new FinishedPurchase();
 						CashPaymentView.this.state.finishTransaction(payment - state.calculateTotal());
 					}
 				} else{
