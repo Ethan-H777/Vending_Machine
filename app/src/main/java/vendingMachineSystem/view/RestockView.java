@@ -151,15 +151,11 @@ public class RestockView extends AbstractView{
             //never reach this line
             System.out.println("either search by name or code!\n");
         }
-        JLabel notFoundLabel = new JLabel();
-        notFoundLabel.setBounds(400, 95+30, 200, 40);
-        p.add(notFoundLabel);
 
         if (index == -1){
             System.out.println("Item not found.\n");
             itemFound = false;
-
-            notFoundLabel.setText("Item Not Found.");
+            new FailRestock();
 
             return index;
         }
