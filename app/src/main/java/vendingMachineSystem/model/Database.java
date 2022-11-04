@@ -32,12 +32,14 @@ public class Database {
 		dbUrl = "jdbc:sqlite:" + System.getProperty("user.dir") + "/" + name;
         try {
         	connection = DriverManager.getConnection(dbUrl);
-        	setupProductTable();
+			setupProductTable();
 			//dropTable("Users");
 			setupUserTable();
 			//addDefaultUsers();
 			setUpChangeTable();
+			//dropTable("Transactions");
 			setupTransactionTable();
+			//dropTable("TransactionProducts");
 			setupTransactionProductsTable();
 			//dropTable("CreditCardList");
 			setupCreditCardList();
@@ -134,82 +136,101 @@ public class Database {
 		statement.close();
 	}
 
-	public void addDefaultUsers() throws SQLException {
-		Statement statement = connection.createStatement();
+//	public void addDefaultUsers() throws SQLException {
+//		Statement statement = connection.createStatement();
+//
+//		String changeTableSql = """
+//			INSERT INTO Users(Username, Password, Type)
+//				VALUES
+//					('billyowner', 'owner123', 'OWNER'),
+//					('billyseller', 'seller123', 'SELLER'),
+//					('billycashier', 'cashier123', 'CASHIER'),
+//					('billy', '123456', 'CUSTOMER')
+//			;
+//			""";
+//
+//		statement.execute(changeTableSql);
+//		statement.close();
+//	}
 
-		String changeTableSql = """
-			INSERT INTO Users(Username, Password, Type) 
-				VALUES 
-					('billyowner', 'owner123', 'OWNER'),
-					('billyseller', 'seller123', 'SELLER'),
-					('billycashier', 'cashier123', 'CASHIER'),
-					('billy', '123456', 'CUSTOMER')
-			;
-			""";
+//	public void addDataChanges() throws SQLException {
+//		Statement statement = connection.createStatement();
+//
+//		String changeTableSql = """
+//			INSERT INTO Changes(name, value, quantity)
+//				VALUES
+//					('$100', '100.00', 5),
+//					('$50', '50.00', 5),
+//					('$20', '20.00', 5),
+//					('$10', '10.00', 5),
+//					('$5', '5.00', 5),
+//					('$2', '2.00', 5),
+//					('$1', '1.00', 5),
+//					('50c', '0.50', 5),
+//					('20c', '0.20', 5),
+//					('10c', '0.10', 5),
+//					('5c', '0.05', 5)
+//			;
+//			""";
+//
+//		statement.execute(changeTableSql);
+//		statement.close();
+//	}
 
-		statement.execute(changeTableSql);
-		statement.close();
-	}
-
-	public void addDataChanges() throws SQLException {
-		Statement statement = connection.createStatement();
-
-		String changeTableSql = """
-			INSERT INTO Changes(name, value, quantity) 
-				VALUES 
-					('$100', '100.00', 5),
-					('$50', '50.00', 5),
-					('$20', '20.00', 5),
-					('$10', '10.00', 5),
-					('$5', '5.00', 5),
-					('$2', '2.00', 5),
-					('$1', '1.00', 5),
-					('50c', '0.50', 5),
-					('20c', '0.20', 5),
-					('10c', '0.10', 5),
-					('5c', '0.05', 5)
-			;
-			""";
-
-		statement.execute(changeTableSql);
-		statement.close();
-	}
-	
-	//Dummy method to show how to add values
-	public void addDataProducts() throws SQLException {
-		Statement statement = connection.createStatement();
-		
-		String productTableSql = """
-			INSERT INTO Products(id, name, category, quantity, price) 
-				VALUES 
-					(1, 'Pebis', 'Drinks', 5, 1.10),
-					(2, 'Conk', 'Drinks', 5, 1.20),
-					(3, 'Spronk', 'Drinks', 5, 1.25),
-					(4, 'Fronta', 'Drinks', 5, 1.20),
-					(5, 'Cabdury', 'Chocolates', 5, 5.6),
-					(6, 'Skites', 'Candies', 5, 4.3),
-					(7, 'Prinkles', 'Chips', 5, 3),
-					(8, 'Alan', 'Chocolates', 5, 1.20)
-			;
-			""";
-		
-		statement.execute(productTableSql);
-		statement.close();
-	}
+//	public void addDataProducts() throws SQLException {
+//		Statement statement = connection.createStatement();
+//
+//		String productTableSql = """
+//			INSERT INTO Products(id, name, category, quantity, price)
+//				VALUES
+//					(101, 'Sprite', 'Drinks', 7, 4.70),
+//					(102, 'Coca-Cola', 'Drinks', 7, 4.70),
+//					(103, 'Mount Franklin', 'Drinks', 7, 3.60),
+//					(104, 'Pump', 'Drinks', 7, 3.40),
+//					(105, 'Pepsi', 'Drinks', 7, 4.50),
+//					(106, 'Original Orange Juice', 'Drinks', 7, 5.00),
+//					(107, 'Golden Circle Apple Juice', 'Drinks', 7, 4.90),
+//					(201, 'Cadbury', 'Chocolates', 7, 6.50),
+//					(202, 'Mars Pods', 'Chocolates', 7, 5.60),
+//					(203, 'Kinder', 'Chocolates', 7, 6.60),
+//					(204, 'M&M', 'Chocolates', 7, 5.00),
+//					(205, 'Oreo', 'Chocolates', 7, 6.60),
+//					(206, 'KitKat', 'Chocolates', 7, 6.70),
+//					(207, 'Bounty', 'Chocolates', 7, 5.40),
+//					(301, 'Pringles Sour Cream', 'Chips', 7, 4.5),
+//					(302, 'Kettle', 'Chips', 7, 3.5),
+//					(303, 'Thins', 'Chips', 7, 3),
+//					(304, 'Smith Sea Salt', 'Chips', 7, 4),
+//					(305, 'Smith Chicken', 'Chips', 7, 4),
+//					(306, 'Smith BBQ', 'Chips', 7, 4),
+//					(307, 'Pringles BBQ', 'Chips', 7, 4.5),
+//					(401, 'Mentos', 'Candies', 7, 5.3),
+//					(402, 'Sour Patch', 'Candies', 7, 4.3),
+//					(403, 'Skittles', 'Candies', 7, 4.7),
+//					(404, 'Tic Tac', 'Candies', 7, 6.3),
+//					(405, 'Allen', 'Candies', 7, 4.8),
+//					(406, 'Twists', 'Candies', 7, 4.3),
+//					(407, 'Haribo Gold Bear', 'Candies', 7, 6.3)
+//			;
+//			""";
+//
+//		statement.execute(productTableSql);
+//		statement.close();
+//	}
 	
 	//Dummy method to show how to retrieve values	
-	public String retrieveDataProducts() throws SQLException {
-		Statement statement = connection.createStatement();
-		
-		String productTableSql = """
-			SELECT * FROM Products;
-			""";
-		
-		ResultSet rs = statement.executeQuery(productTableSql);
-		String name = rs.getString("name");
-		statement.close();
-		return name;
-	}
+//	public String retrieveDataProducts() throws SQLException {
+//		Statement statement = connection.createStatement();
+//
+//		String productTableSql = """
+//			SELECT * FROM Products;
+//			""";
+//
+//		ResultSet rs = statement.executeQuery(productTableSql);
+//		String name = rs.getString("name");
+//		statement.close();
+//		return name;
+//	}
 
 	public void addUser(String username, String password, String type) throws SQLException {
 		Statement statement = connection.createStatement();
@@ -405,29 +426,6 @@ public class Database {
 		statement.close();
 	}
 
-	void productsDrop() throws SQLException{
-		Statement statement = connection.createStatement();
-
-		String productTableSql = """
-			DROP TABLE IF EXISTS Products
- 	  		;""";
-
-		statement.execute(productTableSql);
-		statement.close();
-	}
-
-	void changesDrop() throws SQLException{
-		Statement statement = connection.createStatement();
-
-		String productTableSql = """
-			DROP TABLE IF EXISTS Changes
- 	  		;""";
-
-		statement.execute(productTableSql);
-		statement.close();
-	}
-
-
 
 	void doStatement(String cmd) throws SQLException{
 		Statement statement = connection.createStatement();
@@ -467,7 +465,7 @@ public class Database {
 		statement.close();
 	}
 
-	private void dropTable(String tableToDrop) throws SQLException {
+	public void dropTable(String tableToDrop) throws SQLException {
 		Statement statement = connection.createStatement();
 
 		String dropTableSql = String.format("""
@@ -477,27 +475,27 @@ public class Database {
 		statement.close();
 	}
 
-	private void importJsonFile() throws Exception {
-		String sql = """
-		INSERT INTO CreditCardList (cardID,name, number) VALUES (?, ?, ?);""";
-		PreparedStatement statement = connection.prepareStatement(sql);
-
-		JSONParser parser = new JSONParser();
-		JSONArray jsonArray = (JSONArray) parser.parse(new FileReader("credit_cards.json"));
-		int id = 1;
-		for(Object object : jsonArray) {
-			JSONObject cardDetail = (JSONObject) object;
-			String name = (String) cardDetail.get("name");
-			String number = (String) cardDetail.get("number");
-			statement.setInt(1,id);
-			statement.setString(2, name);
-			statement.setString(3, number);
-			statement.executeUpdate();
-			id +=1;
-		}
-
-		statement.close();
-	}
+//	private void importJsonFile() throws Exception {
+//		String sql = """
+//		INSERT INTO CreditCardList (cardID,name, number) VALUES (?, ?, ?);""";
+//		PreparedStatement statement = connection.prepareStatement(sql);
+//
+//		JSONParser parser = new JSONParser();
+//		JSONArray jsonArray = (JSONArray) parser.parse(new FileReader("credit_cards.json"));
+//		int id = 1;
+//		for(Object object : jsonArray) {
+//			JSONObject cardDetail = (JSONObject) object;
+//			String name = (String) cardDetail.get("name");
+//			String number = (String) cardDetail.get("number");
+//			statement.setInt(1,id);
+//			statement.setString(2, name);
+//			statement.setString(3, number);
+//			statement.executeUpdate();
+//			id +=1;
+//		}
+//
+//		statement.close();
+//	}
 
 	public String getCardNumber(String name, String cardNumber) throws SQLException {
 		Statement statement = connection.createStatement();
